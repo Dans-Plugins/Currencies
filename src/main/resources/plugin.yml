@@ -16,3 +16,5 @@ permissions:
     default: true
   currencies.list:
     default: true
+  currencies.mint:
+    default: true
