@@ -1,5 +1,6 @@
 package dansplugins.currencies.objects;
 
+import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.Material;
 
 public class Currency {
@@ -8,9 +9,9 @@ public class Currency {
     private String material;
     private int currencyID;
 
-    public Currency(String name, String factionName, Material material, int currencyID) {
+    public Currency(String name, MF_Faction faction, Material material, int currencyID) {
         this.name = name;
-        this.factionName = factionName;
+        this.factionName = faction.getName();
         this.material = material.name();
         this.currencyID = currencyID;
     }
