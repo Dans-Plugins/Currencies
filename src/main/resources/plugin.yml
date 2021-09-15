@@ -10,3 +10,5 @@ commands:
 permissions:
   currencies.help:
     default: true
+  currencies.create:
+    default: true
