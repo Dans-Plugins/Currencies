@@ -2,6 +2,9 @@ package dansplugins.currencies.data;
 
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
+import org.bukkit.ChatColor;
+import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
@@ -57,6 +60,17 @@ public class PersistentData {
     public void removeCurrency(Currency currencyToRemove) {
         if (getCurrency(currencyToRemove.getName()) != null) {
             currencies.remove(currencyToRemove);
+        }
+    }
+
+    public void sendListOfCurrenciesToSender(CommandSender sender) {
+        if (currencies.size() == 0) {
+            sender.sendMessage(ChatColor.AQUA + "There are no currencies yet.");
+            return;
+        }
+        sender.sendMessage(ChatColor.AQUA + "=== Currencies ===");
+        for (Currency currency : currencies) {
+            sender.sendMessage(ChatColor.AQUA + currency.getName());
         }
     }
 }
