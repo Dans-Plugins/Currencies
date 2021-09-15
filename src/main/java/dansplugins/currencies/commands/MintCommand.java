@@ -47,7 +47,17 @@ public class MintCommand {
 
         int amount = Integer.parseInt(args[0]); // TODO: handle error here
 
-        // TODO: make minting cost power
+        double powerCost = 0.5; // TODO: make power cost a config option
+        int powerRequired = (int) (amount * powerCost);
+
+        int playerPower = MedievalFactionsIntegrator.getInstance().getAPI().getPower(player);
+
+        if (playerPower < powerRequired) {
+            player.sendMessage(ChatColor.RED + "You need " + powerRequired + " to mint that much currency.");
+            return false;
+        }
+
+        MedievalFactionsIntegrator.getInstance().getAPI().decreasePower(player, powerRequired);
 
         ItemStack itemStack = CurrencyFactory.getInstance().createCurrencyItem(currency, amount);
 
