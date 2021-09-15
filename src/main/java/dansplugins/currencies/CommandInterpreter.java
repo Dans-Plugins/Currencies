@@ -2,6 +2,7 @@ package dansplugins.currencies;
 
 import dansplugins.currencies.commands.CreateCommand;
 import dansplugins.currencies.commands.HelpCommand;
+import dansplugins.currencies.commands.InfoCommand;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -38,6 +39,12 @@ public class CommandInterpreter {
                 if (!checkPermission(sender, "currencies.create")) { return false; }
                 CreateCommand command = new CreateCommand();
                 return command.execute(sender, arguments);
+            }
+
+            if (secondaryLabel.equalsIgnoreCase("info")) {
+                if (!checkPermission(sender, "currencies.info")) { return false; }
+                InfoCommand command = new InfoCommand();
+                return command.execute(sender);
             }
 
             sender.sendMessage(ChatColor.RED + "Currencies doesn't recognize that command.");
