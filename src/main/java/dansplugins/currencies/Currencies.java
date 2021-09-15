@@ -8,7 +8,7 @@ public final class Currencies extends JavaPlugin {
 
     private static Currencies instance;
 
-    private final String version = "v0.2";
+    private final String version = "v0.3";
 
     public static Currencies getInstance() {
         return instance;
