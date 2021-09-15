@@ -1,0 +1,12 @@
+name: Currencies
+version: 0.1
+main: dansplugins.currencies.Currencies
+api-version: 1.17.1
+
+commands:
+  currencies:
+  c:
+
+permissions:
+  currencies.help:
+    default: true
