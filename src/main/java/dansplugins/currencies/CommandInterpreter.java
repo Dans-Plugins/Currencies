@@ -1,9 +1,6 @@
 package dansplugins.currencies;
 
-import dansplugins.currencies.commands.CreateCommand;
-import dansplugins.currencies.commands.HelpCommand;
-import dansplugins.currencies.commands.InfoCommand;
-import dansplugins.currencies.commands.ListCommand;
+import dansplugins.currencies.commands.*;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -52,6 +49,12 @@ public class CommandInterpreter {
                 if (!checkPermission(sender, "currencies.list")) { return false; }
                 ListCommand command = new ListCommand();
                 return command.execute(sender);
+            }
+
+            if (secondaryLabel.equalsIgnoreCase("mint")) {
+                if (!checkPermission(sender, "currencies.mint")) { return false; }
+                MintCommand command = new MintCommand();
+                return command.execute(sender, arguments);
             }
 
             sender.sendMessage(ChatColor.RED + "Currencies doesn't recognize that command.");
