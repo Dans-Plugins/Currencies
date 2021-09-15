@@ -1,5 +1,6 @@
 package dansplugins.currencies;
 
+import dansplugins.currencies.commands.CreateCommand;
 import dansplugins.currencies.commands.HelpCommand;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
@@ -31,6 +32,12 @@ public class CommandInterpreter {
             if (!MedievalFactionsIntegrator.getInstance().isMedievalFactionsAPIAvailable()) {
                 sender.sendMessage(ChatColor.RED + "Currencies cannot utilize Medieval Factions for some reason. It may have to be updated.");
                 return false;
+            }
+
+            if (secondaryLabel.equalsIgnoreCase("create")) {
+                if (!checkPermission(sender, "currencies.create")) { return false; }
+                CreateCommand command = new CreateCommand();
+                return command.execute(sender, arguments);
             }
 
             sender.sendMessage(ChatColor.RED + "Currencies doesn't recognize that command.");

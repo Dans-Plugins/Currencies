@@ -6,6 +6,7 @@ public class HelpCommand {
 
     public boolean execute(CommandSender sender, String[] arguments) {
         sender.sendMessage("/c help");
+        sender.sendMessage("/c create");
         return true;
     }
 
