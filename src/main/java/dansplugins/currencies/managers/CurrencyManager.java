@@ -10,6 +10,8 @@ import java.util.Random;
 public class CurrencyManager {
     private static CurrencyManager instance;
 
+    // TODO: keep a record of all the currency IDs that have existed so that we don't end up with duplicates when people redo their currencies
+
     private CurrencyManager() {
 
     }
@@ -32,7 +34,7 @@ public class CurrencyManager {
 
         int newID;
         do {
-            newID = random.nextInt(1000000);
+            newID = random.nextInt(1000000); // TODO: make maximum ID number a config option
         } while (isTaken(newID));
         return newID;
     }
