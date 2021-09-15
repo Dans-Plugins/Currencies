@@ -1,7 +1,11 @@
 package dansplugins.currencies.managers;
 
+import dansplugins.currencies.data.PersistentData;
+import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.Material;
+
+import java.util.Random;
 
 public class CurrencyManager {
     private static CurrencyManager instance;
@@ -18,12 +22,22 @@ public class CurrencyManager {
     }
 
     public boolean createNewCurrency(String name, MF_Faction faction, Material material) {
-        // TODO: implement;
+        Currency newCurrency = new Currency(name, faction, material, getNewCurrencyID());
+        PersistentData.getInstance().addCurrency(newCurrency);
         return true;
     }
 
     private int getNewCurrencyID() {
-        // TODO: implement
-        return -1;
+        Random random = new Random();
+
+        int newID;
+        do {
+            newID = random.nextInt(1000000);
+        } while (isTaken(newID));
+        return newID;
+    }
+
+    private boolean isTaken(int newID) {
+        return (PersistentData.getInstance().getCurrency(newID) != null);
     }
 }
