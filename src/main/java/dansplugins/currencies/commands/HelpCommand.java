@@ -9,6 +9,7 @@ public class HelpCommand {
         sender.sendMessage(ChatColor.AQUA + "/c help");
         sender.sendMessage(ChatColor.AQUA + "/c create");
         sender.sendMessage(ChatColor.AQUA + "/c info");
+        sender.sendMessage(ChatColor.AQUA + "/c list");
         return true;
     }
 
