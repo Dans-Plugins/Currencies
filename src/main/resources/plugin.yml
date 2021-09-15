@@ -12,3 +12,5 @@ permissions:
     default: true
   currencies.create:
     default: true
+  currencies.info:
+    default: true
