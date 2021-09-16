@@ -11,6 +11,14 @@ public class Coinpurse implements ICoinpurse, Saveable {
     private UUID ownerUUID;
     private HashMap<Currency, Integer> currencyAmounts = new HashMap<>();
 
+    public Coinpurse(UUID playerUUID) {
+        this.ownerUUID = playerUUID;
+    }
+
+    public Coinpurse(Map<String, String> data) {
+        this.load(data);
+    }
+
     @Override
     public UUID getOwnerUUID() {
         // TODO: implement
@@ -19,7 +27,7 @@ public class Coinpurse implements ICoinpurse, Saveable {
 
     @Override
     public void setCurrencyAmount(Currency currency, int amount) {
-// TODO: implement
+        // TODO: implement
     }
 
     @Override
