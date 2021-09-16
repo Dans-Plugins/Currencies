@@ -7,6 +7,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
 
 public class PersistentData {
     private static PersistentData instance;
@@ -72,5 +74,14 @@ public class PersistentData {
         for (Currency currency : currencies) {
             sender.sendMessage(ChatColor.AQUA + currency.getName());
         }
+    }
+
+    public Map<String, String> save() {
+        // TODO: implement
+        return null;
+    }
+
+    public void load(HashMap<String, String> data) {
+        // TODO: implement
     }
 }

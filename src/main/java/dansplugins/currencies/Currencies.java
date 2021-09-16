@@ -1,5 +1,6 @@
 package dansplugins.currencies;
 
+import dansplugins.currencies.managers.StorageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -17,11 +18,13 @@ public final class Currencies extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        StorageManager.getInstance().load();
     }
 
     @Override
     public void onDisable() {
-
+        StorageManager.getInstance().save();
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
