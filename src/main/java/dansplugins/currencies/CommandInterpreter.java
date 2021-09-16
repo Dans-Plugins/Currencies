@@ -67,6 +67,12 @@ public class CommandInterpreter {
                 return command.execute(sender, arguments);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("withdraw")) {
+                if (!checkPermission(sender, "currencies.withdraw")) { return false; }
+                WithdrawCommand command = new WithdrawCommand();
+                return command.execute(sender, arguments);
+            }
+
             sender.sendMessage(ChatColor.RED + "Currencies doesn't recognize that command.");
         }
         return false;
