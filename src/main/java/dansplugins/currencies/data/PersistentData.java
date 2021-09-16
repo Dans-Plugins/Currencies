@@ -1,5 +1,6 @@
 package dansplugins.currencies.data;
 
+import dansplugins.currencies.objects.Coinpurse;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
@@ -9,11 +10,13 @@ import org.bukkit.entity.Player;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.UUID;
 
 public class PersistentData {
     private static PersistentData instance;
 
     private ArrayList<Currency> currencies = new ArrayList<>();
+    private ArrayList<Coinpurse> coinpurses = new ArrayList<>();
 
     private PersistentData() {
 
@@ -78,5 +81,19 @@ public class PersistentData {
         for (Currency currency : currencies) {
             sender.sendMessage(ChatColor.AQUA + currency.getName());
         }
+    }
+
+    public ArrayList<Coinpurse> getCoinpurses() {
+        // TODO: implement
+        return null;
+    }
+
+    public Coinpurse getCoinpurse(UUID playerUUID) {
+        // TODO: implement
+        return null;
+    }
+
+    public void addCoinpurse(Coinpurse newCoinpurse) {
+        // TODO: implement
     }
 }
