@@ -6,6 +6,7 @@ import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import dansplugins.currencies.Currencies;
 import dansplugins.currencies.data.PersistentData;
+import dansplugins.currencies.objects.Coinpurse;
 import dansplugins.currencies.objects.Currency;
 
 import java.io.*;
@@ -22,6 +23,7 @@ public class StorageManager {
 
     private final static String FILE_PATH = "./plugins/Currencies/";
     private final static String CURRENCIES_FILE_NAME = "currencies.json";
+    private final static String COINPURSES_FILE_NAME = "coinpurses.json";
 
     private final static Type LIST_MAP_TYPE = new TypeToken<ArrayList<HashMap<String, String>>>(){}.getType();
 
@@ -40,6 +42,7 @@ public class StorageManager {
 
     public void save() {
         saveCurrencies();
+        saveCoinpurses();
         if (ConfigManager.getInstance().hasBeenAltered()) {
             Currencies.getInstance().saveConfig();
         }
@@ -47,6 +50,7 @@ public class StorageManager {
 
     public void load() {
         loadCurrencies();
+        loadCoinpurses();
     }
 
     private void saveCurrencies() {
@@ -56,14 +60,24 @@ public class StorageManager {
             currencies.add(currency.save());
         }
 
-        writeOutFiles(currencies);
+        writeOutFiles(currencies, CURRENCIES_FILE_NAME);
     }
 
-    private void writeOutFiles(List<Map<String, String>> saveData) {
+    private void saveCoinpurses() {
+        // save each coinpurse object individually
+        List<Map<String, String>> coinpurses = new ArrayList<>();
+        for (Coinpurse coinpurse : PersistentData.getInstance().getCoinpurses()){
+            coinpurses.add(coinpurse.save());
+        }
+
+        writeOutFiles(coinpurses, COINPURSES_FILE_NAME);
+    }
+
+    private void writeOutFiles(List<Map<String, String>> saveData, String fileName) {
         try {
             File parentFolder = new File(FILE_PATH);
             parentFolder.mkdir();
-            File file = new File(FILE_PATH + CURRENCIES_FILE_NAME);
+            File file = new File(FILE_PATH, fileName);
             file.createNewFile();
             OutputStreamWriter outputStreamWriter = new OutputStreamWriter(new FileOutputStream(file), StandardCharsets.UTF_8);
             outputStreamWriter.write(gson.toJson(saveData));
@@ -81,6 +95,17 @@ public class StorageManager {
         for (Map<String, String> currencyData : data){
             Currency currency = new Currency(currencyData);
             PersistentData.getInstance().addCurrency(currency);
+        }
+    }
+
+    private void loadCoinpurses() {
+        PersistentData.getInstance().getCoinpurses().clear();
+
+        ArrayList<HashMap<String, String>> data = loadDataFromFilename(FILE_PATH + COINPURSES_FILE_NAME);
+
+        for (Map<String, String> coinpurseData : data){
+            Coinpurse coinpurse = new Coinpurse(coinpurseData);
+            PersistentData.getInstance().addCoinpurse(coinpurse);
         }
     }
 
