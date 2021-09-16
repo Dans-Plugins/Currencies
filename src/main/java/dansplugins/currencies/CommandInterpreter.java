@@ -1,10 +1,8 @@
 package dansplugins.currencies;
 
 import dansplugins.currencies.commands.*;
-import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.entity.Player;
 
 public class CommandInterpreter {
 
