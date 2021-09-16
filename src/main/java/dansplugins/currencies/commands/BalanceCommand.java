@@ -20,6 +20,11 @@ public class BalanceCommand {
 
         Coinpurse coinpurse = PersistentData.getInstance().getCoinpurse(player.getUniqueId());
 
+        if (coinpurse == null) {
+            player.sendMessage(ChatColor.RED + "[Error] Coinpurse not found.");
+            return false;
+        }
+
         coinpurse.sendCurrencyInformationToPlayer(player);
         return true;
     }

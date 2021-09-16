@@ -84,16 +84,21 @@ public class PersistentData {
     }
 
     public ArrayList<Coinpurse> getCoinpurses() {
-        // TODO: implement
-        return null;
+        return coinpurses;
     }
 
     public Coinpurse getCoinpurse(UUID playerUUID) {
-        // TODO: implement
+        for (Coinpurse coinpurse : coinpurses) {
+            if (coinpurse.getOwnerUUID().equals(playerUUID)) {
+                return coinpurse;
+            }
+        }
         return null;
     }
 
     public void addCoinpurse(Coinpurse newCoinpurse) {
-        // TODO: implement
+        if (!coinpurses.contains(newCoinpurse)) {
+            coinpurses.add(newCoinpurse);
+        }
     }
 }
