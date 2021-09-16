@@ -52,6 +52,10 @@ public class Coinpurse implements ICoinpurse, Savable {
 
     @Override
     public void sendCurrencyInformationToPlayer(Player player) {
+        if (currencyAmounts.size() == 0) {
+            player.sendMessage(ChatColor.AQUA + "Your coinpurse is empty.");
+            return;
+        }
         for (Currency currency : currencyAmounts.keySet()) {
             player.sendMessage(ChatColor.AQUA + "=== Coinpurse Contents ===");
             player.sendMessage(ChatColor.AQUA + currency.getName() + ": " + currencyAmounts.get(currency));
