@@ -1,5 +1,6 @@
 package dansplugins.currencies.objects;
 
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
@@ -25,19 +26,36 @@ public class Coinpurse implements ICoinpurse, Savable {
     }
 
     @Override
+    public void addCurrencyAmount(Currency currency, int amount) {
+        int before = getCurrencyAmount(currency);
+        int after = before + amount;
+        setCurrencyAmount(currency, after);
+    }
+
+    @Override
     public void setCurrencyAmount(Currency currency, int amount) {
-        // TODO: implement
+        if (!currencyAmounts.containsKey(currency)) {
+            currencyAmounts.put(currency, amount);
+            return;
+        }
+        currencyAmounts.replace(currency, amount);
     }
 
     @Override
     public int getCurrencyAmount(Currency currency) {
-        // TODO: implement
-        return 0;
+        if (!currencyAmounts.containsKey(currency)) {
+            currencyAmounts.put(currency, 0);
+            return 0;
+        }
+        return currencyAmounts.get(currency);
     }
 
     @Override
-    public void sendListOfCurrenciesToPlayer(Player player) {
-        // TODO: implement
+    public void sendCurrencyInformationToPlayer(Player player) {
+        for (Currency currency : currencyAmounts.keySet()) {
+            player.sendMessage(ChatColor.AQUA + "=== Coinpurse Contents ===");
+            player.sendMessage(ChatColor.AQUA + currency.getName() + ": " + currencyAmounts.get(currency));
+        }
     }
 
     @Override

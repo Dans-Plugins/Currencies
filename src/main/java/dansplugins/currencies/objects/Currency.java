@@ -8,7 +8,7 @@ import org.bukkit.Material;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Currency implements ICurrency, Saveable {
+public class Currency implements ICurrency, Savable {
     private String name;
     private String factionName;
     private String material;
