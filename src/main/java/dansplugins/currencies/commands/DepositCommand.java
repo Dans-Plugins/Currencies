@@ -9,6 +9,7 @@ import dansplugins.currencies.utils.ArgumentParser;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 
@@ -52,14 +53,17 @@ public class DepositCommand {
             return false;
         }
 
-        if (!player.getInventory().containsAtLeast(CurrencyFactory.getInstance().createCurrencyItem(currency, 1), amount)) {
+        ItemStack currencyItem = CurrencyFactory.getInstance().createCurrencyItem(currency, 1);
+        if (!player.getInventory().containsAtLeast(currencyItem, amount)) {
             player.sendMessage(ChatColor.RED + "Not enough currency.");
             return false;
         }
 
         coinpurse.addCurrencyAmount(currency, amount);
 
-        // TODO: remove currency from player's inventory
+        for (int i = 0; i < amount; i++) {
+            player.getInventory().remove(currencyItem);
+        }
 
         player.sendMessage(ChatColor.GREEN + "Deposited.");
         return true;
