@@ -10,6 +10,4 @@ public interface ICurrency {
     String getMaterial();
     void setMaterial(String material);
     int getCurrencyID();
-    Map<String, String> save();
-    void load(Map<String, String> data);
 }
