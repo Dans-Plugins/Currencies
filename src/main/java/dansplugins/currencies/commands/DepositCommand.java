@@ -57,6 +57,7 @@ public class DepositCommand {
 
         // TODO: remove currency from player's inventory
 
+        player.sendMessage(ChatColor.GREEN + "Deposited.");
         return true;
     }
 
