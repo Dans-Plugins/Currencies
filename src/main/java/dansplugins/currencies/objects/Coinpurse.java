@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public class Coinpurse implements ICoinpurse, Saveable {
+public class Coinpurse implements ICoinpurse, Savable {
 
     private UUID ownerUUID;
     private HashMap<Currency, Integer> currencyAmounts = new HashMap<>();
