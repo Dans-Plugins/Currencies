@@ -53,17 +53,14 @@ public class DepositCommand {
             return false;
         }
 
-        ItemStack currencyItem = CurrencyFactory.getInstance().createCurrencyItem(currency, 1);
-        if (!player.getInventory().containsAtLeast(currencyItem, amount)) {
+        if (!player.getInventory().containsAtLeast(CurrencyFactory.getInstance().createCurrencyItem(currency, 1), amount)) {
             player.sendMessage(ChatColor.RED + "Not enough currency.");
             return false;
         }
 
         coinpurse.addCurrencyAmount(currency, amount);
 
-        for (int i = 0; i < amount; i++) {
-            player.getInventory().remove(currencyItem);
-        }
+        player.getInventory().remove(CurrencyFactory.getInstance().createCurrencyItem(currency, amount));
 
         player.sendMessage(ChatColor.GREEN + "Deposited.");
         return true;
