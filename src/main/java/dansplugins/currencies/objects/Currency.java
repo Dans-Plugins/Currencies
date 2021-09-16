@@ -59,7 +59,7 @@ public class Currency {
 
         Map<String, String> saveMap = new HashMap<>();
         saveMap.put("name", gson.toJson(name));
-        saveMap.put("factionname", gson.toJson(factionName));
+        saveMap.put("factionName", gson.toJson(factionName));
         saveMap.put("material", gson.toJson(material));
         saveMap.put("currencyID", gson.toJson(currencyID));
 
