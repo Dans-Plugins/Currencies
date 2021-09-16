@@ -5,6 +5,8 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.google.gson.stream.JsonReader;
 import dansplugins.currencies.Currencies;
+import dansplugins.currencies.data.PersistentData;
+import dansplugins.currencies.objects.Currency;
 
 import java.io.*;
 import java.lang.reflect.Type;
@@ -48,7 +50,13 @@ public class StorageManager {
     }
 
     private void saveCurrencies() {
-        // TODO: implement
+        // save each currency object individually
+        List<Map<String, String>> currencies = new ArrayList<>();
+        for (Currency currency : PersistentData.getInstance().getCurrencies()){
+            currencies.add(currency.save());
+        }
+
+        writeOutFiles(currencies);
     }
 
     private void writeOutFiles(List<Map<String, String>> saveData) {
@@ -66,7 +74,14 @@ public class StorageManager {
     }
 
     private void loadCurrencies() {
-        // TODO: implement
+        PersistentData.getInstance().getCurrencies().clear();
+
+        ArrayList<HashMap<String, String>> data = loadDataFromFilename(FILE_PATH + CURRENCIES_FILE_NAME);
+
+        for (Map<String, String> currencyData : data){
+            Currency currency = new Currency(currencyData);
+            PersistentData.getInstance().addCurrency(currency);
+        }
     }
 
     private ArrayList<HashMap<String, String>> loadDataFromFilename(String filename) {
