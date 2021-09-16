@@ -61,6 +61,12 @@ public class CommandInterpreter {
                 return command.execute(sender);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("deposit")) {
+                if (!checkPermission(sender, "currencies.deposit")) { return false; }
+                DepositCommand command = new DepositCommand();
+                return command.execute(sender, arguments);
+            }
+
             sender.sendMessage(ChatColor.RED + "Currencies doesn't recognize that command.");
         }
         return false;

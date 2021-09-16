@@ -20,3 +20,5 @@ permissions:
     default: true
   currencies.balance:
     default: true
+  currencies.deposit:
+    default: true
