@@ -20,6 +20,8 @@ public final class Currencies extends JavaPlugin {
         instance = this;
 
         StorageManager.getInstance().load();
+
+        EventRegistry.getInstance().registerEvents();
     }
 
     @Override
