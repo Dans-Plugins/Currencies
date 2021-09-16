@@ -21,8 +21,7 @@ public class Coinpurse implements ICoinpurse, Savable {
 
     @Override
     public UUID getOwnerUUID() {
-        // TODO: implement
-        return null;
+        return ownerUUID;
     }
 
     @Override
