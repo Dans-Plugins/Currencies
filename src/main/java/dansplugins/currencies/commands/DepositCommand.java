@@ -1,5 +1,6 @@
 package dansplugins.currencies.commands;
 
+import dansplugins.currencies.CurrencyFactory;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.managers.CurrencyManager;
 import dansplugins.currencies.objects.Coinpurse;
@@ -51,7 +52,10 @@ public class DepositCommand {
             return false;
         }
 
-        // TODO: make sure player has enough of this currency
+        if (!player.getInventory().containsAtLeast(CurrencyFactory.getInstance().createCurrencyItem(currency, 1), amount)) {
+            player.sendMessage(ChatColor.RED + "Not enough currency.");
+            return false;
+        }
 
         coinpurse.addCurrencyAmount(currency, amount);
 
