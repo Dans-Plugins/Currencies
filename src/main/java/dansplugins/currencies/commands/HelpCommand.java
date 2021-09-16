@@ -6,11 +6,11 @@ import org.bukkit.command.CommandSender;
 public class HelpCommand {
 
     public boolean execute(CommandSender sender, String[] arguments) {
-        sender.sendMessage(ChatColor.AQUA + "/c help");
-        sender.sendMessage(ChatColor.AQUA + "/c create");
-        sender.sendMessage(ChatColor.AQUA + "/c info");
-        sender.sendMessage(ChatColor.AQUA + "/c list");
-        sender.sendMessage(ChatColor.AQUA + "/c mint");
+        sender.sendMessage(ChatColor.AQUA + "/c help - View a list of helpful commands.");
+        sender.sendMessage(ChatColor.AQUA + "/c create - Set up your currency.");
+        sender.sendMessage(ChatColor.AQUA + "/c info - View information about your currency.");
+        sender.sendMessage(ChatColor.AQUA + "/c list - List existing currencies.");
+        sender.sendMessage(ChatColor.AQUA + "/c mint - Mint currency in exchange for power.");
         return true;
     }
 
