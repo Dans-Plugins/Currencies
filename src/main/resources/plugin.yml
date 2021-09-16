@@ -1,5 +1,5 @@
 name: Currencies
-version: 0.5
+version: 0.6-alpha-1
 main: dansplugins.currencies.Currencies
 api-version: 1.13
 
