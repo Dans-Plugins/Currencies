@@ -60,7 +60,7 @@ public class DepositCommand {
 
         coinpurse.addCurrencyAmount(currency, amount);
 
-        player.getInventory().remove(CurrencyFactory.getInstance().createCurrencyItem(currency, amount));
+        player.getInventory().removeItem(CurrencyFactory.getInstance().createCurrencyItem(currency, amount));
 
         player.sendMessage(ChatColor.GREEN + "Deposited.");
         return true;
