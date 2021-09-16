@@ -1,8 +1,13 @@
 package dansplugins.currencies.objects;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.reflect.TypeToken;
+import dansplugins.currencies.data.PersistentData;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Type;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -10,7 +15,7 @@ import java.util.UUID;
 public class Coinpurse implements ICoinpurse, Savable {
 
     private UUID ownerUUID;
-    private HashMap<Currency, Integer> currencyAmounts = new HashMap<>();
+    private HashMap<Integer, Integer> currencyAmounts = new HashMap<>(); // map of currencyID -> amount
 
     public Coinpurse(UUID playerUUID) {
         this.ownerUUID = playerUUID;
@@ -41,20 +46,20 @@ public class Coinpurse implements ICoinpurse, Savable {
 
     @Override
     public void setCurrencyAmount(Currency currency, int amount) {
-        if (!currencyAmounts.containsKey(currency)) {
-            currencyAmounts.put(currency, amount);
+        if (!currencyAmounts.containsKey(currency.getCurrencyID())) {
+            currencyAmounts.put(currency.getCurrencyID(), amount);
             return;
         }
-        currencyAmounts.replace(currency, amount);
+        currencyAmounts.replace(currency.getCurrencyID(), amount);
     }
 
     @Override
     public int getCurrencyAmount(Currency currency) {
-        if (!currencyAmounts.containsKey(currency)) {
-            currencyAmounts.put(currency, 0);
+        if (!currencyAmounts.containsKey(currency.getCurrencyID())) {
+            currencyAmounts.put(currency.getCurrencyID(), 0);
             return 0;
         }
-        return currencyAmounts.get(currency);
+        return currencyAmounts.get(currency.getCurrencyID());
     }
 
     @Override
@@ -63,20 +68,32 @@ public class Coinpurse implements ICoinpurse, Savable {
             player.sendMessage(ChatColor.AQUA + "Your coinpurse is empty.");
             return;
         }
-        for (Currency currency : currencyAmounts.keySet()) {
+        for (int currencyID : currencyAmounts.keySet()) {
+            Currency currency = PersistentData.getInstance().getCurrency(currencyID);
+
             player.sendMessage(ChatColor.AQUA + "=== Coinpurse Contents ===");
-            player.sendMessage(ChatColor.AQUA + currency.getName() + ": " + currencyAmounts.get(currency));
+            player.sendMessage(ChatColor.AQUA + currency.getName() + ": " + currencyID);
         }
     }
 
-    @Override
+    @Override()
     public Map<String, String> save() {
-        // TODO: implement
-        return null;
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        Map<String, String> saveMap = new HashMap<>();
+        saveMap.put("ownerUUID", gson.toJson(ownerUUID));
+        saveMap.put("currencyAmounts", gson.toJson(currencyAmounts));
+
+        return saveMap;
     }
 
-    @Override
+    @Override()
     public void load(Map<String, String> data) {
-        // TODO: implement
+        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+
+        Type integerToIntegerMapType = new TypeToken<HashMap<Integer, Integer>>(){}.getType();
+
+        ownerUUID = UUID.fromString(gson.fromJson(data.get("ownerUUID"), String.class));
+        currencyAmounts = gson.fromJson(data.get("currencyAmounts"), integerToIntegerMapType);
     }
 }
