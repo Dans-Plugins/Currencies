@@ -3,9 +3,10 @@ package dansplugins.currencies.objects;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
-public class Coinpurse implements ICoinpurse {
+public class Coinpurse implements ICoinpurse, Saveable {
 
     private UUID ownerUUID;
     private HashMap<Currency, Integer> currencyAmounts = new HashMap<>();
@@ -32,4 +33,14 @@ public class Coinpurse implements ICoinpurse {
         // TODO: implement
     }
 
+    @Override
+    public Map<String, String> save() {
+        // TODO: implement
+        return null;
+    }
+
+    @Override
+    public void load(Map<String, String> data) {
+        // TODO: implement
+    }
 }
