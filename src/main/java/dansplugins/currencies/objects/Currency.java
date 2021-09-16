@@ -22,6 +22,10 @@ public class Currency {
         this.currencyID = currencyID;
     }
 
+    public Currency(Map<String, String> data) {
+        this.load(data);
+    }
+
     public String getName() {
         return name;
     }

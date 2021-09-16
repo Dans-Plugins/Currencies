@@ -26,6 +26,10 @@ public class PersistentData {
         return instance;
     }
 
+    public ArrayList<Currency> getCurrencies() {
+        return currencies;
+    }
+
     public Currency getCurrency(String currencyName) {
         for (Currency c : currencies) {
             if (c.getName().equalsIgnoreCase(currencyName)) {
@@ -74,14 +78,5 @@ public class PersistentData {
         for (Currency currency : currencies) {
             sender.sendMessage(ChatColor.AQUA + currency.getName());
         }
-    }
-
-    public Map<String, String> save() {
-        // TODO: implement
-        return null;
-    }
-
-    public void load(HashMap<String, String> data) {
-        // TODO: implement
     }
 }
