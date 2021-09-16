@@ -7,9 +7,8 @@ import org.bukkit.Material;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.UUID;
 
-public class Currency {
+public class Currency implements ICurrency {
     private String name;
     private String factionName;
     private String material;
@@ -26,34 +25,42 @@ public class Currency {
         this.load(data);
     }
 
+    @Override()
     public String getName() {
         return name;
     }
 
+    @Override()
     public void setName(String name) {
         this.name = name;
     }
 
+    @Override()
     public String getFactionName() {
         return factionName;
     }
 
+    @Override()
     public void setFactionName(String factionName) {
         this.factionName = factionName;
     }
 
+    @Override()
     public String getMaterial() {
         return material;
     }
 
+    @Override()
     public void setMaterial(String material) {
         this.material = material;
     }
 
+    @Override()
     public int getCurrencyID() {
         return currencyID;
     }
 
+    @Override()
     public Map<String, String> save() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();;
 
@@ -66,7 +73,8 @@ public class Currency {
         return saveMap;
     }
 
-    private void load(Map<String, String> data) {
+    @Override()
+    public void load(Map<String, String> data) {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
 
         name = gson.fromJson(data.get("name"), String.class);
