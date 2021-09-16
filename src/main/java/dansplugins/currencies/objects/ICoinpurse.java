@@ -7,6 +7,7 @@ import java.util.UUID;
 public interface ICoinpurse {
     UUID getOwnerUUID();
     void addCurrencyAmount(Currency currency, int amount);
+    void subtractCurrencyAmount(Currency currency, int amount);
     void setCurrencyAmount(Currency currency, int amount);
     int getCurrencyAmount(Currency currency);
     void sendCurrencyInformationToPlayer(Player player);

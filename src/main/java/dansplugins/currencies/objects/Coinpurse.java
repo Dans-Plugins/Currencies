@@ -33,6 +33,13 @@ public class Coinpurse implements ICoinpurse, Savable {
     }
 
     @Override
+    public void subtractCurrencyAmount(Currency currency, int amount) {
+        int before = getCurrencyAmount(currency);
+        int after = before - amount;
+        setCurrencyAmount(currency, after);
+    }
+
+    @Override
     public void setCurrencyAmount(Currency currency, int amount) {
         if (!currencyAmounts.containsKey(currency)) {
             currencyAmounts.put(currency, amount);
