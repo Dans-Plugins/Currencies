@@ -57,6 +57,12 @@ public class CommandInterpreter {
                 return command.execute(sender, arguments);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("balance")) {
+                if (!checkPermission(sender, "currencies.balance")) { return false; }
+                BalanceCommand command = new BalanceCommand();
+                return command.execute(sender);
+            }
+
             sender.sendMessage(ChatColor.RED + "Currencies doesn't recognize that command.");
         }
         return false;
