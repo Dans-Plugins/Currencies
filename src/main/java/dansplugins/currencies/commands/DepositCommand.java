@@ -1,7 +1,9 @@
 package dansplugins.currencies.commands;
 
 import dansplugins.currencies.data.PersistentData;
+import dansplugins.currencies.managers.CurrencyManager;
 import dansplugins.currencies.objects.Coinpurse;
+import dansplugins.currencies.objects.Currency;
 import dansplugins.currencies.utils.ArgumentParser;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -32,9 +34,15 @@ public class DepositCommand {
         }
 
         String currencyName = singleQuoteArgs.get(0);
-        String amountString = singleQuoteArgs.get(1);
 
+        String amountString = singleQuoteArgs.get(1);
         int amount = Integer.parseInt(amountString); // TODO: handle error here
+
+        Currency currency = PersistentData.getInstance().getCurrency(currencyName);
+        if (currency == null) {
+            player.sendMessage(ChatColor.RED + "That currency wasn't found.");
+            return false;
+        }
 
         Coinpurse coinpurse = PersistentData.getInstance().getCoinpurse(player.getUniqueId());
 
@@ -43,7 +51,11 @@ public class DepositCommand {
             return false;
         }
 
-        // TODO: finish implementing
+        // TODO: make sure player has enough of this currency
+
+        coinpurse.addCurrencyAmount(currency, amount);
+
+        // TODO: remove currency from player's inventory
 
         return true;
     }
