@@ -41,7 +41,7 @@ public class CurrencyFactory {
         meta.setLore(asList(
             "",
             ChatColor.WHITE + "Currency of " + currency.getFactionName(),
-            ChatColor.WHITE + "ID: " + currency.getCurrencyID()
+            ChatColor.WHITE + "currencyID: " + currency.getCurrencyID()
         ));
 
         newItemStack.setItemMeta(meta);

@@ -1,10 +1,14 @@
 package dansplugins.currencies.managers;
 
+import dansplugins.currencies.Currencies;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.Material;
+import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.ItemMeta;
 
+import java.util.List;
 import java.util.Random;
 
 public class CurrencyManager {
@@ -29,17 +33,51 @@ public class CurrencyManager {
         return true;
     }
 
+    public boolean isCurrency(ItemStack itemStack) {
+        if (itemStack.getType() == Material.AIR) {
+            return false;
+        }
+
+        ItemMeta itemMeta = itemStack.getItemMeta();
+        if (itemMeta == null) {
+            return false;
+        }
+
+        String currencyIDString = getCurrencyIDFromLore(itemMeta);
+        if (currencyIDString == null) {
+            return false;
+        }
+
+        int currencyID = Integer.parseInt(currencyIDString); // TODO: handle error here
+
+        return isCurrencyIDTaken(currencyID);
+    }
+
+    private String getCurrencyIDFromLore(ItemMeta meta) {
+        List<String> lore = meta.getLore();
+        for (String s : lore) {
+            if (s.contains("currencyID")) {
+                String ID = s.substring(12);
+                if (Currencies.getInstance().isDebugEnabled()) {
+                    System.out.println("Currency ID found: " + ID);
+                    return ID;
+                }
+            }
+        }
+        return null;
+    }
+
     private int getNewCurrencyID() {
         Random random = new Random();
 
         int newID;
         do {
             newID = random.nextInt(1000000); // TODO: make maximum ID number a config option
-        } while (isTaken(newID));
+        } while (isCurrencyIDTaken(newID));
         return newID;
     }
 
-    private boolean isTaken(int newID) {
-        return (PersistentData.getInstance().getCurrency(newID) != null);
+    private boolean isCurrencyIDTaken(int currencyID) {
+        return (PersistentData.getInstance().getCurrency(currencyID) != null);
     }
 }
