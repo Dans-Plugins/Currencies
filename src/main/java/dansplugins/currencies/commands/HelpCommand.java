@@ -12,6 +12,7 @@ public class HelpCommand {
         sender.sendMessage(ChatColor.AQUA + "/c list - List existing currencies.");
         sender.sendMessage(ChatColor.AQUA + "/c mint - Mint currency in exchange for power.");
         sender.sendMessage(ChatColor.AQUA + "/c balance - View the contents of your coinpurse.");
+        sender.sendMessage(ChatColor.AQUA + "/c deposit - Deposit a currency into your coinpurse.");
         return true;
     }
 
