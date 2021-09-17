@@ -47,8 +47,11 @@ public class ConfigManager {
         if (!getConfig().isSet("powerCostEnabled")) {
             getConfig().set("powerCostEnabled", true);
         }
-        if (!getConfig().isSet("powreCost")) {
+        if (!getConfig().isSet("powerCost")) {
             getConfig().set("powerCost", 0.5);
+        }
+        if (!getConfig().isSet("minimumPowerCost")) {
+            getConfig().set("minimumPowerCost", 1);
         }
         getConfig().options().copyDefaults(true);
         Currencies.getInstance().saveConfig();
@@ -61,7 +64,8 @@ public class ConfigManager {
             if (option.equalsIgnoreCase("version")) {
                 sender.sendMessage(ChatColor.RED + "Cannot set version.");
                 return;
-            } else if (option.equalsIgnoreCase("maxCurrencyIDNumber")) {
+            } else if (option.equalsIgnoreCase("maxCurrencyIDNumber")
+                    || option.equalsIgnoreCase("minimumPowerCost")) {
                 getConfig().set(option, Integer.parseInt(value));
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
             } else if (option.equalsIgnoreCase("debugMode")

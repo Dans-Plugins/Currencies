@@ -54,7 +54,7 @@ public class MintCommand {
             double powerCost = ConfigManager.getInstance().getDouble("powerCost");
             powerRequired = (int) (amount * powerCost);
 
-            int minimumPowerCost = 1; // TODO: make this a config option
+            int minimumPowerCost = 1; ConfigManager.getInstance().getInt("minimumPowerCost");
             if (powerRequired < 1) {
                 powerRequired = minimumPowerCost;
             }
