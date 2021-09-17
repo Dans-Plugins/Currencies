@@ -59,9 +59,12 @@ public class CurrencyManager {
 
     private String getCurrencyIDFromLore(ItemMeta meta) {
         List<String> lore = meta.getLore();
+        if (lore == null) {
+            return null;
+        }
         for (String s : lore) {
             if (s.contains("currencyID")) {
-                String ID = s.substring(12);
+                String ID = s.substring(14);
                 if (Currencies.getInstance().isDebugEnabled()) {
                     System.out.println("Currency ID found: " + ID);
                     return ID;

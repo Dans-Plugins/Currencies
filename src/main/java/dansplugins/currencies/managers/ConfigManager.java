@@ -53,6 +53,9 @@ public class ConfigManager {
         if (!getConfig().isSet("minimumPowerCost")) {
             getConfig().set("minimumPowerCost", 1);
         }
+        if (!getConfig().isSet("disallowCrafting")) {
+            getConfig().set("disallowCrafting", true);
+        }
         getConfig().options().copyDefaults(true);
         Currencies.getInstance().saveConfig();
     }
@@ -69,7 +72,8 @@ public class ConfigManager {
                 getConfig().set(option, Integer.parseInt(value));
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
             } else if (option.equalsIgnoreCase("debugMode")
-                    || option.equals("powerCostEnabled")) {
+                    || option.equalsIgnoreCase("powerCostEnabled")
+                    || option.equalsIgnoreCase("disallowCrafting")) {
                 getConfig().set(option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
             } else if (option.equalsIgnoreCase("powerCost")) {
@@ -94,7 +98,8 @@ public class ConfigManager {
                 + ", debugMode: " + getString("debugMode")
                 + ", maxCurrencyIDNumber: " + getInt("maxCurrencyIDNumber")
                 + ", powerCostEnabled: " + getBoolean("powerCostEnabled")
-                + ", powerCost: " + getDouble("powerCost"));
+                + ", powerCost: " + getDouble("powerCost")
+                + ", disallowCrafting: " + getBoolean("disallowCrafting"));
     }
 
     public boolean hasBeenAltered() {
