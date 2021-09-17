@@ -1,8 +1,5 @@
 package dansplugins.currencies;
-import dansplugins.currencies.eventhandlers.CraftingHandler;
-import dansplugins.currencies.eventhandlers.FactionEventHandler;
-import dansplugins.currencies.eventhandlers.JoinHandler;
-import dansplugins.currencies.eventhandlers.PlacementHandler;
+import dansplugins.currencies.eventhandlers.*;
 import org.bukkit.plugin.PluginManager;
 
 public class EventRegistry {
@@ -30,5 +27,6 @@ public class EventRegistry {
         manager.registerEvents(new CraftingHandler(), mainInstance);
         manager.registerEvents(new PlacementHandler(), mainInstance);
         manager.registerEvents(new FactionEventHandler(), mainInstance);
+        manager.registerEvents(new InteractionHandler(), mainInstance);
     }
 }

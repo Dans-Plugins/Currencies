@@ -57,7 +57,11 @@ public class CurrencyManager {
         return isCurrencyIDTaken(currencyID);
     }
 
-    private String getCurrencyIDFromLore(ItemMeta meta) {
+    public void updateCurrencyIfNecessary(ItemStack itemStack) {
+        // TODO: implement
+    }
+
+    public String getCurrencyIDFromLore(ItemMeta meta) {
         List<String> lore = meta.getLore();
         if (lore == null) {
             return null;
