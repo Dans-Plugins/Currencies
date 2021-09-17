@@ -7,7 +7,7 @@ Currencies is an add-on plugin for [Medieval Factions](https://github.com/dmccoy
 This plugin isn't ready to be used yet, but if you want to try a pre-release you can download the latest version from [this page](https://github.com/dmccoystephenson/Currencies/releases).
 
 ## Usage
-- [User Guide](https://github.com/dmccoystephenson/Currencies/wiki/Guide) (coming soon)
+- [User Guide](https://github.com/dmccoystephenson/Currencies/wiki/Guide)
 - [List of Commands](https://github.com/dmccoystephenson/Currencies/wiki/Commands)
 - [FAQ](https://github.com/dmccoystephenson/Currencies/wiki/FAQ) (coming soon)
 
