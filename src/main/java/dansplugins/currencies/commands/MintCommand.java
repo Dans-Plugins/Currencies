@@ -3,6 +3,7 @@ package dansplugins.currencies.commands;
 import dansplugins.currencies.CurrencyFactory;
 import dansplugins.currencies.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
+import dansplugins.currencies.managers.ConfigManager;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
@@ -47,27 +48,37 @@ public class MintCommand {
 
         int amount = Integer.parseInt(args[0]); // TODO: handle error here
 
-        double powerCost = 0.5; // TODO: make power cost a config option
-        int powerRequired = (int) (amount * powerCost);
+        boolean powerCostEnabled = ConfigManager.getInstance().getBoolean("powerCostEnabled");
+        int powerRequired = -1;
+        if (powerCostEnabled) {
+            double powerCost = ConfigManager.getInstance().getDouble("powerCost");
+            powerRequired = (int) (amount * powerCost);
 
-        int minimumPowerCost = 1; // TODO: make this a config option
-        if (powerRequired < 1) {
-            powerRequired = minimumPowerCost;
+            int minimumPowerCost = 1; ConfigManager.getInstance().getInt("minimumPowerCost");
+            if (powerRequired < 1) {
+                powerRequired = minimumPowerCost;
+            }
+
+            int playerPower = MedievalFactionsIntegrator.getInstance().getAPI().getPower(player);
+
+            if (playerPower < powerRequired) {
+                player.sendMessage(ChatColor.RED + "You need " + powerRequired + " power to mint that much currency.");
+                return false;
+            }
+            MedievalFactionsIntegrator.getInstance().getAPI().decreasePower(player, powerRequired);
         }
-
-        int playerPower = MedievalFactionsIntegrator.getInstance().getAPI().getPower(player);
-
-        if (playerPower < powerRequired) {
-            player.sendMessage(ChatColor.RED + "You need " + powerRequired + " power to mint that much currency.");
-            return false;
-        }
-
-        MedievalFactionsIntegrator.getInstance().getAPI().decreasePower(player, powerRequired);
 
         ItemStack itemStack = CurrencyFactory.getInstance().createCurrencyItem(currency, amount);
 
         player.getInventory().addItem(itemStack); // TODO: handle full inventory
-        player.sendMessage(ChatColor.GREEN + "Minted. Power has been decreased by " + powerRequired + ".");
+
+        if (powerCostEnabled) {
+            player.sendMessage(ChatColor.GREEN + "Minted. Power has been decreased by " + powerRequired + ".");
+        }
+        else {
+            player.sendMessage(ChatColor.GREEN + "Minted.");
+        }
+
         return true;
     }
 

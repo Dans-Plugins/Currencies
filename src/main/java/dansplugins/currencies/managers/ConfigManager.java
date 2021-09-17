@@ -41,6 +41,18 @@ public class ConfigManager {
         if (!getConfig().isSet("debugMode")) {
             getConfig().set("debugMode", false);
         }
+        if (!getConfig().isSet("maxCurrencyIDNumber")) {
+            getConfig().set("maxCurrencyIDNumber", 1000000);
+        }
+        if (!getConfig().isSet("powerCostEnabled")) {
+            getConfig().set("powerCostEnabled", true);
+        }
+        if (!getConfig().isSet("powerCost")) {
+            getConfig().set("powerCost", 0.5);
+        }
+        if (!getConfig().isSet("minimumPowerCost")) {
+            getConfig().set("minimumPowerCost", 1);
+        }
         getConfig().options().copyDefaults(true);
         Currencies.getInstance().saveConfig();
     }
@@ -52,13 +64,15 @@ public class ConfigManager {
             if (option.equalsIgnoreCase("version")) {
                 sender.sendMessage(ChatColor.RED + "Cannot set version.");
                 return;
-            } else if (option.equalsIgnoreCase("a")) { // no integers yet
+            } else if (option.equalsIgnoreCase("maxCurrencyIDNumber")
+                    || option.equalsIgnoreCase("minimumPowerCost")) {
                 getConfig().set(option, Integer.parseInt(value));
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
-            } else if (option.equalsIgnoreCase("debugMode")) {
+            } else if (option.equalsIgnoreCase("debugMode")
+                    || option.equals("powerCostEnabled")) {
                 getConfig().set(option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
-            } else if (option.equalsIgnoreCase("c")) { // no doubles yet
+            } else if (option.equalsIgnoreCase("powerCost")) {
                 getConfig().set(option, Double.parseDouble(value));
                 sender.sendMessage(ChatColor.GREEN + "Double set.");
             } else {
@@ -77,7 +91,10 @@ public class ConfigManager {
     public void sendConfigList(CommandSender sender) {
         sender.sendMessage(ChatColor.AQUA + "=== Config List ===");
         sender.sendMessage(ChatColor.AQUA + "version: " + getConfig().getString("version")
-                + ", debugMode: " + getString("debugMode"));
+                + ", debugMode: " + getString("debugMode")
+                + ", maxCurrencyIDNumber: " + getInt("maxCurrencyIDNumber")
+                + ", powerCostEnabled: " + getBoolean("powerCostEnabled")
+                + ", powerCost: " + getDouble("powerCost"));
     }
 
     public boolean hasBeenAltered() {

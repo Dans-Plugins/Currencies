@@ -62,7 +62,12 @@ public class CreateCommand {
             return false;
         }
 
-        CurrencyManager.getInstance().createNewCurrency(name, faction, material);
+        boolean success = CurrencyManager.getInstance().createNewCurrency(name, faction, material);
+        if (!success) {
+            player.sendMessage(ChatColor.RED + "There was a problem creating the currency.");
+            return false;
+        }
+
         player.sendMessage(ChatColor.GREEN + "Currency created.");
         return true;
     }
