@@ -1,9 +1,12 @@
 package dansplugins.currencies;
 
+import dansplugins.currencies.managers.ConfigManager;
 import dansplugins.currencies.managers.StorageManager;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+
+import java.io.File;
 
 public final class Currencies extends JavaPlugin {
 
@@ -18,6 +21,18 @@ public final class Currencies extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        // create/load config
+        if (!(new File("./plugins/Currencies/config.yml").exists())) {
+            ConfigManager.getInstance().saveMissingConfigDefaultsIfNotPresent();
+        }
+        else {
+            // pre load compatibility checks
+            if (isVersionMismatched()) {
+                ConfigManager.getInstance().saveMissingConfigDefaultsIfNotPresent();
+            }
+            reloadConfig();
+        }
 
         StorageManager.getInstance().load();
 
@@ -39,8 +54,7 @@ public final class Currencies extends JavaPlugin {
     }
 
     public boolean isDebugEnabled() {
-        // return ConfigManager.getInstance().getBoolean("debugMode");
-        return true;
+        return ConfigManager.getInstance().getBoolean("debugMode");
     }
 
     private boolean isVersionMismatched() {
