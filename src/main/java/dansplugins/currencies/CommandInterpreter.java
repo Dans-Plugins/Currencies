@@ -73,6 +73,12 @@ public class CommandInterpreter {
                 return command.execute(sender, arguments);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("config")) {
+                if (!checkPermission(sender, "currencies.config")) { return false; }
+                ConfigCommand command = new ConfigCommand();
+                return command.execute(sender, arguments);
+            }
+
             sender.sendMessage(ChatColor.RED + "Currencies doesn't recognize that command.");
         }
         return false;

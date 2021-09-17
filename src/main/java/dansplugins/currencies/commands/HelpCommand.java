@@ -14,6 +14,7 @@ public class HelpCommand {
         sender.sendMessage(ChatColor.AQUA + "/c balance - View the contents of your coinpurse.");
         sender.sendMessage(ChatColor.AQUA + "/c deposit - Deposit currency into your coinpurse.");
         sender.sendMessage(ChatColor.AQUA + "/c withdraw - Withdraw currency from your coinpurse.");
+        sender.sendMessage(ChatColor.AQUA + "/c config - View or set config options.");
         return true;
     }
 
