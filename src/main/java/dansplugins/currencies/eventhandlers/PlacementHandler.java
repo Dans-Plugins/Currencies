@@ -4,7 +4,6 @@ import dansplugins.currencies.Currencies;
 import dansplugins.currencies.managers.ConfigManager;
 import dansplugins.currencies.managers.CurrencyManager;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.block.BlockPlaceEvent;

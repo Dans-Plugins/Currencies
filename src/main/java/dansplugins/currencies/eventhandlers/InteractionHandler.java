@@ -2,11 +2,9 @@ package dansplugins.currencies.eventhandlers;
 
 import dansplugins.currencies.Currencies;
 import dansplugins.currencies.CurrencyFactory;
-import dansplugins.currencies.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.managers.CurrencyManager;
 import dansplugins.currencies.objects.Currency;
-import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

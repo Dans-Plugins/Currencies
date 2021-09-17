@@ -4,7 +4,6 @@ import dansplugins.currencies.Currencies;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
-import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;

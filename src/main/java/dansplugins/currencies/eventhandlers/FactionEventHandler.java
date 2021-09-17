@@ -2,7 +2,6 @@ package dansplugins.currencies.eventhandlers;
 
 import dansplugins.currencies.Currencies;
 import dansplugins.currencies.data.PersistentData;
-import dansplugins.currencies.managers.CurrencyManager;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.events.FactionRenameEvent;
 import dansplugins.factionsystem.externalapi.MF_Faction;
