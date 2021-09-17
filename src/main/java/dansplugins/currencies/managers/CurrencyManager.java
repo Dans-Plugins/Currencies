@@ -64,7 +64,7 @@ public class CurrencyManager {
             return null;
         }
         for (String s : lore) {
-            if (s.contains("faction")) {
+            if (s.contains("Currency of")) {
                 String factionName = s.substring(14);
                 if (Currencies.getInstance().isDebugEnabled()) {
                     return factionName;
