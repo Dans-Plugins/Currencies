@@ -41,6 +41,9 @@ public class ConfigManager {
         if (!getConfig().isSet("debugMode")) {
             getConfig().set("debugMode", false);
         }
+        if (!getConfig().isSet("maxCurrencyIDNumber")) {
+            getConfig().set("maxCurrencyIDNumber", 1000000);
+        }
         getConfig().options().copyDefaults(true);
         Currencies.getInstance().saveConfig();
     }
@@ -52,7 +55,7 @@ public class ConfigManager {
             if (option.equalsIgnoreCase("version")) {
                 sender.sendMessage(ChatColor.RED + "Cannot set version.");
                 return;
-            } else if (option.equalsIgnoreCase("a")) { // no integers yet
+            } else if (option.equalsIgnoreCase("maxCurrencyIDNumber")) {
                 getConfig().set(option, Integer.parseInt(value));
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
             } else if (option.equalsIgnoreCase("debugMode")) {
@@ -77,7 +80,8 @@ public class ConfigManager {
     public void sendConfigList(CommandSender sender) {
         sender.sendMessage(ChatColor.AQUA + "=== Config List ===");
         sender.sendMessage(ChatColor.AQUA + "version: " + getConfig().getString("version")
-                + ", debugMode: " + getString("debugMode"));
+                + ", debugMode: " + getString("debugMode")
+                + ", maxCurrencyIDNumber: " + getInt("maxCurrencyIDNumber"));
     }
 
     public boolean hasBeenAltered() {

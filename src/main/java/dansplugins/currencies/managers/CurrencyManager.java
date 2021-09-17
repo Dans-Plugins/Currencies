@@ -28,7 +28,11 @@ public class CurrencyManager {
     }
 
     public boolean createNewCurrency(String name, MF_Faction faction, Material material) {
-        Currency newCurrency = new Currency(name, faction, material, getNewCurrencyID());
+        int newCurrencyID = getNewCurrencyID();
+        if (newCurrencyID == -1) {
+            return false;
+        }
+        Currency newCurrency = new Currency(name, faction, material, newCurrencyID);
         PersistentData.getInstance().addCurrency(newCurrency);
         return true;
     }
@@ -69,11 +73,14 @@ public class CurrencyManager {
 
     private int getNewCurrencyID() {
         Random random = new Random();
-
-        int newID;
+        int numAttempts = 0;
+        int maxAttempts = 25;
+        int newID = -1;
         do {
-            newID = random.nextInt(1000000); // TODO: make maximum ID number a config option
-        } while (isCurrencyIDTaken(newID));
+            int maxCurrencyIDNumber = ConfigManager.getInstance().getInt("maxCurrencyIDNumber");
+            newID = random.nextInt(maxCurrencyIDNumber);
+            numAttempts++;
+        } while (isCurrencyIDTaken(newID) && numAttempts <= maxAttempts);
         return newID;
     }
 
