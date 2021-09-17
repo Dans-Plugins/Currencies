@@ -21,6 +21,7 @@ public class PlacementHandler implements Listener {
         if (CurrencyManager.getInstance().isCurrency(event.getItemInHand())) {
             event.getPlayer().sendMessage(ChatColor.RED + "You can't place currencies.");
             event.setCancelled(true);
+            return;
         }
         if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Placement was not cancelled."); }
     }
