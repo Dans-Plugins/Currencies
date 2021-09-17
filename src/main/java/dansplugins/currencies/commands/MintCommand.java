@@ -50,6 +50,11 @@ public class MintCommand {
         double powerCost = 0.5; // TODO: make power cost a config option
         int powerRequired = (int) (amount * powerCost);
 
+        int minimumPowerCost = 1; // TODO: make this a config option
+        if (powerRequired < 1) {
+            powerRequired = minimumPowerCost;
+        }
+
         int playerPower = MedievalFactionsIntegrator.getInstance().getAPI().getPower(player);
 
         if (playerPower < powerRequired) {
