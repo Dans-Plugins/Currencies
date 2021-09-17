@@ -14,11 +14,14 @@ public class Currency implements ICurrency, Savable {
     private String material;
     private int currencyID;
 
+    private int amount;
+
     public Currency(String name, MF_Faction faction, Material material, int currencyID) {
         this.name = name;
         this.factionName = faction.getName();
         this.material = material.name();
         this.currencyID = currencyID;
+        amount = 0;
     }
 
     public Currency(Map<String, String> data) {
@@ -60,6 +63,21 @@ public class Currency implements ICurrency, Savable {
         return currencyID;
     }
 
+    @Override
+    public int getAmount() {
+        return amount;
+    }
+
+    @Override
+    public void increaseAmount(int amount) {
+        this.amount += amount;
+    }
+
+    @Override
+    public void decreaseAmount(int amount) {
+        this.amount -= amount;
+    }
+
     @Override()
     public Map<String, String> save() {
         Gson gson = new GsonBuilder().setPrettyPrinting().create();;
@@ -69,6 +87,7 @@ public class Currency implements ICurrency, Savable {
         saveMap.put("factionName", gson.toJson(factionName));
         saveMap.put("material", gson.toJson(material));
         saveMap.put("currencyID", gson.toJson(currencyID));
+        saveMap.put("amount", gson.toJson(amount));
 
         return saveMap;
     }
@@ -81,5 +100,6 @@ public class Currency implements ICurrency, Savable {
         factionName = gson.fromJson(data.get("factionName"), String.class);
         material = gson.fromJson(data.get("material"), String.class);
         currencyID = Integer.parseInt(gson.fromJson(data.getOrDefault("currencyID", "-1"), String.class));
+        amount = Integer.parseInt(gson.fromJson(data.getOrDefault("amount", "-1"), String.class));
     }
 }
