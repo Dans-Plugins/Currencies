@@ -4,6 +4,7 @@ import dansplugins.currencies.Currencies;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -47,7 +48,7 @@ public class CurrencyManager {
             return false;
         }
 
-        String currencyIDString = getCurrencyIDFromLore(itemMeta);
+        String currencyIDString = getCurrencyID(itemMeta);
         if (currencyIDString == null) {
             return false;
         }
@@ -57,11 +58,23 @@ public class CurrencyManager {
         return isCurrencyIDTaken(currencyID);
     }
 
-    public void updateCurrencyIfNecessary(ItemStack itemStack) {
-        // TODO: implement
+    public String getFactionName(ItemMeta meta) {
+        List<String> lore = meta.getLore();
+        if (lore == null) {
+            return null;
+        }
+        for (String s : lore) {
+            if (s.contains("faction")) {
+                String factionName = s.substring(14);
+                if (Currencies.getInstance().isDebugEnabled()) {
+                    return factionName;
+                }
+            }
+        }
+        return null;
     }
 
-    public String getCurrencyIDFromLore(ItemMeta meta) {
+    public String getCurrencyID(ItemMeta meta) {
         List<String> lore = meta.getLore();
         if (lore == null) {
             return null;
@@ -70,7 +83,6 @@ public class CurrencyManager {
             if (s.contains("currencyID")) {
                 String ID = s.substring(14);
                 if (Currencies.getInstance().isDebugEnabled()) {
-                    System.out.println("Currency ID found: " + ID);
                     return ID;
                 }
             }
