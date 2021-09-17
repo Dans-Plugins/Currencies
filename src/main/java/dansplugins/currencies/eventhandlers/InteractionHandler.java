@@ -38,6 +38,7 @@ public class InteractionHandler implements Listener {
 
         String factionName = CurrencyManager.getInstance().getFactionName(meta);
 
+        if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Comparing '" + currency.getFactionName() + "' to '" + factionName + "'"); }
         if (!currency.getFactionName().equalsIgnoreCase(factionName)) {
             if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Fixing faction name mismatch with an item stack."); }
             event.getPlayer().getInventory().setItemInMainHand(CurrencyFactory.getInstance().createCurrencyItem(currency, itemStack.getAmount()));
