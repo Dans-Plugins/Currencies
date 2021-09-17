@@ -47,6 +47,9 @@ public class ConfigManager {
         if (!getConfig().isSet("powerCostEnabled")) {
             getConfig().set("powerCostEnabled", true);
         }
+        if (!getConfig().isSet("powreCost")) {
+            getConfig().set("powerCost", 0.5);
+        }
         getConfig().options().copyDefaults(true);
         Currencies.getInstance().saveConfig();
     }
@@ -65,7 +68,7 @@ public class ConfigManager {
                     || option.equals("powerCostEnabled")) {
                 getConfig().set(option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
-            } else if (option.equalsIgnoreCase("c")) { // no doubles yet
+            } else if (option.equalsIgnoreCase("powerCost")) {
                 getConfig().set(option, Double.parseDouble(value));
                 sender.sendMessage(ChatColor.GREEN + "Double set.");
             } else {
@@ -86,7 +89,8 @@ public class ConfigManager {
         sender.sendMessage(ChatColor.AQUA + "version: " + getConfig().getString("version")
                 + ", debugMode: " + getString("debugMode")
                 + ", maxCurrencyIDNumber: " + getInt("maxCurrencyIDNumber")
-                + ", powerCostEnabled: " + getBoolean("powerCostEnabled"));
+                + ", powerCostEnabled: " + getBoolean("powerCostEnabled")
+                + ", powerCost: " + getDouble("powerCost"));
     }
 
     public boolean hasBeenAltered() {
