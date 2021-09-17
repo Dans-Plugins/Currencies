@@ -35,8 +35,6 @@ public class CurrencyFactory {
             return null;
         }
 
-        String name = currency.getName();
-
         meta.setDisplayName(currency.getName());
         meta.setLore(asList(
             "",
