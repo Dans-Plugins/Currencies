@@ -1,5 +1,6 @@
 package dansplugins.currencies;
 
+import dansplugins.currencies.bstats.Metrics;
 import dansplugins.currencies.managers.ConfigManager;
 import dansplugins.currencies.managers.StorageManager;
 import org.bukkit.command.Command;
@@ -21,6 +22,10 @@ public final class Currencies extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
+
+        // bStats
+        int pluginId = 12810;
+        Metrics metrics = new Metrics(this, pluginId);
 
         // create/load config
         if (!(new File("./plugins/Currencies/config.yml").exists())) {
