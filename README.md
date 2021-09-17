@@ -4,7 +4,7 @@
 Currencies is an add-on plugin for [Medieval Factions](https://github.com/dmccoystephenson/Medieval-Factions) that allows faction owners to create local currencies.
 
 ## Installation
-This plugin isn't ready to be used yet.
+This plugin isn't ready to be used yet, but if you want to try a pre-release you can download the latest version from [this page](https://github.com/dmccoystephenson/Currencies/releases).
 
 ## Usage
 - [User Guide](https://github.com/dmccoystephenson/Currencies/wiki/Guide) (coming soon)
