@@ -56,6 +56,9 @@ public class ConfigManager {
         if (!getConfig().isSet("disallowCrafting")) {
             getConfig().set("disallowCrafting", true);
         }
+        if (!getConfig().isSet("disallowPlacement")) {
+            getConfig().set("disallowPlacement", true);
+        }
         getConfig().options().copyDefaults(true);
         Currencies.getInstance().saveConfig();
     }
@@ -73,7 +76,8 @@ public class ConfigManager {
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
             } else if (option.equalsIgnoreCase("debugMode")
                     || option.equalsIgnoreCase("powerCostEnabled")
-                    || option.equalsIgnoreCase("disallowCrafting")) {
+                    || option.equalsIgnoreCase("disallowCrafting")
+                    || option.equalsIgnoreCase("disallowPlacement")) {
                 getConfig().set(option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
             } else if (option.equalsIgnoreCase("powerCost")) {
@@ -99,7 +103,8 @@ public class ConfigManager {
                 + ", maxCurrencyIDNumber: " + getInt("maxCurrencyIDNumber")
                 + ", powerCostEnabled: " + getBoolean("powerCostEnabled")
                 + ", powerCost: " + getDouble("powerCost")
-                + ", disallowCrafting: " + getBoolean("disallowCrafting"));
+                + ", disallowCrafting: " + getBoolean("disallowCrafting")
+                + ", disallowPlacement: " + getBoolean("disallowPlacement"));
     }
 
     public boolean hasBeenAltered() {

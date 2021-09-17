@@ -18,7 +18,7 @@ public class CraftingHandler implements Listener {
     public void handle(CraftItemEvent event) {
 
         if (!ConfigManager.getInstance().getBoolean("disallowCrafting")) {
-            if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Crafting with currencies is allowed and therefore will not be ."); }
+            if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Crafting with currencies is allowed."); }
             return;
         }
 
