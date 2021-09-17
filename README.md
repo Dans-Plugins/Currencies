@@ -8,7 +8,7 @@ This plugin isn't ready to be used yet, but if you want to try a pre-release you
 
 ## Usage
 - [User Guide](https://github.com/dmccoystephenson/Currencies/wiki/Guide) (coming soon)
-- [List of Commands](https://github.com/dmccoystephenson/Currencies/wiki/Commands) (coming soon)
+- [List of Commands](https://github.com/dmccoystephenson/Currencies/wiki/Commands)
 - [FAQ](https://github.com/dmccoystephenson/Currencies/wiki/FAQ) (coming soon)
 
 ## Support
