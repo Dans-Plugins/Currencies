@@ -37,6 +37,7 @@ public class InfoCommand {
         player.sendMessage(ChatColor.AQUA + "Faction: " + currency.getFactionName());
         player.sendMessage(ChatColor.AQUA + "Material: " + currency.getMaterial());
         player.sendMessage(ChatColor.AQUA + "ID: " + currency.getCurrencyID());
+        player.sendMessage(ChatColor.AQUA + "Minted: " + currency.getAmount());
         return true;
     }
 
