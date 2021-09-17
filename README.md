@@ -30,6 +30,8 @@ Name | Main Contributions
 ------------ | -------------
 DanTheTechMan | Creator
 
+It was Ricortix's suggestion to create a plugin like this one.
+
 ## License
 GPL3
 
