@@ -44,6 +44,9 @@ public class ConfigManager {
         if (!getConfig().isSet("maxCurrencyIDNumber")) {
             getConfig().set("maxCurrencyIDNumber", 1000000);
         }
+        if (!getConfig().isSet("powerCostEnabled")) {
+            getConfig().set("powerCostEnabled", true);
+        }
         getConfig().options().copyDefaults(true);
         Currencies.getInstance().saveConfig();
     }
@@ -58,7 +61,8 @@ public class ConfigManager {
             } else if (option.equalsIgnoreCase("maxCurrencyIDNumber")) {
                 getConfig().set(option, Integer.parseInt(value));
                 sender.sendMessage(ChatColor.GREEN + "Integer set.");
-            } else if (option.equalsIgnoreCase("debugMode")) {
+            } else if (option.equalsIgnoreCase("debugMode")
+                    || option.equals("powerCostEnabled")) {
                 getConfig().set(option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
             } else if (option.equalsIgnoreCase("c")) { // no doubles yet
@@ -81,7 +85,8 @@ public class ConfigManager {
         sender.sendMessage(ChatColor.AQUA + "=== Config List ===");
         sender.sendMessage(ChatColor.AQUA + "version: " + getConfig().getString("version")
                 + ", debugMode: " + getString("debugMode")
-                + ", maxCurrencyIDNumber: " + getInt("maxCurrencyIDNumber"));
+                + ", maxCurrencyIDNumber: " + getInt("maxCurrencyIDNumber")
+                + ", powerCostEnabled: " + getBoolean("powerCostEnabled"));
     }
 
     public boolean hasBeenAltered() {
