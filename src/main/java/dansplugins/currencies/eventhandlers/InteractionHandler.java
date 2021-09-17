@@ -24,13 +24,18 @@ public class InteractionHandler implements Listener {
             return;
         }
 
-        String factionName = CurrencyManager.getInstance().getFactionName(meta);
-        int currencyID = Integer.parseInt(CurrencyManager.getInstance().getCurrencyID(meta));
+        String currencyIDString = CurrencyManager.getInstance().getCurrencyID(meta);
+        if (currencyIDString == null) {
+            return;
+        }
+        int currencyID = Integer.parseInt(currencyIDString);
 
         Currency currency = PersistentData.getInstance().getCurrency(currencyID);
         if (currency == null) {
             return;
         }
+
+        String factionName = CurrencyManager.getInstance().getFactionName(meta);
 
         if (!currency.getFactionName().equalsIgnoreCase(factionName)) {
             if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Fixing faction name mismatch with an item stack."); }
