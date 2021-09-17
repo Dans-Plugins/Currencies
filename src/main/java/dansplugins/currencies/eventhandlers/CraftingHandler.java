@@ -21,7 +21,7 @@ public class CraftingHandler implements Listener {
 
         CraftingInventory inventory = event.getInventory();
 
-        for (ItemStack itemStack : inventory.getMatrix()) {
+        for (ItemStack itemStack : inventory.getContents()) {
             if (CurrencyManager.getInstance().isCurrency(itemStack)) {
                 event.getWhoClicked().sendMessage(ChatColor.RED + "You can't use currencies in crafting recipes.");
                 event.setCancelled(true);
