@@ -7,6 +7,7 @@ import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.managers.CurrencyManager;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
+import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerInteractEvent;
@@ -40,6 +41,7 @@ public class InteractionHandler implements Listener {
         if (!currency.getFactionName().equalsIgnoreCase(factionName)) {
             if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Fixing faction name mismatch with an item stack."); }
             event.getPlayer().getInventory().setItemInMainHand(CurrencyFactory.getInstance().createCurrencyItem(currency, itemStack.getAmount()));
+            event.getPlayer().sendMessage(ChatColor.GREEN + "The currency you're holding had a faction name mismatch. This has been corrected.");
         }
     }
 
