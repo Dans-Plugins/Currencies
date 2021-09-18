@@ -3,6 +3,7 @@ package dansplugins.currencies.objects;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
+import dansplugins.currencies.Currencies;
 import dansplugins.currencies.data.PersistentData;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -71,6 +72,10 @@ public class Coinpurse implements ICoinpurse, Savable {
         player.sendMessage(ChatColor.AQUA + "=== Coinpurse Contents ===");
         for (int currencyID : currencyAmounts.keySet()) {
             Currency currency = PersistentData.getInstance().getCurrency(currencyID);
+            if (currency == null) {
+                if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[ERROR] Currency was null when attempting to list in the output of the balance command."); }
+                continue;
+            }
             if (!currency.isRetired()) {
                 player.sendMessage(ChatColor.AQUA + currency.getName() + ": " + getCurrencyAmount(currency));
             }
