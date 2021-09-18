@@ -22,7 +22,7 @@ public class StorageManager {
     private static StorageManager instance;
 
     private final static String FILE_PATH = "./plugins/Currencies/";
-    private final static String CURRENCIES_FILE_NAME = "currencies.json";
+    private final static String ACTIVE_CURRENCIES_FILE_NAME = "activeCurrencies.json";
     private final static String RETIRED_CURRENCIES_FILE_NAME = "retiredCurrencies.json";
     private final static String COINPURSES_FILE_NAME = "coinpurses.json";
 
@@ -63,7 +63,7 @@ public class StorageManager {
             currencies.add(currency.save());
         }
 
-        writeOutFiles(currencies, CURRENCIES_FILE_NAME);
+        writeOutFiles(currencies, ACTIVE_CURRENCIES_FILE_NAME);
     }
 
     private void saveRetiredCurrencies() {
@@ -103,7 +103,7 @@ public class StorageManager {
     private void loadActiveCurrencies() {
         PersistentData.getInstance().getActiveCurrencies().clear();
 
-        ArrayList<HashMap<String, String>> data = loadDataFromFilename(FILE_PATH + CURRENCIES_FILE_NAME);
+        ArrayList<HashMap<String, String>> data = loadDataFromFilename(FILE_PATH + ACTIVE_CURRENCIES_FILE_NAME);
 
         for (Map<String, String> currencyData : data){
             Currency currency = new Currency(currencyData);
