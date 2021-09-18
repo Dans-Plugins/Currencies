@@ -79,6 +79,12 @@ public class CommandInterpreter {
                 return command.execute(sender, arguments);
             }
 
+            if (secondaryLabel.equalsIgnoreCase("desc")) {
+                if (!checkPermission(sender, "currencies.desc")) { return false; }
+                DescCommand command = new DescCommand();
+                return command.execute(sender, arguments);
+            }
+
             sender.sendMessage(ChatColor.RED + "Currencies doesn't recognize that command.");
         }
         return false;
