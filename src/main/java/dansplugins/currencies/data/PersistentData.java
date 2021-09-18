@@ -133,6 +133,6 @@ public class PersistentData {
     }
 
     public boolean isCurrencyNameTaken(String currencyName) {
-        return (getActiveCurrency(currencyName) != null && getRetiredCurrency(currencyName) != null);
+        return (getActiveCurrency(currencyName) != null || getRetiredCurrency(currencyName) != null);
     }
 }
