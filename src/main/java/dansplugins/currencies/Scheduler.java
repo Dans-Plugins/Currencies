@@ -2,12 +2,6 @@ package dansplugins.currencies;
 
 import dansplugins.currencies.managers.StorageManager;
 import org.bukkit.Bukkit;
-import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-
-import static org.bukkit.Bukkit.getServer;
 
 public class Scheduler {
 

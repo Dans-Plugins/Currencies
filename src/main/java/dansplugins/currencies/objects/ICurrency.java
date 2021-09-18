@@ -1,7 +1,5 @@
 package dansplugins.currencies.objects;
 
-import java.util.Map;
-
 public interface ICurrency {
     String getName();
     void setName(String name);
