@@ -43,6 +43,14 @@ public class PersistentData {
         return getRetiredCurrency(currencyName);
     }
 
+    public Currency getCurrency(int currencyID) {
+        Currency currency = getActiveCurrency(currencyID);
+        if (currency != null) {
+            return currency;
+        }
+        return getRetiredCurrency(currencyID);
+    }
+
     public Currency getActiveCurrency(String currencyName) {
         for (Currency c : activeCurrencies) {
             if (c.getName().equalsIgnoreCase(currencyName)) {
