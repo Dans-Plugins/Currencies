@@ -34,7 +34,7 @@ public class PersistentData {
         for (Currency c : currencies) {
             if (c.getName().equalsIgnoreCase(currencyName)) {
                 if (c.isRetired()) {
-                    break;
+                    continue;
                 }
                 return c;
             }
@@ -46,7 +46,7 @@ public class PersistentData {
         for (Currency c : currencies) {
             if (c.getCurrencyID() == currencyID) {
                 if (c.isRetired()) {
-                    break;
+                    continue;
                 }
                 return c;
             }
@@ -56,9 +56,33 @@ public class PersistentData {
 
     public Currency getActiveCurrency(MF_Faction faction) {
         for (Currency c : currencies) {
+            if (c.isRetired()) {
+                continue; // don't count this one in our search
+            }
             if (c.getFactionName().equalsIgnoreCase(faction.getName())) {
-                if (c.isRetired()) {
-                    break;
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public Currency getRetiredCurrency(int currencyID) {
+        for (Currency c : currencies) {
+            if (c.getCurrencyID() == currencyID) {
+                if (!c.isRetired()) {
+                    continue;
+                }
+                return c;
+            }
+        }
+        return null;
+    }
+
+    public Currency getRetiredCurrency(String currencyName) {
+        for (Currency c : currencies) {
+            if (c.getName().equalsIgnoreCase(currencyName)) {
+                if (!c.isRetired()) {
+                    continue;
                 }
                 return c;
             }
@@ -67,7 +91,7 @@ public class PersistentData {
     }
 
     public void addCurrency(Currency newCurrency) {
-        if (!currencies.contains(newCurrency)) {
+        if (!isCurrencyNameTaken(newCurrency.getName())) {
             currencies.add(newCurrency);
         }
     }
@@ -106,5 +130,9 @@ public class PersistentData {
         if (!coinpurses.contains(newCoinpurse)) {
             coinpurses.add(newCoinpurse);
         }
+    }
+
+    public boolean isCurrencyNameTaken(String currencyName) {
+        return (getActiveCurrency(currencyName) != null && getRetiredCurrency(currencyName) != null);
     }
 }

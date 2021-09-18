@@ -54,6 +54,11 @@ public class CreateCommand {
 
         String name = singleQuoteArgs.get(0);
 
+        if (PersistentData.getInstance().isCurrencyNameTaken(name)) {
+            player.sendMessage(ChatColor.RED + "That name is taken.");
+            return false;
+        }
+
         ItemStack item = player.getInventory().getItemInMainHand();
 
         Material material = item.getType();
