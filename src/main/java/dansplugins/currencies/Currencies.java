@@ -42,6 +42,8 @@ public final class Currencies extends JavaPlugin {
         StorageManager.getInstance().load();
 
         EventRegistry.getInstance().registerEvents();
+
+        Scheduler.getInstance().scheduleAutosave();
     }
 
     @Override
