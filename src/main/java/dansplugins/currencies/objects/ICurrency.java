@@ -13,6 +13,6 @@ public interface ICurrency {
     int getAmount();
     void increaseAmount(int amount);
     void decreaseAmount(int amount);
-    Map<String, String> save();
-    void load(Map<String, String> data);
+    String getDescription();
+    void setDescription(String newDescription);
 }
