@@ -37,7 +37,7 @@ public class InfoCommand {
             }
 
             String currencyName = singleQuoteArgs.get(0);
-            Currency currency = PersistentData.getInstance().getActiveCurrency(currencyName);
+            Currency currency = PersistentData.getInstance().getCurrency(currencyName);
 
             sendCurrencyInfo(currency, player);
             return true;

@@ -38,7 +38,7 @@ public class DepositCommand {
         String amountString = singleQuoteArgs.get(1);
         int amount = Integer.parseInt(amountString); // TODO: handle error here
 
-        Currency currency = PersistentData.getInstance().getActiveCurrency(currencyName);
+        Currency currency = PersistentData.getInstance().getCurrency(currencyName);
         if (currency == null) {
             player.sendMessage(ChatColor.RED + "That currency wasn't found.");
             return false;

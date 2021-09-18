@@ -35,6 +35,14 @@ public class PersistentData {
         return retiredCurrencies;
     }
 
+    public Currency getCurrency(String currencyName) {
+        Currency currency = getActiveCurrency(currencyName);
+        if (currency != null) {
+            return currency;
+        }
+        return getRetiredCurrency(currencyName);
+    }
+
     public Currency getActiveCurrency(String currencyName) {
         for (Currency c : activeCurrencies) {
             if (c.getName().equalsIgnoreCase(currencyName)) {
@@ -107,9 +115,7 @@ public class PersistentData {
         }
         sender.sendMessage(ChatColor.AQUA + "=== Currencies ===");
         for (Currency currency : activeCurrencies) {
-            if (!currency.isRetired()) {
-                sender.sendMessage(ChatColor.AQUA + currency.getName());
-            }
+            sender.sendMessage(ChatColor.AQUA + currency.getName());
         }
     }
 
