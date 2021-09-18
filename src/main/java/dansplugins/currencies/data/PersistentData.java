@@ -113,9 +113,11 @@ public class PersistentData {
             sender.sendMessage(ChatColor.AQUA + "There are no active currencies at this time.");
             return;
         }
-        sender.sendMessage(ChatColor.AQUA + "=== Currencies ===");
+        sender.sendMessage(ChatColor.AQUA + "=== Active Currencies ===");
         for (Currency currency : activeCurrencies) {
-            sender.sendMessage(ChatColor.AQUA + currency.getName());
+            if (!currency.isRetired()) {
+                sender.sendMessage(ChatColor.AQUA + currency.getName());
+            }
         }
     }
 
