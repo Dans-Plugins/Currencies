@@ -62,7 +62,7 @@ public class InfoCommand {
     }
 
     private void sendCurrencyInfo(Currency currency, Player player) {
-        player.sendMessage(ChatColor.AQUA + "=== " + currency.getName() + ChatColor.RED + " [retired]" + ChatColor.AQUA + "===");
+        player.sendMessage(ChatColor.AQUA + "=== " + currency.getName() + ChatColor.RED + " [retired]" + ChatColor.AQUA + " ===");
         player.sendMessage(ChatColor.AQUA + "Description: " + currency.getDescription());
         player.sendMessage(ChatColor.AQUA + "Faction: " + currency.getFactionName());
         player.sendMessage(ChatColor.AQUA + "Material: " + currency.getMaterial());
