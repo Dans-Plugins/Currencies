@@ -4,6 +4,7 @@ import dansplugins.currencies.Currencies;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.event.inventory.PrepareAnvilEvent;
 import org.bukkit.inventory.AnvilInventory;
 
 public class AnvilUsageHandler implements Listener {
@@ -15,6 +16,11 @@ public class AnvilUsageHandler implements Listener {
             if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] An anvil inventory is being interacted with."); }
         }
 
+    }
+
+    @EventHandler()
+    public void handle(PrepareAnvilEvent event) {
+        if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Prepare Anvil Event is firing."); }
     }
 
 }
