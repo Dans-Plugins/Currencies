@@ -118,7 +118,7 @@ public class StorageManager {
 
         for (Map<String, String> currencyData : data){
             Currency currency = new Currency(currencyData);
-            PersistentData.getInstance().addActiveCurrency(currency);
+            PersistentData.getInstance().addRetiredCurrency(currency);
         }
     }
 
