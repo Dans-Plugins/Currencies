@@ -37,7 +37,7 @@ public class InfoCommand {
             }
 
             String currencyName = singleQuoteArgs.get(0);
-            Currency currency = PersistentData.getInstance().getCurrency(currencyName);
+            Currency currency = PersistentData.getInstance().getActiveCurrency(currencyName);
 
             sendCurrencyInfo(currency, player);
             return true;
@@ -50,7 +50,7 @@ public class InfoCommand {
             return false;
         }
 
-        Currency currency = PersistentData.getInstance().getCurrency(faction);
+        Currency currency = PersistentData.getInstance().getActiveCurrency(faction);
 
         if (currency == null) {
             player.sendMessage(ChatColor.RED + "Your faction doesn't have a currency yet.");

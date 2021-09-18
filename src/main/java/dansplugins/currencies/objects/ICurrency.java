@@ -13,4 +13,6 @@ public interface ICurrency {
     void decreaseAmount(int amount);
     String getDescription();
     void setDescription(String newDescription);
+    boolean isRetired();
+    void setRetired(Boolean b);
 }

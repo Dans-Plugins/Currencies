@@ -2,14 +2,12 @@ package dansplugins.currencies.commands;
 
 import dansplugins.currencies.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
+import dansplugins.currencies.managers.CurrencyManager;
 import dansplugins.currencies.objects.Currency;
-import dansplugins.currencies.utils.ArgumentParser;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
 
 public class RetireCommand {
 
@@ -34,14 +32,19 @@ public class RetireCommand {
             return false;
         }
 
-        Currency currency = PersistentData.getInstance().getCurrency(faction);
+        Currency currency = PersistentData.getInstance().getActiveCurrency(faction);
 
         if (currency == null) {
             player.sendMessage(ChatColor.RED + "Your faction doesn't have a currency yet.");
             return false;
         }
 
-        // TODO: retire currency
+        // TODO: insert an "are you sure?" prompt here
+
+        CurrencyManager.getInstance().retireCurrency(currency);
+        player.sendMessage(ChatColor.GREEN + "Retired.");
+
+        // TODO: inform faction members that the currency has been retired
 
         return true;
     }

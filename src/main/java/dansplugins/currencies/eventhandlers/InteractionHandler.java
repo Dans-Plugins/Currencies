@@ -29,7 +29,7 @@ public class InteractionHandler implements Listener {
         }
         int currencyID = Integer.parseInt(currencyIDString);
 
-        Currency currency = PersistentData.getInstance().getCurrency(currencyID);
+        Currency currency = PersistentData.getInstance().getActiveCurrency(currencyID);
         if (currency == null) {
             return;
         }

@@ -89,6 +89,10 @@ public class CurrencyManager {
         return null;
     }
 
+    public void retireCurrency(Currency currency) {
+        currency.setRetired(true);
+    }
+
     private int getNewCurrencyID() {
         Random random = new Random();
         int numAttempts = 0;
@@ -103,6 +107,6 @@ public class CurrencyManager {
     }
 
     private boolean isCurrencyIDTaken(int currencyID) {
-        return (PersistentData.getInstance().getCurrency(currencyID) != null);
+        return (PersistentData.getInstance().getActiveCurrency(currencyID) != null);
     }
 }

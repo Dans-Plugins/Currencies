@@ -30,27 +30,36 @@ public class PersistentData {
         return currencies;
     }
 
-    public Currency getCurrency(String currencyName) {
+    public Currency getActiveCurrency(String currencyName) {
         for (Currency c : currencies) {
             if (c.getName().equalsIgnoreCase(currencyName)) {
+                if (c.isRetired()) {
+                    break;
+                }
                 return c;
             }
         }
         return null;
     }
 
-    public Currency getCurrency(int currencyID) {
+    public Currency getActiveCurrency(int currencyID) {
         for (Currency c : currencies) {
             if (c.getCurrencyID() == currencyID) {
+                if (c.isRetired()) {
+                    break;
+                }
                 return c;
             }
         }
         return null;
     }
 
-    public Currency getCurrency(MF_Faction faction) {
+    public Currency getActiveCurrency(MF_Faction faction) {
         for (Currency c : currencies) {
             if (c.getFactionName().equalsIgnoreCase(faction.getName())) {
+                if (c.isRetired()) {
+                    break;
+                }
                 return c;
             }
         }
@@ -58,25 +67,25 @@ public class PersistentData {
     }
 
     public void addCurrency(Currency newCurrency) {
-        if (getCurrency(newCurrency.getName()) == null) {
+        if (!currencies.contains(newCurrency)) {
             currencies.add(newCurrency);
         }
     }
 
     public void removeCurrency(Currency currencyToRemove) {
-        if (getCurrency(currencyToRemove.getName()) != null) {
-            currencies.remove(currencyToRemove);
-        }
+        currencies.remove(currencyToRemove);
     }
 
-    public void sendListOfCurrenciesToSender(CommandSender sender) {
+    public void sendListOfActiveCurrenciesToSender(CommandSender sender) {
         if (currencies.size() == 0) {
-            sender.sendMessage(ChatColor.AQUA + "There are no currencies yet.");
+            sender.sendMessage(ChatColor.AQUA + "There are no active currencies at this time.");
             return;
         }
         sender.sendMessage(ChatColor.AQUA + "=== Currencies ===");
         for (Currency currency : currencies) {
-            sender.sendMessage(ChatColor.AQUA + currency.getName());
+            if (!currency.isRetired()) {
+                sender.sendMessage(ChatColor.AQUA + currency.getName());
+            }
         }
     }
 
