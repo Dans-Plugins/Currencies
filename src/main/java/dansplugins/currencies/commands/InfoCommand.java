@@ -4,10 +4,13 @@ import dansplugins.currencies.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.managers.ConfigManager;
 import dansplugins.currencies.objects.Currency;
+import dansplugins.currencies.utils.ArgumentParser;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.ArrayList;
 
 public class InfoCommand {
 
@@ -22,10 +25,18 @@ public class InfoCommand {
 
         if (args.length > 0) {
             if (!player.hasPermission("info.others")) {
-                player.sendMessage(ChatColor.AQUA + "You don't have permission to view others' currency information.");
+                player.sendMessage(ChatColor.AQUA + "You don't have permission to view the currency information of others.");
                 return false;
             }
-            String currencyName = args[0];
+
+            ArrayList<String> singleQuoteArgs = ArgumentParser.getInstance().getArgumentsInsideSingleQuotes(args);
+
+            if (singleQuoteArgs.size() == 0) {
+                player.sendMessage(ChatColor.RED + "Currency name must be designated between single quotes.");
+                return false;
+            }
+
+            String currencyName = singleQuoteArgs.get(0);
             Currency currency = PersistentData.getInstance().getCurrency(currencyName);
 
             sendCurrencyInfo(currency, player);
