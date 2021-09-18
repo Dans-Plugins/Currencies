@@ -2,6 +2,7 @@ package dansplugins.currencies.commands;
 
 import dansplugins.currencies.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
+import dansplugins.currencies.managers.ConfigManager;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
@@ -38,7 +39,9 @@ public class InfoCommand {
         player.sendMessage(ChatColor.AQUA + "Description: " + currency.getDescription());
         player.sendMessage(ChatColor.AQUA + "Material: " + currency.getMaterial());
         player.sendMessage(ChatColor.AQUA + "ID: " + currency.getCurrencyID());
-        player.sendMessage(ChatColor.AQUA + "Minted: " + currency.getAmount());
+        if (ConfigManager.getInstance().getBoolean("showAmountMinted")) {
+            player.sendMessage(ChatColor.AQUA + "Minted: " + currency.getAmount());
+        }
         return true;
     }
 
