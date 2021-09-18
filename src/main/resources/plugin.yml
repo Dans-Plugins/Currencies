@@ -29,6 +29,8 @@ permissions:
     default: true
   currencies.rename:
     default: true
+  currencies.retire:
+    default: true
   currencies.balance:
     default: true
   currencies.balance.others:

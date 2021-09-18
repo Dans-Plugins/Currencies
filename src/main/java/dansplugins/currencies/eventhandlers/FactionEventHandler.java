@@ -2,7 +2,9 @@ package dansplugins.currencies.eventhandlers;
 
 import dansplugins.currencies.Currencies;
 import dansplugins.currencies.data.PersistentData;
+import dansplugins.currencies.managers.CurrencyManager;
 import dansplugins.currencies.objects.Currency;
+import dansplugins.factionsystem.events.FactionDisbandEvent;
 import dansplugins.factionsystem.events.FactionRenameEvent;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.event.EventHandler;
@@ -26,6 +28,16 @@ public class FactionEventHandler implements Listener {
 
         currency.setFactionName(newName);
         if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Faction Rename Event has been handled."); }
+    }
+
+    @EventHandler()
+    public void disband(FactionDisbandEvent event) {
+
+        MF_Faction faction = new MF_Faction(event.getFaction());
+        Currency currency = PersistentData.getInstance().getActiveCurrency(faction);
+        CurrencyManager.getInstance().retireCurrency(currency);
+        if (Currencies.getInstance().isDebugEnabled()) { System.out.println(currency.getName() + " has been retired because " + faction.getName() + " was disbanded."); }
+
     }
 
 }
