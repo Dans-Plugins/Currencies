@@ -25,5 +25,7 @@ permissions:
     default: true
   currencies.withdraw:
     default: true
+  currencies.desc:
+    default: true
   currencies.config:
     default: op
