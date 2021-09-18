@@ -33,7 +33,7 @@ public class CurrencyManager {
             return false;
         }
         Currency newCurrency = new Currency(name, faction, material, newCurrencyID);
-        PersistentData.getInstance().addCurrency(newCurrency);
+        PersistentData.getInstance().addActiveCurrency(newCurrency);
         return true;
     }
 
@@ -91,6 +91,8 @@ public class CurrencyManager {
 
     public void retireCurrency(Currency currency) {
         currency.setRetired(true);
+        PersistentData.getInstance().removeActiveCurrency(currency);
+        PersistentData.getInstance().addRetiredCurrency(currency);
     }
 
     private int getNewCurrencyID() {

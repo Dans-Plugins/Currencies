@@ -12,7 +12,8 @@ import java.util.UUID;
 public class PersistentData {
     private static PersistentData instance;
 
-    private ArrayList<Currency> currencies = new ArrayList<>();
+    private ArrayList<Currency> activeCurrencies = new ArrayList<>();
+    private ArrayList<Currency> retiredCurrencies = new ArrayList<>();
     private ArrayList<Coinpurse> coinpurses = new ArrayList<>();
 
     private PersistentData() {
@@ -26,16 +27,17 @@ public class PersistentData {
         return instance;
     }
 
-    public ArrayList<Currency> getCurrencies() {
-        return currencies;
+    public ArrayList<Currency> getActiveCurrencies() {
+        return activeCurrencies;
+    }
+
+    public ArrayList<Currency> getRetiredCurrencies() {
+        return retiredCurrencies;
     }
 
     public Currency getActiveCurrency(String currencyName) {
-        for (Currency c : currencies) {
+        for (Currency c : activeCurrencies) {
             if (c.getName().equalsIgnoreCase(currencyName)) {
-                if (c.isRetired()) {
-                    continue;
-                }
                 return c;
             }
         }
@@ -43,11 +45,8 @@ public class PersistentData {
     }
 
     public Currency getActiveCurrency(int currencyID) {
-        for (Currency c : currencies) {
+        for (Currency c : activeCurrencies) {
             if (c.getCurrencyID() == currencyID) {
-                if (c.isRetired()) {
-                    continue;
-                }
                 return c;
             }
         }
@@ -55,10 +54,7 @@ public class PersistentData {
     }
 
     public Currency getActiveCurrency(MF_Faction faction) {
-        for (Currency c : currencies) {
-            if (c.isRetired()) {
-                continue; // don't count this one in our search
-            }
+        for (Currency c : activeCurrencies) {
             if (c.getFactionName().equalsIgnoreCase(faction.getName())) {
                 return c;
             }
@@ -67,11 +63,8 @@ public class PersistentData {
     }
 
     public Currency getRetiredCurrency(int currencyID) {
-        for (Currency c : currencies) {
+        for (Currency c : retiredCurrencies) {
             if (c.getCurrencyID() == currencyID) {
-                if (!c.isRetired()) {
-                    continue;
-                }
                 return c;
             }
         }
@@ -79,34 +72,41 @@ public class PersistentData {
     }
 
     public Currency getRetiredCurrency(String currencyName) {
-        for (Currency c : currencies) {
+        for (Currency c : retiredCurrencies) {
             if (c.getName().equalsIgnoreCase(currencyName)) {
-                if (!c.isRetired()) {
-                    continue;
-                }
                 return c;
             }
         }
         return null;
     }
 
-    public void addCurrency(Currency newCurrency) {
+    public void addActiveCurrency(Currency newCurrency) {
         if (!isCurrencyNameTaken(newCurrency.getName())) {
-            currencies.add(newCurrency);
+            activeCurrencies.add(newCurrency);
         }
     }
 
-    public void removeCurrency(Currency currencyToRemove) {
-        currencies.remove(currencyToRemove);
+    public void removeActiveCurrency(Currency currencyToRemove) {
+        activeCurrencies.remove(currencyToRemove);
+    }
+
+    public void addRetiredCurrency(Currency newCurrency) {
+        if (!isCurrencyNameTaken(newCurrency.getName())) {
+            retiredCurrencies.add(newCurrency);
+        }
+    }
+
+    public void removeRetiredCurrency(Currency currencyToRemove) {
+        retiredCurrencies.remove(currencyToRemove);
     }
 
     public void sendListOfActiveCurrenciesToSender(CommandSender sender) {
-        if (currencies.size() == 0) {
+        if (activeCurrencies.size() == 0) {
             sender.sendMessage(ChatColor.AQUA + "There are no active currencies at this time.");
             return;
         }
         sender.sendMessage(ChatColor.AQUA + "=== Currencies ===");
-        for (Currency currency : currencies) {
+        for (Currency currency : activeCurrencies) {
             if (!currency.isRetired()) {
                 sender.sendMessage(ChatColor.AQUA + currency.getName());
             }

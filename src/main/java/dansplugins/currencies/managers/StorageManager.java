@@ -23,6 +23,7 @@ public class StorageManager {
 
     private final static String FILE_PATH = "./plugins/Currencies/";
     private final static String CURRENCIES_FILE_NAME = "currencies.json";
+    private final static String RETIRED_CURRENCIES_FILE_NAME = "retiredCurrencies.json";
     private final static String COINPURSES_FILE_NAME = "coinpurses.json";
 
     private final static Type LIST_MAP_TYPE = new TypeToken<ArrayList<HashMap<String, String>>>(){}.getType();
@@ -41,7 +42,8 @@ public class StorageManager {
     }
 
     public void save() {
-        saveCurrencies();
+        saveActiveCurrencies();
+        saveRetiredCurrencies();
         saveCoinpurses();
         if (ConfigManager.getInstance().hasBeenAltered()) {
             Currencies.getInstance().saveConfig();
@@ -49,18 +51,29 @@ public class StorageManager {
     }
 
     public void load() {
-        loadCurrencies();
+        loadActiveCurrencies();
+        loadRetiredCurrencies();
         loadCoinpurses();
     }
 
-    private void saveCurrencies() {
+    private void saveActiveCurrencies() {
         // save each currency object individually
         List<Map<String, String>> currencies = new ArrayList<>();
-        for (Currency currency : PersistentData.getInstance().getCurrencies()){
+        for (Currency currency : PersistentData.getInstance().getActiveCurrencies()){
             currencies.add(currency.save());
         }
 
         writeOutFiles(currencies, CURRENCIES_FILE_NAME);
+    }
+
+    private void saveRetiredCurrencies() {
+        // save each currency object individually
+        List<Map<String, String>> currencies = new ArrayList<>();
+        for (Currency currency : PersistentData.getInstance().getRetiredCurrencies()){
+            currencies.add(currency.save());
+        }
+
+        writeOutFiles(currencies, RETIRED_CURRENCIES_FILE_NAME);
     }
 
     private void saveCoinpurses() {
@@ -87,14 +100,25 @@ public class StorageManager {
         }
     }
 
-    private void loadCurrencies() {
-        PersistentData.getInstance().getCurrencies().clear();
+    private void loadActiveCurrencies() {
+        PersistentData.getInstance().getActiveCurrencies().clear();
 
         ArrayList<HashMap<String, String>> data = loadDataFromFilename(FILE_PATH + CURRENCIES_FILE_NAME);
 
         for (Map<String, String> currencyData : data){
             Currency currency = new Currency(currencyData);
-            PersistentData.getInstance().addCurrency(currency);
+            PersistentData.getInstance().addActiveCurrency(currency);
+        }
+    }
+
+    private void loadRetiredCurrencies() {
+        PersistentData.getInstance().getRetiredCurrencies().clear();
+
+        ArrayList<HashMap<String, String>> data = loadDataFromFilename(FILE_PATH + RETIRED_CURRENCIES_FILE_NAME);
+
+        for (Map<String, String> currencyData : data){
+            Currency currency = new Currency(currencyData);
+            PersistentData.getInstance().addActiveCurrency(currency);
         }
     }
 
