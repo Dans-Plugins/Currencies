@@ -21,8 +21,6 @@ permissions:
     default: true
   currencies.mint:
     default: true
-  currencies.balance:
-    default: true
   currencies.deposit:
     default: true
   currencies.withdraw:
@@ -31,5 +29,9 @@ permissions:
     default: true
   currencies.rename:
     default: true
+  currencies.balance:
+    default: true
+  currencies.balance.others:
+    default: op
   currencies.config:
     default: op

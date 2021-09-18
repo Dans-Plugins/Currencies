@@ -58,7 +58,7 @@ public class CommandInterpreter {
             if (secondaryLabel.equalsIgnoreCase("balance")) {
                 if (!checkPermission(sender, "currencies.balance")) { return false; }
                 BalanceCommand command = new BalanceCommand();
-                return command.execute(sender);
+                return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("deposit")) {
