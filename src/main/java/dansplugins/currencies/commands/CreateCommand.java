@@ -35,7 +35,7 @@ public class CreateCommand {
             return false;
         }
 
-        if (PersistentData.getInstance().getCurrency(faction) != null) {
+        if (PersistentData.getInstance().getActiveCurrency(faction) != null) {
             player.sendMessage(ChatColor.RED + "Your faction already has a currency.");
             return false;
         }

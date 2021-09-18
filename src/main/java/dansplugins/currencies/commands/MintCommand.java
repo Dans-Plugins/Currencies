@@ -34,7 +34,7 @@ public class MintCommand {
             return false;
         }
 
-        Currency currency = PersistentData.getInstance().getCurrency(faction);
+        Currency currency = PersistentData.getInstance().getActiveCurrency(faction);
 
         if (currency == null) {
             player.sendMessage(ChatColor.RED + "Your faction doesn't have a currency yet.");

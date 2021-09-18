@@ -2,18 +2,17 @@ package dansplugins.currencies.commands;
 
 import dansplugins.currencies.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
+import dansplugins.currencies.managers.CurrencyManager;
 import dansplugins.currencies.objects.Currency;
-import dansplugins.currencies.utils.ArgumentParser;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
+public class RetireCommand {
 
-public class RenameCommand {
+    public boolean execute(CommandSender sender) {
 
-    public boolean execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
             // TODO: add message
             return false;
@@ -34,27 +33,19 @@ public class RenameCommand {
         }
 
         Currency currency = PersistentData.getInstance().getActiveCurrency(faction);
+
         if (currency == null) {
-            player.sendMessage(ChatColor.RED + "Your faction doesn't have a currency.");
+            player.sendMessage(ChatColor.RED + "Your faction doesn't have a currency yet.");
             return false;
         }
 
-        if (args.length == 0) {
-            player.sendMessage(ChatColor.RED + "Usage: /c create (currencyName)");
-            return false;
-        }
+        // TODO: insert an "are you sure?" prompt here
 
-        ArrayList<String> singleQuoteArgs = ArgumentParser.getInstance().getArgumentsInsideSingleQuotes(args);
+        CurrencyManager.getInstance().retireCurrency(currency);
+        player.sendMessage(ChatColor.GREEN + "Retired.");
 
-        if (singleQuoteArgs.size() == 0) {
-            player.sendMessage(ChatColor.RED + "Name must be designated between single quotes.");
-            return false;
-        }
+        // TODO: inform faction members that the currency has been retired
 
-        String newName = singleQuoteArgs.get(0);
-
-        currency.setName(newName);
-        player.sendMessage(ChatColor.GREEN + "Renamed.");
         return true;
     }
 

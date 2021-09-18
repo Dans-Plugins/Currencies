@@ -18,7 +18,7 @@ public class FactionEventHandler implements Listener {
         String oldName = event.getCurrentName();
         String newName = event.getProposedName();
 
-        Currency currency = PersistentData.getInstance().getCurrency(faction);
+        Currency currency = PersistentData.getInstance().getActiveCurrency(faction);
 
         if (currency == null) {
             return;
