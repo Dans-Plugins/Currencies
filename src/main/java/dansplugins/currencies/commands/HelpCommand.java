@@ -15,6 +15,7 @@ public class HelpCommand {
         sender.sendMessage(ChatColor.AQUA + "/c create - Set up your currency.");
         sender.sendMessage(ChatColor.AQUA + "/c desc - Set the description of your currency.");
         sender.sendMessage(ChatColor.AQUA + "/c mint - Mint currency in exchange for power.");
+        sender.sendMessage(ChatColor.AQUA + "/c rename - Rename your currency.");
         sender.sendMessage(ChatColor.AQUA + "/c config - View or set config options.");
         return true;
     }
