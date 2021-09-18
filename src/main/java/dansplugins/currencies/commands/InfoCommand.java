@@ -11,7 +11,7 @@ import org.bukkit.entity.Player;
 
 public class InfoCommand {
 
-    public boolean execute(CommandSender sender) {
+    public boolean execute(CommandSender sender, String[] args) {
 
         if (!(sender instanceof Player)) {
             // TODO: add message
@@ -19,6 +19,18 @@ public class InfoCommand {
         }
 
         Player player = (Player) sender;
+
+        if (args.length > 0) {
+            if (!player.hasPermission("info.others")) {
+                player.sendMessage(ChatColor.AQUA + "You don't have permission to view others' currency information.");
+                return false;
+            }
+            String currencyName = args[0];
+            Currency currency = PersistentData.getInstance().getCurrency(currencyName);
+
+            sendCurrencyInfo(currency, player);
+            return true;
+        }
 
         MF_Faction faction = MedievalFactionsIntegrator.getInstance().getAPI().getFaction(player);
 
@@ -34,6 +46,11 @@ public class InfoCommand {
             return false;
         }
 
+        sendCurrencyInfo(currency, player);
+        return true;
+    }
+
+    private void sendCurrencyInfo(Currency currency, Player player) {
         player.sendMessage(ChatColor.AQUA + "=== " + currency.getName() + " ===");
         player.sendMessage(ChatColor.AQUA + "Faction: " + currency.getFactionName());
         player.sendMessage(ChatColor.AQUA + "Description: " + currency.getDescription());
@@ -42,7 +59,6 @@ public class InfoCommand {
         if (ConfigManager.getInstance().getBoolean("showAmountMinted")) {
             player.sendMessage(ChatColor.AQUA + "Minted: " + currency.getAmount());
         }
-        return true;
     }
 
 }
