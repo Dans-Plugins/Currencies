@@ -28,5 +28,6 @@ public class EventRegistry {
         manager.registerEvents(new PlacementHandler(), mainInstance);
         manager.registerEvents(new FactionEventHandler(), mainInstance);
         manager.registerEvents(new InteractionHandler(), mainInstance);
+        manager.registerEvents(new AnvilUsageHandler(), mainInstance);
     }
 }

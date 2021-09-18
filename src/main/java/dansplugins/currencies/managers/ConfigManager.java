@@ -62,6 +62,9 @@ public class ConfigManager {
         if (!getConfig().isSet("showAmountMinted")) {
             getConfig().set("showAmountMinted", true);
         }
+        if (!getConfig().isSet("disallowAnvilUsage")) {
+            getConfig().set("disallowAnvilUsage", true);
+        }
         getConfig().options().copyDefaults(true);
         Currencies.getInstance().saveConfig();
     }
@@ -81,7 +84,8 @@ public class ConfigManager {
                     || option.equalsIgnoreCase("powerCostEnabled")
                     || option.equalsIgnoreCase("disallowCrafting")
                     || option.equalsIgnoreCase("disallowPlacement")
-                    || option.equalsIgnoreCase("showAmountMinted")) {
+                    || option.equalsIgnoreCase("showAmountMinted")
+                    || option.equalsIgnoreCase("disallowAnvilUsage")) {
                 getConfig().set(option, Boolean.parseBoolean(value));
                 sender.sendMessage(ChatColor.GREEN + "Boolean set.");
             } else if (option.equalsIgnoreCase("powerCost")) {
@@ -109,7 +113,8 @@ public class ConfigManager {
                 + ", powerCost: " + getDouble("powerCost")
                 + ", disallowCrafting: " + getBoolean("disallowCrafting")
                 + ", disallowPlacement: " + getBoolean("disallowPlacement")
-                + ", showAmountMinted: " + getBoolean("showAmountMinted"));
+                + ", showAmountMinted: " + getBoolean("showAmountMinted")
+                + ", disallowAnvilUsage: " + getBoolean("disallowAnvilUsage"));
     }
 
     public boolean hasBeenAltered() {
