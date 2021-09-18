@@ -40,7 +40,7 @@ public class CommandInterpreter {
             if (secondaryLabel.equalsIgnoreCase("info")) {
                 if (!checkPermission(sender, "currencies.info")) { return false; }
                 InfoCommand command = new InfoCommand();
-                return command.execute(sender);
+                return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("list")) {
@@ -82,6 +82,12 @@ public class CommandInterpreter {
             if (secondaryLabel.equalsIgnoreCase("desc")) {
                 if (!checkPermission(sender, "currencies.desc")) { return false; }
                 DescCommand command = new DescCommand();
+                return command.execute(sender, arguments);
+            }
+
+            if (secondaryLabel.equalsIgnoreCase("rename")) {
+                if (!checkPermission(sender, "currencies.rename")) { return false; }
+                RenameCommand command = new RenameCommand();
                 return command.execute(sender, arguments);
             }
 

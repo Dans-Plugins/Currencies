@@ -29,5 +29,7 @@ permissions:
     default: true
   currencies.desc:
     default: true
+  currencies.rename:
+    default: true
   currencies.config:
     default: op
