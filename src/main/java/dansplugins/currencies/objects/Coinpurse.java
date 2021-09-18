@@ -71,7 +71,14 @@ public class Coinpurse implements ICoinpurse, Savable {
         player.sendMessage(ChatColor.AQUA + "=== Coinpurse Contents ===");
         for (int currencyID : currencyAmounts.keySet()) {
             Currency currency = PersistentData.getInstance().getCurrency(currencyID);
-            player.sendMessage(ChatColor.AQUA + currency.getName() + ": " + getCurrencyAmount(currency));
+            ChatColor color;
+            if (!currency.isRetired()) {
+                color = ChatColor.AQUA;
+            }
+            else {
+                color = ChatColor.RED;
+            }
+            player.sendMessage(color + currency.getName() + ": " + getCurrencyAmount(currency));
         }
     }
 
