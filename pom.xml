@@ -6,7 +6,7 @@
 
     <groupId>dansplugins</groupId>
     <artifactId>Currencies</artifactId>
-    <version>v0.13-alpha-1</version>
+    <version>v0.13</version>
     <packaging>jar</packaging>
 
     <name>Currencies</name>
