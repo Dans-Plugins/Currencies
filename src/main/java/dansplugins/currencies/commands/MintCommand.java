@@ -79,6 +79,7 @@ public class MintCommand {
                 player.sendMessage(ChatColor.RED + "You need more " + currency.getMaterial() + ".");
                 return false;
             }
+            inventory.removeItem(new ItemStack(material, amount));
         }
 
         ItemStack itemStack = CurrencyFactory.getInstance().createCurrencyItem(currency, amount);
