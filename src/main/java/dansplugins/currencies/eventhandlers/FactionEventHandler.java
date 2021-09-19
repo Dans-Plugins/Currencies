@@ -1,7 +1,6 @@
 package dansplugins.currencies.eventhandlers;
 
-import dansplugins.currencies.Currencies;
-import dansplugins.currencies.Logger;
+import dansplugins.currencies.utils.Logger;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.managers.CurrencyManager;
 import dansplugins.currencies.objects.Currency;

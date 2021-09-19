@@ -1,6 +1,7 @@
 package dansplugins.currencies;
 
 import dansplugins.currencies.managers.StorageManager;
+import dansplugins.currencies.utils.Logger;
 import org.bukkit.Bukkit;
 
 public class Scheduler {

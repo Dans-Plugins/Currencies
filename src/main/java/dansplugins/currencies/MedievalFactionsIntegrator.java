@@ -1,5 +1,6 @@
 package dansplugins.currencies;
 
+import dansplugins.currencies.utils.Logger;
 import dansplugins.factionsystem.externalapi.MedievalFactionsAPI;
 import org.bukkit.Bukkit;
 

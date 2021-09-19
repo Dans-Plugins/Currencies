@@ -1,4 +1,6 @@
-package dansplugins.currencies;
+package dansplugins.currencies.utils;
+
+import dansplugins.currencies.Currencies;
 
 public class Logger {
 
