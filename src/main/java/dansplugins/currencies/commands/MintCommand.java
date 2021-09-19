@@ -7,8 +7,10 @@ import dansplugins.currencies.managers.ConfigManager;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
+import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
 public class MintCommand {
@@ -66,6 +68,17 @@ public class MintCommand {
                 return false;
             }
             MedievalFactionsIntegrator.getInstance().getAPI().decreasePower(player, powerRequired);
+        }
+
+        if (ConfigManager.getInstance().getBoolean("itemCost")) {
+            // require player to have enough items to mint
+            Material material = Material.getMaterial(currency.getMaterial());
+            ItemStack itemStack = new ItemStack(material);
+            Inventory inventory = player.getInventory();
+            if (!inventory.containsAtLeast(itemStack, amount)) {
+                player.sendMessage(ChatColor.RED + "You need more " + currency.getMaterial() + ".");
+                return false;
+            }
         }
 
         ItemStack itemStack = CurrencyFactory.getInstance().createCurrencyItem(currency, amount);
