@@ -9,7 +9,7 @@ This plugin isn't ready to be used yet, but if you want to try a pre-release you
 ## Usage
 - [User Guide](https://github.com/dmccoystephenson/Currencies/wiki/Guide)
 - [List of Commands](https://github.com/dmccoystephenson/Currencies/wiki/Commands)
-- [FAQ](https://github.com/dmccoystephenson/Currencies/wiki/FAQ) (coming soon)
+- [FAQ](https://github.com/dmccoystephenson/Currencies/wiki/FAQ)
 
 ## Support
 You can find the support discord server [here](https://discord.gg/xXtuAQ2).
