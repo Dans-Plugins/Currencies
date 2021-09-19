@@ -50,6 +50,11 @@ public class MintCommand {
 
         int amount = Integer.parseInt(args[0]); // TODO: handle error here
 
+        if (amount < 0) {
+            player.sendMessage(ChatColor.RED + "You can't mint a negative amount of currency.");
+            return false;
+        }
+
         boolean powerCostEnabled = ConfigManager.getInstance().getBoolean("powerCostEnabled");
         int powerRequired = -1;
         if (powerCostEnabled) {
