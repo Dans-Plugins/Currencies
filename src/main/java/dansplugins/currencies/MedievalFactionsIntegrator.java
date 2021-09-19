@@ -11,11 +11,11 @@ public class MedievalFactionsIntegrator {
 
     private MedievalFactionsIntegrator() {
         if (isMedievalFactionsPresent()) {
-            if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Medieval Factions was found successfully!"); }
+            Logger.getInstance().log("Medieval Factions was found successfully!");
             try {
                 mf_api = new MedievalFactionsAPI();
-                System.out.println("[Currencies] Using Medieval Factions External API " + getAPI().getAPIVersion());
-                System.out.println("[Currencies] Installed Version of Medieval Factions: " + getAPI().getVersion());
+                Logger.getInstance().log("Using Medieval Factions External API " + getAPI().getAPIVersion());
+                Logger.getInstance().log("Installed Version of Medieval Factions: " + getAPI().getVersion());
             }
             catch(NoClassDefFoundError e) {
                 System.out.println("[Currencies] There was a problem instantiating the Medieval Factions API. Medieval Factions might need to be updated.");

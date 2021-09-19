@@ -65,9 +65,7 @@ public class CurrencyManager {
         for (String s : lore) {
             if (s.contains("Currency of")) {
                 String factionName = s.substring(14);
-                if (Currencies.getInstance().isDebugEnabled()) {
-                    return factionName;
-                }
+                return factionName; // note: this used to be contained within an if-debug statement
             }
         }
         return null;
@@ -81,9 +79,7 @@ public class CurrencyManager {
         for (String s : lore) {
             if (s.contains("currencyID")) {
                 String ID = s.substring(14);
-                if (Currencies.getInstance().isDebugEnabled()) {
-                    return ID;
-                }
+                return ID; // note: this used to be contained within an if-debug statement
             }
         }
         return null;

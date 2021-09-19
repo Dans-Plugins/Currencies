@@ -1,6 +1,7 @@
 package dansplugins.currencies.eventhandlers;
 
 import dansplugins.currencies.Currencies;
+import dansplugins.currencies.Logger;
 import dansplugins.currencies.managers.ConfigManager;
 import dansplugins.currencies.managers.CurrencyManager;
 import org.bukkit.ChatColor;
@@ -16,7 +17,7 @@ public class CraftingHandler implements Listener {
     public void handle(CraftItemEvent event) {
 
         if (!ConfigManager.getInstance().getBoolean("disallowCrafting")) {
-            if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Crafting with currencies is allowed."); }
+            Logger.getInstance().log("[DEBUG] Crafting with currencies is allowed.");
             return;
         }
 
@@ -26,16 +27,14 @@ public class CraftingHandler implements Listener {
             if (itemStack == null) {
                 continue;
             }
-            if (Currencies.getInstance().isDebugEnabled()) {
-                System.out.println("Looking at item: " + itemStack.toString());
-            }
+            Logger.getInstance().log("Looking at item: " + itemStack.toString());
             if (CurrencyManager.getInstance().isCurrency(itemStack)) {
                 event.getWhoClicked().sendMessage(ChatColor.RED + "You can't use currencies in crafting recipes.");
                 event.setCancelled(true);
                 return;
             }
         }
-        if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Crafting was not cancelled."); }
+        Logger.getInstance().log("Crafting was not cancelled.");
     }
 
 }

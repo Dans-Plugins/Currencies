@@ -19,13 +19,13 @@ public class Scheduler {
     }
 
     public void scheduleAutosave() {
-        if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[Currencies] Scheduling hourly autosave."); }
+        Logger.getInstance().log("[Currencies] Scheduling hourly autosave.");
         int delay = 60 * 60; // 1 hour
         int secondsUntilRepeat = 60 * 60; // 1 hour
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Currencies.getInstance(), new Runnable() {
             @Override
             public void run() {
-                if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[Currencies] Saving. This will happen hourly."); }
+                Logger.getInstance().log("[Currencies] Saving. This will happen hourly.");
                 StorageManager.getInstance().save();
             }
         }, delay * 20, secondsUntilRepeat * 20);
