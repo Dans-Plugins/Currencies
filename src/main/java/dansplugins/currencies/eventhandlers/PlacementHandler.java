@@ -1,6 +1,7 @@
 package dansplugins.currencies.eventhandlers;
 
 import dansplugins.currencies.Currencies;
+import dansplugins.currencies.Logger;
 import dansplugins.currencies.managers.ConfigManager;
 import dansplugins.currencies.managers.CurrencyManager;
 import org.bukkit.ChatColor;
@@ -13,7 +14,7 @@ public class PlacementHandler implements Listener {
     @EventHandler()
     public void handle(BlockPlaceEvent event) {
         if (!ConfigManager.getInstance().getBoolean("disallowPlacement")) {
-            if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Crafting with currencies is allowed."); }
+            Logger.getInstance().log("Crafting with currencies is allowed.");
             return;
         }
 
@@ -22,7 +23,7 @@ public class PlacementHandler implements Listener {
             event.setCancelled(true);
             return;
         }
-        if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Placement was not cancelled."); }
+        Logger.getInstance().log("Placement was not cancelled.");
     }
 
 }

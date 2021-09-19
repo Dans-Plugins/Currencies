@@ -2,6 +2,7 @@ package dansplugins.currencies.eventhandlers;
 
 import dansplugins.currencies.Currencies;
 import dansplugins.currencies.CurrencyFactory;
+import dansplugins.currencies.Logger;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.managers.CurrencyManager;
 import dansplugins.currencies.objects.Currency;
@@ -37,21 +38,21 @@ public class InteractionHandler implements Listener {
         String factionName = CurrencyManager.getInstance().getFactionName(meta);
 
         if (factionName == null) {
-            if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Faction name was null in Interaction Handler."); }
+            Logger.getInstance().log("Faction name was null in Interaction Handler.");
             return;
         }
 
         // fix faction name mismatch if there is one
-        if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Comparing '" + currency.getFactionName() + "' to '" + factionName + "'"); }
+        Logger.getInstance().log("Comparing '" + currency.getFactionName() + "' to '" + factionName + "'");
         if (!currency.getFactionName().equalsIgnoreCase(factionName)) {
-            if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Fixing faction name mismatch with an item stack."); }
+            Logger.getInstance().log("Fixing faction name mismatch with an item stack.");
             event.getPlayer().getInventory().setItemInMainHand(CurrencyFactory.getInstance().createCurrencyItem(currency, itemStack.getAmount()));
             event.getPlayer().sendMessage(ChatColor.GREEN + "The currency you're holding had a faction name mismatch. This has been corrected.");
         }
 
         // fix currency name mismatch if there is one
         if (!currency.getName().equalsIgnoreCase(meta.getDisplayName())) {
-            if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[DEBUG] Fixing currency name mismatch with an item stack."); }
+            Logger.getInstance().log("Fixing currency name mismatch with an item stack.");
             event.getPlayer().getInventory().setItemInMainHand(CurrencyFactory.getInstance().createCurrencyItem(currency, itemStack.getAmount()));
             event.getPlayer().sendMessage(ChatColor.GREEN + "The currency you're holding had a currency name mismatch. This has been corrected.");
         }
