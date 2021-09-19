@@ -21,10 +21,6 @@ public class AnvilUsageHandler implements Listener {
             return;
         }
 
-        if (Currencies.getInstance().isDebugEnabled()) {
-            System.out.println("[DEBUG] Prepare Anvil Event is firing.");
-        }
-
         Player player = (Player) event.getViewers().get(0);
 
         if (player == null) {
