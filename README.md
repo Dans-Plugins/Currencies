@@ -6,7 +6,7 @@ Currencies is an add-on plugin for [Medieval Factions](https://github.com/dmccoy
 ## Installation
 This plugin isn't available on SpigotMC yet, but if you want to try a pre-release version you can download the latest version from [this page](https://github.com/dmccoystephenson/Currencies/releases).
 
-This plugin depends on Medieval Factions in order to work.
+It should be noted that this plugin depends on Medieval Factions in order to work.
 
 ## Usage
 - [User Guide](https://github.com/dmccoystephenson/Currencies/wiki/Guide)
