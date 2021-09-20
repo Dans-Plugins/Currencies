@@ -31,10 +31,19 @@ public class MintCommand {
             return false;
         }
 
-        if (!faction.getOwner().equals(player.getUniqueId())) {
-            player.sendMessage(ChatColor.RED + "You must be the owner of your faction to use this command.");
-            return false;
+        if (!((boolean)faction.getFlag("officersCanMintCurrency"))) {
+            if (!faction.getOwner().equals(player.getUniqueId())) {
+                player.sendMessage(ChatColor.RED + "You must be the owner of your faction to use this command.");
+                return false;
+            }
         }
+        else {
+            if (!faction.getOwner().equals(player.getUniqueId()) && !faction.isOfficer(player)) {
+                player.sendMessage(ChatColor.RED + "You must be an owner or officer to use this command.");
+                return false;
+            }
+        }
+
 
         Currency currency = PersistentData.getInstance().getActiveCurrency(faction);
 
