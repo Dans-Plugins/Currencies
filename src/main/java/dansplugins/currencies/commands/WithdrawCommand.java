@@ -72,18 +72,19 @@ public class WithdrawCommand {
                 withdrawn++;
             }
             else {
+                // player has no free inventory spots
                 int remainder = amount - withdrawn;
                 if (remainder < 64) {
+                    // we can fit this in the last slot
                     coinpurse.subtractCurrencyAmount(currency,remainder);
                     player.getInventory().addItem(CurrencyFactory.getInstance().createCurrencyItem(currency, remainder));
                     withdrawn = withdrawn + remainder;
                 }
                 else {
+                    // we can't fit this in the last slot, but we can fit 63
                     coinpurse.subtractCurrencyAmount(currency,63);
                     player.getInventory().addItem(CurrencyFactory.getInstance().createCurrencyItem(currency, 63));
                     withdrawn = withdrawn + 63;
-                    player.sendMessage(ChatColor.RED + "Not enough space.");
-                    return false;
                 }
 
             }
