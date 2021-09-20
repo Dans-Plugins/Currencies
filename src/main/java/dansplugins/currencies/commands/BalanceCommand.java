@@ -33,6 +33,11 @@ public class BalanceCommand {
             }
             Coinpurse coinpurse = PersistentData.getInstance().getCoinpurse(playerUUID);
 
+            if (coinpurse == null) {
+                player.sendMessage(ChatColor.RED + "That player doesn't have a coinpurse yet.");
+                return false;
+            }
+
             coinpurse.sendCurrencyInformationToPlayer(player);
             return true;
         }
