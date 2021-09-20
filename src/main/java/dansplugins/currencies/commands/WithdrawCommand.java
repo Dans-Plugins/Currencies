@@ -90,9 +90,7 @@ public class WithdrawCommand {
             }
         }
 
-        coinpurse.subtractCurrencyAmount(currency, amount);
-
-        player.getInventory().addItem(CurrencyFactory.getInstance().createCurrencyItem(currency, amount));
+        player.getInventory().addItem(CurrencyFactory.getInstance().createCurrencyItem(currency, withdrawn));
 
         player.sendMessage(ChatColor.GREEN + "Withdrew " + withdrawn + ".");
         return true;
