@@ -1,11 +1,10 @@
 package dansplugins.currencies.eventhandlers;
 
-import dansplugins.currencies.Currencies;
 import dansplugins.currencies.CurrencyFactory;
-import dansplugins.currencies.Logger;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.managers.CurrencyManager;
 import dansplugins.currencies.objects.Currency;
+import dansplugins.currencies.utils.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
