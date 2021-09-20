@@ -60,7 +60,7 @@ public class DepositCommand {
 
         player.getInventory().removeItem(CurrencyFactory.getInstance().createCurrencyItem(currency, amount));
 
-        player.sendMessage(ChatColor.GREEN + "Deposited.");
+        player.sendMessage(ChatColor.GREEN + "Deposited " + amount + ".");
         return true;
     }
 

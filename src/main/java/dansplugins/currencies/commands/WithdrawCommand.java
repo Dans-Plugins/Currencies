@@ -2,6 +2,7 @@ package dansplugins.currencies.commands;
 
 import dansplugins.currencies.CurrencyFactory;
 import dansplugins.currencies.data.PersistentData;
+import dansplugins.currencies.managers.ConfigManager;
 import dansplugins.currencies.objects.Coinpurse;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.currencies.utils.ArgumentParser;
@@ -56,11 +57,43 @@ public class WithdrawCommand {
             return false;
         }
 
+        // if no free slots then disallow
+        if (player.getInventory().firstEmpty() == -1) {
+            player.sendMessage(ChatColor.RED + "Not enough space.");
+            return false;
+        }
+
+        // withdraw until inventory is full
+        int withdrawn = 0;
+        for (int i = 0; i < amount; i++) {
+            if (!(player.getInventory().firstEmpty() == -1)) {
+                coinpurse.subtractCurrencyAmount(currency,1);
+                player.getInventory().addItem(CurrencyFactory.getInstance().createCurrencyItem(currency, 1));
+                withdrawn++;
+            }
+            else {
+                int remainder = amount - withdrawn;
+                if (remainder < 64) {
+                    coinpurse.subtractCurrencyAmount(currency,remainder);
+                    player.getInventory().addItem(CurrencyFactory.getInstance().createCurrencyItem(currency, remainder));
+                    withdrawn = withdrawn + remainder;
+                }
+                else {
+                    coinpurse.subtractCurrencyAmount(currency,63);
+                    player.getInventory().addItem(CurrencyFactory.getInstance().createCurrencyItem(currency, 63));
+                    withdrawn = withdrawn + 63;
+                    player.sendMessage(ChatColor.RED + "Not enough space.");
+                    return false;
+                }
+
+            }
+        }
+
         coinpurse.subtractCurrencyAmount(currency, amount);
 
         player.getInventory().addItem(CurrencyFactory.getInstance().createCurrencyItem(currency, amount));
 
-        player.sendMessage(ChatColor.GREEN + "Withdrawn.");
+        player.sendMessage(ChatColor.GREEN + "Withdrew " + withdrawn + ".");
         return true;
     }
 
