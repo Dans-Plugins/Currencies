@@ -53,6 +53,11 @@ public class RenameCommand {
 
         String newName = singleQuoteArgs.get(0);
 
+        if (PersistentData.getInstance().isCurrencyNameTaken(newName)) {
+            player.sendMessage(ChatColor.RED + "That name is taken by an active or retired currency.");
+            return false;
+        }
+
         currency.setName(newName);
         player.sendMessage(ChatColor.GREEN + "Renamed.");
         return true;
