@@ -4,9 +4,14 @@
 Currencies is an add-on plugin for [Medieval Factions](https://github.com/dmccoystephenson/Medieval-Factions) that allows faction owners to create and mint local currencies, which paves the way for the simulation of local economies.
 
 ## Installation
-This plugin isn't available on SpigotMC yet, but if you want to try a pre-release version you can download the latest version from [this page](https://github.com/dmccoystephenson/Currencies/releases).
+1) You can download the plugin from [this page](https://github.com/dmccoystephenson/Currencies/releases).
 
-It should be noted that this plugin depends on Medieval Factions in order to work.
+2) Once downloaded, place the jar in the plugins folder of your server files.
+
+3) Restart your server.
+
+### Dependencies
+This plugin depends on Medieval Factions in order to work.
 
 ## Usage
 - [User Guide](https://github.com/dmccoystephenson/Currencies/wiki/Guide)
