@@ -1,6 +1,8 @@
 package dansplugins.currencies;
 
 import dansplugins.currencies.commands.*;
+import dansplugins.currencies.utils.ArgumentParser;
+import dansplugins.currencies.utils.PermissionChecker;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
@@ -17,10 +19,10 @@ public class CommandInterpreter {
             }
 
             String secondaryLabel = args[0];
-            String[] arguments = getArguments(args);
+            String[] arguments = ArgumentParser.getInstance().dropFirstArgument(args);
 
             if (secondaryLabel.equalsIgnoreCase("help")) {
-                if (!checkPermission(sender, "currencies.help")) { return false; }
+                if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.help")) { return false; }
                 HelpCommand command = new HelpCommand();
                 return command.execute(sender, arguments);
             }
@@ -32,92 +34,80 @@ public class CommandInterpreter {
             }
 
             if (secondaryLabel.equalsIgnoreCase("create")) {
-                if (!checkPermission(sender, "currencies.create")) { return false; }
+                if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.create")) { return false; }
                 CreateCommand command = new CreateCommand();
                 return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("info")) {
-                if (!checkPermission(sender, "currencies.info")) { return false; }
+                if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.info")) { return false; }
                 InfoCommand command = new InfoCommand();
                 return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("list")) {
-                if (!checkPermission(sender, "currencies.list")) { return false; }
+                if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.list")) { return false; }
                 ListCommand command = new ListCommand();
                 return command.execute(sender);
             }
 
             if (secondaryLabel.equalsIgnoreCase("mint")) {
-                if (!checkPermission(sender, "currencies.mint")) { return false; }
+                if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.mint")) { return false; }
                 MintCommand command = new MintCommand();
                 return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("balance")) {
-                if (!checkPermission(sender, "currencies.balance")) { return false; }
+                if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.balance")) { return false; }
                 BalanceCommand command = new BalanceCommand();
                 return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("deposit")) {
-                if (!checkPermission(sender, "currencies.deposit")) { return false; }
+                if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.deposit")) { return false; }
                 DepositCommand command = new DepositCommand();
                 return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("withdraw")) {
-                if (!checkPermission(sender, "currencies.withdraw")) { return false; }
+                if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.withdraw")) { return false; }
                 WithdrawCommand command = new WithdrawCommand();
                 return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("config")) {
-                if (!checkPermission(sender, "currencies.config")) { return false; }
+                if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.config")) { return false; }
                 ConfigCommand command = new ConfigCommand();
                 return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("desc")) {
-                if (!checkPermission(sender, "currencies.desc")) { return false; }
+                if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.desc")) { return false; }
                 DescCommand command = new DescCommand();
                 return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("rename")) {
-                if (!checkPermission(sender, "currencies.rename")) { return false; }
+                if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.rename")) { return false; }
                 RenameCommand command = new RenameCommand();
                 return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("retire")) {
-                if (!checkPermission(sender, "currencies.retire")) { return false; }
+                if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.retire")) { return false; }
                 RetireCommand command = new RetireCommand();
                 return command.execute(sender);
+            }
+
+            if (secondaryLabel.equalsIgnoreCase("force")) {
+                if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.force")) { return false; }
+                ForceCommand command = new ForceCommand();
+                return command.execute(sender, arguments);
             }
 
             sender.sendMessage(ChatColor.RED + "Currencies doesn't recognize that command.");
         }
         return false;
-    }
-
-    private String[] getArguments(String[] args) {
-        String[] toReturn = new String[args.length - 1];
-
-        for (int i = 1; i < args.length; i++) {
-            toReturn[i - 1] = args[i];
-        }
-
-        return toReturn;
-    }
-
-    private boolean checkPermission(CommandSender sender, String permission) {
-        if (!sender.hasPermission(permission)) {
-            sender.sendMessage(ChatColor.RED + "In order to use this command, you need the following permission: '" + permission + "'");
-            return false;
-        }
-        return true;
     }
 
 }
