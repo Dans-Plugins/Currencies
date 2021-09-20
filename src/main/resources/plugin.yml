@@ -1,5 +1,5 @@
 name: Currencies
-version: 0.14.1
+version: 1.0-alpha-1
 main: dansplugins.currencies.Currencies
 api-version: 1.13
 depend: [MedievalFactions]
