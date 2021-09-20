@@ -90,8 +90,6 @@ public class WithdrawCommand {
             }
         }
 
-        player.getInventory().addItem(CurrencyFactory.getInstance().createCurrencyItem(currency, withdrawn));
-
         player.sendMessage(ChatColor.GREEN + "Withdrew " + withdrawn + ".");
         return true;
     }
