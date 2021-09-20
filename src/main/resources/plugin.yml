@@ -37,3 +37,7 @@ permissions:
     default: op
   currencies.config:
     default: op
+  currencies.force:
+    default: op
+  currencies.force.retire:
+    default: op

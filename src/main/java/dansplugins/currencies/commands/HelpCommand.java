@@ -18,6 +18,7 @@ public class HelpCommand {
         sender.sendMessage(ChatColor.AQUA + "/c rename - Rename your currency.");
         sender.sendMessage(ChatColor.AQUA + "/c retire - Retire your currency.");
         sender.sendMessage(ChatColor.AQUA + "/c config - View or set config options.");
+        sender.sendMessage(ChatColor.AQUA + "/c force - Force the plugin to perform an action.");
         return true;
     }
 

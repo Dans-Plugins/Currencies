@@ -17,6 +17,16 @@ public class ArgumentParser {
         return instance;
     }
 
+    public String[] dropFirstArgument(String[] args) {
+        String[] toReturn = new String[args.length - 1];
+
+        for (int i = 1; i < args.length; i++) {
+            toReturn[i - 1] = args[i];
+        }
+
+        return toReturn;
+    }
+
     public ArrayList<String> getArgumentsInsideSingleQuotes(String[] args) {
         ArrayList<String> toReturn = new ArrayList<>();
 
