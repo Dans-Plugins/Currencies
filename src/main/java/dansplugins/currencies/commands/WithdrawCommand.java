@@ -79,12 +79,14 @@ public class WithdrawCommand {
                     coinpurse.subtractCurrencyAmount(currency,remainder);
                     player.getInventory().addItem(CurrencyFactory.getInstance().createCurrencyItem(currency, remainder));
                     withdrawn = withdrawn + remainder;
+                    break;
                 }
                 else {
                     // we can't fit this in the last slot, but we can fit 63
                     coinpurse.subtractCurrencyAmount(currency,63);
                     player.getInventory().addItem(CurrencyFactory.getInstance().createCurrencyItem(currency, 63));
                     withdrawn = withdrawn + 63;
+                    break;
                 }
 
             }
