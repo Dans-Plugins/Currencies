@@ -10,7 +10,8 @@ Currencies is an add-on plugin for [Medieval Factions](https://github.com/dmccoy
 
 3) Restart your server.
 
-It should be noted that this plugin depends on Medieval Factions in order to work.
+### Dependencies
+This plugin depends on Medieval Factions in order to work.
 
 ## Usage
 - [User Guide](https://github.com/dmccoystephenson/Currencies/wiki/Guide)
