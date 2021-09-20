@@ -39,6 +39,11 @@ public class WithdrawCommand {
         String amountString = singleQuoteArgs.get(1);
         int amount = Integer.parseInt(amountString); // TODO: handle error here
 
+        if (amount < 0) {
+            player.sendMessage(ChatColor.RED + "Amount can't be negative.");
+            return false;
+        }
+
         Currency currency = PersistentData.getInstance().getCurrency(currencyName);
         if (currency == null) {
             player.sendMessage(ChatColor.RED + "That currency wasn't found.");
