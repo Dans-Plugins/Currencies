@@ -41,3 +41,5 @@ permissions:
     default: op
   currencies.force.retire:
     default: op
+  currencies.force.rename:
+    default: op
