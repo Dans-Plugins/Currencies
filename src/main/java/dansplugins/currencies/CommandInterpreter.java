@@ -48,7 +48,7 @@ public class CommandInterpreter {
             if (secondaryLabel.equalsIgnoreCase("list")) {
                 if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.list")) { return false; }
                 ListCommand command = new ListCommand();
-                return command.execute(sender);
+                return command.execute(sender, arguments);
             }
 
             if (secondaryLabel.equalsIgnoreCase("mint")) {
