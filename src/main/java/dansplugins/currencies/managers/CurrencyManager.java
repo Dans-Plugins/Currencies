@@ -1,9 +1,12 @@
 package dansplugins.currencies.managers;
 
 import dansplugins.currencies.Currencies;
+import dansplugins.currencies.MedievalFactionsIntegrator;
+import dansplugins.currencies.Messenger;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
+import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
@@ -89,6 +92,8 @@ public class CurrencyManager {
         currency.setRetired(true);
         PersistentData.getInstance().removeActiveCurrency(currency);
         PersistentData.getInstance().addRetiredCurrency(currency);
+        MF_Faction faction = MedievalFactionsIntegrator.getInstance().getAPI().getFaction(currency.getFactionName());
+        Messenger.getInstance().sendMessageToOnlinePlayersInFaction(faction, ChatColor.RED + "The currency known as " + currency.getName() + " has been retired.");
     }
 
     private int getNewCurrencyID() {
