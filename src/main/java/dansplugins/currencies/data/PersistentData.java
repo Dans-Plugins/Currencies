@@ -51,6 +51,11 @@ public class PersistentData {
         return getRetiredCurrency(currencyID);
     }
 
+    public Currency getCurrency(MF_Faction faction) {
+        // TODO: implement
+        return null;
+    }
+
     public Currency getActiveCurrency(String currencyName) {
         for (Currency c : activeCurrencies) {
             if (c.getName().equalsIgnoreCase(currencyName)) {
