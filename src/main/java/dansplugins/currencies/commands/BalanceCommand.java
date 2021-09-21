@@ -20,7 +20,7 @@ public class BalanceCommand {
         Player player = (Player) sender;
 
         if (args.length > 0) {
-            if (!player.hasPermission("balance.others")) {
+            if (!player.hasPermission("currencies.balance.others")) {
                 player.sendMessage(ChatColor.AQUA + "You don't have permission to view the balance information of others.");
                 return false;
             }
