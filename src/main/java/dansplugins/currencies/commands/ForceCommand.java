@@ -32,7 +32,7 @@ public class ForceCommand {
             return forceRename(sender, arguments);
         }
 
-        sender.sendMessage(ChatColor.RED + "Sub-commands: retire");
+        sender.sendMessage(ChatColor.RED + "Sub-commands: retire, rename");
         return false;
     }
 
