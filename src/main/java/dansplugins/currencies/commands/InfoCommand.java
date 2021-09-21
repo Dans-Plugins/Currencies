@@ -24,7 +24,7 @@ public class InfoCommand {
         Player player = (Player) sender;
 
         if (args.length > 0) {
-            if (!player.hasPermission("info.others")) {
+            if (!player.hasPermission("currencies.info.others")) {
                 player.sendMessage(ChatColor.AQUA + "You don't have permission to view the currency information of others.");
                 return false;
             }
