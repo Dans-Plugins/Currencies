@@ -29,7 +29,7 @@ public class ForceCommand {
 
         if (secondaryLabel.equalsIgnoreCase("rename")) {
             if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.force.rename")) { return false; }
-            return forceRetire(sender, arguments);
+            return forceRename(sender, arguments);
         }
 
         sender.sendMessage(ChatColor.RED + "Sub-commands: retire");
@@ -82,7 +82,7 @@ public class ForceCommand {
 
         String currencyName = singleQuoteArgs.get(0);
 
-        Currency currency = PersistentData.getInstance().getActiveCurrency(currencyName);
+        Currency currency = PersistentData.getInstance().getCurrency(currencyName);
 
         if (currency == null) {
             sender.sendMessage(ChatColor.RED + "There are no currencies named " + currencyName);
