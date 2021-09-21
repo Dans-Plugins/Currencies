@@ -123,9 +123,18 @@ public class PersistentData {
         }
         sender.sendMessage(ChatColor.AQUA + "=== Active Currencies ===");
         for (Currency currency : activeCurrencies) {
-            if (!currency.isRetired()) {
-                sender.sendMessage(ChatColor.AQUA + currency.getName());
-            }
+            sender.sendMessage(ChatColor.AQUA + currency.getName());
+        }
+    }
+
+    public void sendListOfRetiredCurrenciesToSender(CommandSender sender) {
+        if (retiredCurrencies.size() == 0) {
+            sender.sendMessage(ChatColor.AQUA + "There are no retired currencies at this time.");
+            return;
+        }
+        sender.sendMessage(ChatColor.AQUA + "=== Retired Currencies ===");
+        for (Currency currency : retiredCurrencies) {
+            sender.sendMessage(ChatColor.AQUA + currency.getName());
         }
     }
 
