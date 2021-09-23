@@ -91,7 +91,9 @@ public class CurrencyManager {
     public void retireCurrency(Currency currency) {
         currency.setRetired(true);
         PersistentData.getInstance().removeActiveCurrency(currency);
-        PersistentData.getInstance().addRetiredCurrency(currency);
+        if (currency.getAmount() > 0) {
+            PersistentData.getInstance().addRetiredCurrency(currency);
+        }
         MF_Faction faction = MedievalFactionsIntegrator.getInstance().getAPI().getFaction(currency.getFactionName());
         Messenger.getInstance().sendMessageToOnlinePlayersInFaction(faction, ChatColor.RED + "The currency known as " + currency.getName() + " has been retired.");
     }
