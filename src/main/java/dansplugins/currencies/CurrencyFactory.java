@@ -44,8 +44,6 @@ public class CurrencyFactory {
 
         newItemStack.setItemMeta(meta);
 
-        currency.increaseAmount(amount);
-
         return newItemStack;
     }
 

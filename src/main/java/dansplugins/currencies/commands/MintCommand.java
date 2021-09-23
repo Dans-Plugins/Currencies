@@ -107,6 +107,8 @@ public class MintCommand {
             player.sendMessage(ChatColor.GREEN + "Minted.");
         }
 
+        currency.increaseAmount(amount);
+
         return true;
     }
 
