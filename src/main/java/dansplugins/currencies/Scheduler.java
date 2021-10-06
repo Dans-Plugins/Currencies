@@ -20,13 +20,13 @@ public class Scheduler {
     }
 
     public void scheduleAutosave() {
-        Logger.getInstance().log("[Currencies] Scheduling hourly autosave.");
+        Logger.getInstance().log("Scheduling hourly autosave.");
         int delay = 60 * 60; // 1 hour
         int secondsUntilRepeat = 60 * 60; // 1 hour
         Bukkit.getScheduler().scheduleSyncRepeatingTask(Currencies.getInstance(), new Runnable() {
             @Override
             public void run() {
-                Logger.getInstance().log("[Currencies] Saving. This will happen hourly.");
+                Logger.getInstance().log("Saving. This will happen hourly.");
                 StorageManager.getInstance().save();
             }
         }, delay * 20, secondsUntilRepeat * 20);
