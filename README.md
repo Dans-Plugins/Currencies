@@ -1,7 +1,7 @@
 # Currencies
 
 ## Description
-Currencies is an add-on plugin for [Medieval Factions](https://github.com/dmccoystephenson/Medieval-Factions) that allows faction owners to create and mint local currencies, which paves the way for the simulation of local economies.
+Currencies is an expansion for [Medieval Factions](https://github.com/dmccoystephenson/Medieval-Factions) that allows faction owners to create and mint local currencies, which paves the way for the simulation of local economies.
 
 ## Installation
 1) You can download the plugin from [this page](https://www.spigotmc.org/resources/currencies.96381/).
