@@ -35,7 +35,7 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/Currenci
 ## Authors and acknowledgement
 Name | Main Contributions
 ------------ | -------------
-DanTheTechMan | Creator
+Daniel Stephenson | Creator
 
 It was Ricortix's suggestion to create a plugin like this one.
 
