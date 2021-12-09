@@ -39,9 +39,9 @@ public final class Currencies extends JavaPlugin {
             reloadConfig();
         }
 
-        StorageManager.getInstance().load();
-
         EventRegistry.getInstance().registerEvents();
+
+        StorageManager.getInstance().load();
 
         Scheduler.getInstance().scheduleAutosave();
     }
