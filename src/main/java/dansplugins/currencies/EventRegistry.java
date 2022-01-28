@@ -29,5 +29,6 @@ public class EventRegistry {
         manager.registerEvents(new FactionEventHandler(), mainInstance);
         manager.registerEvents(new InteractionHandler(), mainInstance);
         manager.registerEvents(new AnvilUsageHandler(), mainInstance);
+        manager.registerEvents(new FurnaceUsageHandler(), mainInstance);
     }
 }
