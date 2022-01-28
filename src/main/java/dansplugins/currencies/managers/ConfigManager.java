@@ -56,6 +56,9 @@ public class ConfigManager {
         if (!getConfig().isSet("disallowCrafting")) {
             getConfig().set("disallowCrafting", true);
         }
+        if (!getConfig().isSet("disallowSmelting")){
+            getConfig().set("disallowSmelting", true);
+        }
         if (!getConfig().isSet("disallowPlacement")) {
             getConfig().set("disallowPlacement", true);
         }
