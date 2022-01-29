@@ -98,6 +98,9 @@ public class ConfigManager {
             } else if (option.equalsIgnoreCase("powerCost")) {
                 getConfig().set(option, Double.parseDouble(value));
                 sender.sendMessage(ChatColor.GREEN + "Double set.");
+            } else if (option.equalsIgnoreCase("disallowSmelting")) {
+                getConfig().set(option, Boolean.parseBoolean(value));
+                sender.sendMessage(ChatColor.GREEN + "Boolean set.");
             } else {
                 getConfig().set(option, value);
                 sender.sendMessage(ChatColor.GREEN + "String set.");
@@ -122,6 +125,7 @@ public class ConfigManager {
                 + ", disallowPlacement: " + getBoolean("disallowPlacement")
                 + ", showAmountMinted: " + getBoolean("showAmountMinted")
                 + ", disallowAnvilUsage: " + getBoolean("disallowAnvilUsage")
+                + ", disallowSmelting: " + getBoolean("disallowSmelting")
                 + ", itemCost: " + getBoolean("itemCost"));
     }
 
