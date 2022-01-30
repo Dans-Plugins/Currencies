@@ -77,5 +77,11 @@
             <scope>system</scope>
             <systemPath>${project.basedir}/src/main/resources/Medieval-Factions-4.5.1.jar</systemPath>
         </dependency>
+        <dependency>
+            <groupId>preponderous</groupId>
+            <artifactId>ponder</artifactId>
+            <version>v0.13</version>
+            <scope>compile</scope>
+        </dependency>
     </dependencies>
 </project>
