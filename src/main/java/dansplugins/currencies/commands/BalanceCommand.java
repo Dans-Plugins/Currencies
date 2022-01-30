@@ -2,10 +2,10 @@ package dansplugins.currencies.commands;
 
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.objects.Coinpurse;
-import dansplugins.currencies.utils.UUIDChecker;
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import preponderous.ponder.minecraft.spigot.tools.UUIDChecker;
 
 import java.util.UUID;
 
@@ -26,7 +26,8 @@ public class BalanceCommand {
             }
 
             String playerName = args[0];
-            UUID playerUUID = UUIDChecker.getInstance().findUUIDBasedOnPlayerName(playerName);
+            UUIDChecker uuidChecker = new UUIDChecker();
+            UUID playerUUID = uuidChecker.findUUIDBasedOnPlayerName(playerName);
             if (playerUUID == null) {
                 player.sendMessage(ChatColor.RED + "That player wasn't found.");
                 return false;
