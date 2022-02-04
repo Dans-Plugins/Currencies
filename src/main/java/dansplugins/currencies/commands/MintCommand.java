@@ -75,7 +75,7 @@ public class MintCommand {
                 powerRequired = minimumPowerCost;
             }
 
-            int playerPower = MedievalFactionsIntegrator.getInstance().getAPI().getPower(player);
+            double playerPower = MedievalFactionsIntegrator.getInstance().getAPI().getPower(player);
 
             if (playerPower < powerRequired) {
                 player.sendMessage(ChatColor.RED + "You need " + powerRequired + " power to mint that much currency.");
