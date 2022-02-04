@@ -36,6 +36,7 @@ Please fill out a bug report [here](https://github.com/dmccoystephenson/Currenci
 Name | Main Contributions
 ------------ | -------------
 Daniel Stephenson | Creator
+Deej | Added the FurnaceHandler.
 
 It was Ricortix's suggestion to create a plugin like this one.
 
