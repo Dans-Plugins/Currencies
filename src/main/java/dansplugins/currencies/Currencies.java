@@ -1,8 +1,11 @@
 package dansplugins.currencies;
 
 import dansplugins.currencies.bstats.Metrics;
-import dansplugins.currencies.managers.ConfigManager;
-import dansplugins.currencies.managers.StorageManager;
+import dansplugins.currencies.services.LocalConfigService;
+import dansplugins.currencies.services.LocalCommandService;
+import dansplugins.currencies.services.LocalStorageService;
+import dansplugins.currencies.utils.EventRegistry;
+import dansplugins.currencies.utils.Scheduler;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -29,31 +32,31 @@ public final class Currencies extends JavaPlugin {
 
         // create/load config
         if (!(new File("./plugins/Currencies/config.yml").exists())) {
-            ConfigManager.getInstance().saveMissingConfigDefaultsIfNotPresent();
+            LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
         }
         else {
             // pre load compatibility checks
             if (isVersionMismatched()) {
-                ConfigManager.getInstance().saveMissingConfigDefaultsIfNotPresent();
+                LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
             }
             reloadConfig();
         }
 
         EventRegistry.getInstance().registerEvents();
 
-        StorageManager.getInstance().load();
+        LocalStorageService.getInstance().load();
 
         Scheduler.getInstance().scheduleAutosave();
     }
 
     @Override
     public void onDisable() {
-        StorageManager.getInstance().save();
+        LocalStorageService.getInstance().save();
     }
 
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
-        CommandInterpreter commandInterpreter = new CommandInterpreter();
-        return commandInterpreter.interpretCommand(sender, label, args);
+        LocalCommandService localCommandService = new LocalCommandService();
+        return localCommandService.interpretCommand(sender, label, args);
     }
 
     public String getVersion() {
@@ -61,7 +64,7 @@ public final class Currencies extends JavaPlugin {
     }
 
     public boolean isDebugEnabled() {
-        return ConfigManager.getInstance().getBoolean("debugMode");
+        return LocalConfigService.getInstance().getBoolean("debugMode");
     }
 
     private boolean isVersionMismatched() {

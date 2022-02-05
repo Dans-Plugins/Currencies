@@ -1,8 +1,8 @@
 package dansplugins.currencies.eventhandlers;
 
-import dansplugins.currencies.CurrencyFactory;
+import dansplugins.currencies.factories.CurrencyFactory;
 import dansplugins.currencies.data.PersistentData;
-import dansplugins.currencies.managers.CurrencyManager;
+import dansplugins.currencies.services.LocalCurrencyService;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.currencies.utils.Logger;
 import org.bukkit.ChatColor;
@@ -23,7 +23,7 @@ public class InteractionHandler implements Listener {
             return;
         }
 
-        String currencyIDString = CurrencyManager.getInstance().getCurrencyID(meta);
+        String currencyIDString = LocalCurrencyService.getInstance().getCurrencyID(meta);
         if (currencyIDString == null) {
             return;
         }
@@ -34,7 +34,7 @@ public class InteractionHandler implements Listener {
             return;
         }
 
-        String factionName = CurrencyManager.getInstance().getFactionName(meta);
+        String factionName = LocalCurrencyService.getInstance().getFactionName(meta);
 
         if (factionName == null) {
             Logger.getInstance().log("Faction name was null in Interaction Handler.");

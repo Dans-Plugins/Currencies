@@ -1,8 +1,8 @@
 package dansplugins.currencies.commands;
 
-import dansplugins.currencies.MedievalFactionsIntegrator;
+import dansplugins.currencies.integrators.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
-import dansplugins.currencies.managers.CurrencyManager;
+import dansplugins.currencies.services.LocalCurrencyService;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
@@ -41,7 +41,7 @@ public class RetireCommand {
 
         // TODO: insert an "are you sure?" prompt here
 
-        CurrencyManager.getInstance().retireCurrency(currency);
+        LocalCurrencyService.getInstance().retireCurrency(currency);
         player.sendMessage(ChatColor.GREEN + "Retired.");
 
         // TODO: inform faction members that the currency has been retired

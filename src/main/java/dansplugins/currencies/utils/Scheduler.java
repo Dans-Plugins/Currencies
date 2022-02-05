@@ -1,7 +1,7 @@
-package dansplugins.currencies;
+package dansplugins.currencies.utils;
 
-import dansplugins.currencies.managers.StorageManager;
-import dansplugins.currencies.utils.Logger;
+import dansplugins.currencies.Currencies;
+import dansplugins.currencies.services.LocalStorageService;
 import org.bukkit.Bukkit;
 
 public class Scheduler {
@@ -27,7 +27,7 @@ public class Scheduler {
             @Override
             public void run() {
                 Logger.getInstance().log("Saving. This will happen hourly.");
-                StorageManager.getInstance().save();
+                LocalStorageService.getInstance().save();
             }
         }, delay * 20, secondsUntilRepeat * 20);
     }

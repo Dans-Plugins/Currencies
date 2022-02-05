@@ -1,8 +1,7 @@
 package dansplugins.currencies.commands;
 
-import dansplugins.currencies.CurrencyFactory;
+import dansplugins.currencies.factories.CurrencyFactory;
 import dansplugins.currencies.data.PersistentData;
-import dansplugins.currencies.managers.ConfigManager;
 import dansplugins.currencies.objects.Coinpurse;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.currencies.utils.ArgumentParser;

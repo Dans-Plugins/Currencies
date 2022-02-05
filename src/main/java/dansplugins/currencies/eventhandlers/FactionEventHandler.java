@@ -2,7 +2,7 @@ package dansplugins.currencies.eventhandlers;
 
 import dansplugins.currencies.utils.Logger;
 import dansplugins.currencies.data.PersistentData;
-import dansplugins.currencies.managers.CurrencyManager;
+import dansplugins.currencies.services.LocalCurrencyService;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.events.FactionDisbandEvent;
 import dansplugins.factionsystem.events.FactionRenameEvent;
@@ -35,7 +35,7 @@ public class FactionEventHandler implements Listener {
 
         MF_Faction faction = new MF_Faction(event.getFaction());
         Currency currency = PersistentData.getInstance().getActiveCurrency(faction);
-        CurrencyManager.getInstance().retireCurrency(currency);
+        LocalCurrencyService.getInstance().retireCurrency(currency);
         Logger.getInstance().log(currency.getName() + " has been retired because " + faction.getName() + " was disbanded.");
 
     }

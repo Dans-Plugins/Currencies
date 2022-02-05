@@ -1,7 +1,7 @@
 package dansplugins.currencies.externalapi;
 
 import dansplugins.currencies.data.PersistentData;
-import dansplugins.currencies.managers.CurrencyManager;
+import dansplugins.currencies.services.LocalCurrencyService;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.inventory.ItemStack;
@@ -52,12 +52,12 @@ public class CurrenciesAPI implements ICurrenciesAPI {
 
     @Override
     public boolean isCurrency(ItemStack itemStack) {
-        return CurrencyManager.getInstance().isCurrency(itemStack);
+        return LocalCurrencyService.getInstance().isCurrency(itemStack);
     }
 
     @Override
     public String getCurrencyID(ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
-        return CurrencyManager.getInstance().getCurrencyID(meta);
+        return LocalCurrencyService.getInstance().getCurrencyID(meta);
     }
 }

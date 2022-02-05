@@ -1,8 +1,8 @@
 package dansplugins.currencies.eventhandlers;
 
 import dansplugins.currencies.Currencies;
-import dansplugins.currencies.managers.ConfigManager;
-import dansplugins.currencies.managers.CurrencyManager;
+import dansplugins.currencies.services.LocalConfigService;
+import dansplugins.currencies.services.LocalCurrencyService;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -17,7 +17,7 @@ public class AnvilUsageHandler implements Listener {
 
     @EventHandler()
     public void handle(PrepareAnvilEvent event) {
-        if (!ConfigManager.getInstance().getBoolean("disallowAnvilUsage")) {
+        if (!LocalConfigService.getInstance().getBoolean("disallowAnvilUsage")) {
             return;
         }
 
@@ -32,7 +32,7 @@ public class AnvilUsageHandler implements Listener {
             if (itemStack == null) {
                 continue;
             }
-            if (CurrencyManager.getInstance().isCurrency(itemStack)) {
+            if (LocalCurrencyService.getInstance().isCurrency(itemStack)) {
                 if (!cooldown) {
                     player.sendMessage(ChatColor.RED + "You can't use currencies when renaming or repairing.");
                 }

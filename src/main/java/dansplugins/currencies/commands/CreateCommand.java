@@ -1,8 +1,8 @@
 package dansplugins.currencies.commands;
 
-import dansplugins.currencies.MedievalFactionsIntegrator;
+import dansplugins.currencies.integrators.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
-import dansplugins.currencies.managers.CurrencyManager;
+import dansplugins.currencies.services.LocalCurrencyService;
 import dansplugins.currencies.utils.ArgumentParser;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
@@ -68,7 +68,7 @@ public class CreateCommand {
             return false;
         }
 
-        boolean success = CurrencyManager.getInstance().createNewCurrency(name, faction, material);
+        boolean success = LocalCurrencyService.getInstance().createNewCurrency(name, faction, material);
         if (!success) {
             player.sendMessage(ChatColor.RED + "There was a problem creating the currency.");
             return false;

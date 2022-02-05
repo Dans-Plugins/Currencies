@@ -1,7 +1,7 @@
 package dansplugins.currencies.commands;
 
 import dansplugins.currencies.data.PersistentData;
-import dansplugins.currencies.managers.CurrencyManager;
+import dansplugins.currencies.services.LocalCurrencyService;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.currencies.utils.ArgumentParser;
 import dansplugins.currencies.utils.PermissionChecker;
@@ -61,7 +61,7 @@ public class ForceCommand {
 
         // TODO: insert an "are you sure?" prompt here
 
-        CurrencyManager.getInstance().retireCurrency(currency);
+        LocalCurrencyService.getInstance().retireCurrency(currency);
         sender.sendMessage(ChatColor.GREEN + "Retired.");
         return true;
     }
