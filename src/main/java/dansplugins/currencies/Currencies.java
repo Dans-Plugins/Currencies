@@ -13,7 +13,7 @@ public final class Currencies extends JavaPlugin {
 
     private static Currencies instance;
 
-    private final String version = "v1.1";
+    private final String pluginVersion = "v" + getDescription().getVersion();
 
     public static Currencies getInstance() {
         return instance;
@@ -57,7 +57,7 @@ public final class Currencies extends JavaPlugin {
     }
 
     public String getVersion() {
-        return version;
+        return pluginVersion;
     }
 
     public boolean isDebugEnabled() {
