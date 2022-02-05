@@ -25,27 +25,10 @@ public final class Currencies extends JavaPlugin {
     @Override
     public void onEnable() {
         instance = this;
-
-        // bStats
-        int pluginId = 12810;
-        Metrics metrics = new Metrics(this, pluginId);
-
-        // create/load config
-        if (!(new File("./plugins/Currencies/config.yml").exists())) {
-            LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
-        }
-        else {
-            // pre load compatibility checks
-            if (isVersionMismatched()) {
-                LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
-            }
-            reloadConfig();
-        }
-
+        initializeConfig();
         EventRegistry.getInstance().registerEvents();
-
         LocalStorageService.getInstance().load();
-
+        handlebStatsIntegration();
         Scheduler.getInstance().scheduleAutosave();
     }
 
@@ -69,5 +52,23 @@ public final class Currencies extends JavaPlugin {
 
     private boolean isVersionMismatched() {
         return !getConfig().getString("version").equalsIgnoreCase(getVersion());
+    }
+
+    private void initializeConfig() {
+        if (!(new File("./plugins/Currencies/config.yml").exists())) {
+            LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
+        }
+        else {
+            // pre load compatibility checks
+            if (isVersionMismatched()) {
+                LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
+            }
+            reloadConfig();
+        }
+    }
+
+    private void handlebStatsIntegration() {
+        int pluginId = 12810;
+        Metrics metrics = new Metrics(this, pluginId);
     }
 }
