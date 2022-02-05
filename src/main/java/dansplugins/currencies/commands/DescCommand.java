@@ -1,6 +1,6 @@
 package dansplugins.currencies.commands;
 
-import dansplugins.currencies.MedievalFactionsIntegrator;
+import dansplugins.currencies.integrators.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.currencies.utils.ArgumentParser;

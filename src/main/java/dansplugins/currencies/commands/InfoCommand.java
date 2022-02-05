@@ -1,8 +1,8 @@
 package dansplugins.currencies.commands;
 
-import dansplugins.currencies.MedievalFactionsIntegrator;
+import dansplugins.currencies.integrators.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
-import dansplugins.currencies.managers.ConfigManager;
+import dansplugins.currencies.services.LocalConfigService;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.currencies.utils.ArgumentParser;
 import dansplugins.factionsystem.externalapi.MF_Faction;
@@ -73,7 +73,7 @@ public class InfoCommand {
         player.sendMessage(ChatColor.AQUA + "Faction: " + currency.getFactionName());
         player.sendMessage(ChatColor.AQUA + "Material: " + currency.getMaterial());
         player.sendMessage(ChatColor.AQUA + "ID: " + currency.getCurrencyID());
-        if (ConfigManager.getInstance().getBoolean("showAmountMinted")) {
+        if (LocalConfigService.getInstance().getBoolean("showAmountMinted")) {
             player.sendMessage(ChatColor.AQUA + "Minted: " + currency.getAmount());
         }
     }

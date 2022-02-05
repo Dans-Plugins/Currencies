@@ -1,4 +1,4 @@
-package dansplugins.currencies;
+package dansplugins.currencies.utils;
 
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.Bukkit;

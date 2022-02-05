@@ -1,7 +1,7 @@
 package dansplugins.currencies.eventhandlers;
 
-import dansplugins.currencies.managers.ConfigManager;
-import dansplugins.currencies.managers.CurrencyManager;
+import dansplugins.currencies.services.LocalConfigService;
+import dansplugins.currencies.services.LocalCurrencyService;
 import dansplugins.currencies.utils.Logger;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
@@ -16,7 +16,7 @@ public class FurnaceUsageHandler implements Listener {
     @EventHandler()
     public void handle(InventoryClickEvent event) {
 
-        if (!ConfigManager.getInstance().getBoolean("disallowSmelting")) {
+        if (!LocalConfigService.getInstance().getBoolean("disallowSmelting")) {
             Logger.getInstance().log("[DEBUG] Smelting with currencies is allowed.");
             return;
         }
@@ -28,7 +28,7 @@ public class FurnaceUsageHandler implements Listener {
 
             if (event.getSlotType() != InventoryType.SlotType.CRAFTING) return;
             if (event.getInventory().getType() != InventoryType.FURNACE) return;
-            if (event.getCurrentItem().equals(CurrencyManager.getInstance().isCurrency(itemStack))) {
+            if (event.getCurrentItem().equals(LocalCurrencyService.getInstance().isCurrency(itemStack))) {
                 Player player = (Player) event.getWhoClicked();
                 player.sendMessage(ChatColor.RED + "You can't use currency in smelting recipes.");
                 event.setCancelled(true);

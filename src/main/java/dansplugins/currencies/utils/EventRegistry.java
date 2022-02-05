@@ -1,4 +1,5 @@
-package dansplugins.currencies;
+package dansplugins.currencies.utils;
+import dansplugins.currencies.Currencies;
 import dansplugins.currencies.eventhandlers.*;
 import org.bukkit.plugin.PluginManager;
 

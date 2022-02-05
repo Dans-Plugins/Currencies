@@ -1,8 +1,8 @@
 package dansplugins.currencies.eventhandlers;
 
 import dansplugins.currencies.utils.Logger;
-import dansplugins.currencies.managers.ConfigManager;
-import dansplugins.currencies.managers.CurrencyManager;
+import dansplugins.currencies.services.LocalConfigService;
+import dansplugins.currencies.services.LocalCurrencyService;
 import org.bukkit.ChatColor;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -15,7 +15,7 @@ public class CraftingHandler implements Listener {
     @EventHandler()
     public void handle(CraftItemEvent event) {
 
-        if (!ConfigManager.getInstance().getBoolean("disallowCrafting")) {
+        if (!LocalConfigService.getInstance().getBoolean("disallowCrafting")) {
             Logger.getInstance().log("[DEBUG] Crafting with currencies is allowed.");
             return;
         }
@@ -27,7 +27,7 @@ public class CraftingHandler implements Listener {
                 continue;
             }
             Logger.getInstance().log("Looking at item: " + itemStack.toString());
-            if (CurrencyManager.getInstance().isCurrency(itemStack)) {
+            if (LocalCurrencyService.getInstance().isCurrency(itemStack)) {
                 event.getWhoClicked().sendMessage(ChatColor.RED + "You can't use currencies in crafting recipes.");
                 event.setCancelled(true);
                 return;

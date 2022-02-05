@@ -1,9 +1,9 @@
 package dansplugins.currencies.commands;
 
-import dansplugins.currencies.CurrencyFactory;
-import dansplugins.currencies.MedievalFactionsIntegrator;
+import dansplugins.currencies.factories.CurrencyFactory;
+import dansplugins.currencies.integrators.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
-import dansplugins.currencies.managers.ConfigManager;
+import dansplugins.currencies.services.LocalConfigService;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.ChatColor;
@@ -64,13 +64,13 @@ public class MintCommand {
             return false;
         }
 
-        boolean powerCostEnabled = ConfigManager.getInstance().getBoolean("powerCostEnabled");
+        boolean powerCostEnabled = LocalConfigService.getInstance().getBoolean("powerCostEnabled");
         int powerRequired = -1;
         if (powerCostEnabled) {
-            double powerCost = ConfigManager.getInstance().getDouble("powerCost");
+            double powerCost = LocalConfigService.getInstance().getDouble("powerCost");
             powerRequired = (int) (amount * powerCost);
 
-            int minimumPowerCost = 1; ConfigManager.getInstance().getInt("minimumPowerCost");
+            int minimumPowerCost = 1; LocalConfigService.getInstance().getInt("minimumPowerCost");
             if (powerRequired < 1) {
                 powerRequired = minimumPowerCost;
             }
@@ -84,7 +84,7 @@ public class MintCommand {
             MedievalFactionsIntegrator.getInstance().getAPI().decreasePower(player, powerRequired);
         }
 
-        if (ConfigManager.getInstance().getBoolean("itemCost")) {
+        if (LocalConfigService.getInstance().getBoolean("itemCost")) {
             // require player to have enough items to mint
             Material material = Material.getMaterial(currency.getMaterial());
             ItemStack itemStack = new ItemStack(material);
