@@ -81,7 +81,6 @@ public class MintCommand {
                 player.sendMessage(ChatColor.RED + "You need " + powerRequired + " power to mint that much currency.");
                 return false;
             }
-            MedievalFactionsIntegrator.getInstance().getAPI().decreasePower(player, powerRequired);
         }
 
         if (LocalConfigService.getInstance().getBoolean("itemCost")) {
@@ -94,6 +93,10 @@ public class MintCommand {
                 return false;
             }
             inventory.removeItem(new ItemStack(material, amount));
+            MedievalFactionsIntegrator.getInstance().getAPI().decreasePower(player, powerRequired);
+        }
+        else {
+            MedievalFactionsIntegrator.getInstance().getAPI().decreasePower(player, powerRequired);
         }
 
         ItemStack itemStack = CurrencyFactory.getInstance().createCurrencyItem(currency, amount);
