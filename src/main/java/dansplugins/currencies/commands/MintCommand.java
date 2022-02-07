@@ -93,10 +93,6 @@ public class MintCommand {
                 return false;
             }
             inventory.removeItem(new ItemStack(material, amount));
-            MedievalFactionsIntegrator.getInstance().getAPI().decreasePower(player, powerRequired);
-        }
-        else {
-            MedievalFactionsIntegrator.getInstance().getAPI().decreasePower(player, powerRequired);
         }
 
         ItemStack itemStack = CurrencyFactory.getInstance().createCurrencyItem(currency, amount);
@@ -104,6 +100,7 @@ public class MintCommand {
         player.getInventory().addItem(itemStack); // TODO: handle full inventory
 
         if (powerCostEnabled) {
+            MedievalFactionsIntegrator.getInstance().getAPI().decreasePower(player, powerRequired);
             player.sendMessage(ChatColor.GREEN + "Minted. Power has been decreased by " + powerRequired + ".");
         }
         else {
@@ -111,7 +108,6 @@ public class MintCommand {
         }
 
         currency.increaseAmount(amount);
-
         return true;
     }
 
