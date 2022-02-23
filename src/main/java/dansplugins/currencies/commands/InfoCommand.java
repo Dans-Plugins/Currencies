@@ -6,42 +6,32 @@ import dansplugins.currencies.services.LocalConfigService;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.currencies.utils.ArgumentParser;
 import dansplugins.factionsystem.externalapi.MF_Faction;
+import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class InfoCommand {
+/**
+ * @author Daniel McCoy Stephenson
+ */
+public class InfoCommand extends AbstractPluginCommand {
 
-    public boolean execute(CommandSender sender, String[] args) {
+    public InfoCommand() {
+        super(new ArrayList<>(Arrays.asList("info")), new ArrayList<>(Arrays.asList("currencies.info")));
+    }
 
+    @Override
+    public boolean execute(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            // TODO: add message
+            sender.sendMessage("This command can't be used int the console.");
             return false;
         }
 
         Player player = (Player) sender;
-
-        if (args.length > 0) {
-            if (!player.hasPermission("currencies.info.others")) {
-                player.sendMessage(ChatColor.AQUA + "You don't have permission to view the currency information of others.");
-                return false;
-            }
-
-            ArrayList<String> singleQuoteArgs = ArgumentParser.getInstance().getArgumentsInsideSingleQuotes(args);
-
-            if (singleQuoteArgs.size() == 0) {
-                player.sendMessage(ChatColor.RED + "Currency name must be designated between single quotes.");
-                return false;
-            }
-
-            String currencyName = singleQuoteArgs.get(0);
-            Currency currency = PersistentData.getInstance().getCurrency(currencyName);
-
-            sendCurrencyInfo(currency, player);
-            return true;
-        }
 
         MF_Faction faction = MedievalFactionsIntegrator.getInstance().getAPI().getFaction(player);
 
@@ -56,6 +46,33 @@ public class InfoCommand {
             player.sendMessage(ChatColor.RED + "Your faction doesn't have a currency yet.");
             return false;
         }
+
+        sendCurrencyInfo(currency, player);
+        return true;
+    }
+    
+    public boolean execute(CommandSender sender, String[] args) {
+        if (!(sender instanceof Player)) {
+            sender.sendMessage("This command can't be used in the console.");
+            return false;
+        }
+
+        Player player = (Player) sender;
+
+        if (!player.hasPermission("currencies.info.others")) {
+            player.sendMessage(ChatColor.AQUA + "You don't have permission to view the currency information of others.");
+            return false;
+        }
+
+        ArrayList<String> singleQuoteArgs = ArgumentParser.getInstance().getArgumentsInsideSingleQuotes(args);
+
+        if (singleQuoteArgs.size() == 0) {
+            player.sendMessage(ChatColor.RED + "Currency name must be designated between single quotes.");
+            return false;
+        }
+
+        String currencyName = singleQuoteArgs.get(0);
+        Currency currency = PersistentData.getInstance().getCurrency(currencyName);
 
         sendCurrencyInfo(currency, player);
         return true;
@@ -77,5 +94,4 @@ public class InfoCommand {
             player.sendMessage(ChatColor.AQUA + "Minted: " + currency.getAmount());
         }
     }
-
 }

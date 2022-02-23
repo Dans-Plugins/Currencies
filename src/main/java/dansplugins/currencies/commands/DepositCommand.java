@@ -5,17 +5,33 @@ import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.objects.Coinpurse;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.currencies.utils.ArgumentParser;
+import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class DepositCommand {
+/**
+ * @author Daniel McCoy Stephenson
+ */
+public class DepositCommand extends AbstractPluginCommand {
+
+    public DepositCommand() {
+        super(new ArrayList<>(Arrays.asList("deposit")), new ArrayList<>(Arrays.asList("currencies.deposit")));
+    }
+
+    @Override
+    public boolean execute(CommandSender sender) {
+        sender.sendMessage(ChatColor.RED + "Usage: /c deposit 'currency' 'amount'");
+        return false;
+    }
 
     public boolean execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            // TODO: add message
+            sender.sendMessage("This command can't be used in the console.");
             return false;
         }
 
@@ -68,5 +84,4 @@ public class DepositCommand {
         player.sendMessage(ChatColor.GREEN + "Deposited " + amount + ".");
         return true;
     }
-
 }

@@ -11,6 +11,9 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class RenameCommand {
 
     public boolean execute(CommandSender sender, String[] args) {

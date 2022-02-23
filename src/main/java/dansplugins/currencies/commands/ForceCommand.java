@@ -5,20 +5,30 @@ import dansplugins.currencies.services.LocalCurrencyService;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.currencies.utils.ArgumentParser;
 import dansplugins.currencies.utils.PermissionChecker;
+import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class ForceCommand {
+/**
+ * @author Daniel McCoy Stephenson
+ */
+public class ForceCommand extends AbstractPluginCommand {
+
+    public ForceCommand() {
+        super(new ArrayList<>(Arrays.asList("force")), new ArrayList<>(Arrays.asList("currencies.force")));
+    }
+
+    @Override
+    public boolean execute(CommandSender sender) {
+        sender.sendMessage(ChatColor.RED + "Sub-commands: retire, rename");
+        return false;
+    }
 
     public boolean execute(CommandSender sender, String[] args) {
-        
-        if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Sub-commands: retire, rename");
-            return false;
-        }
-
         String secondaryLabel = args[0];
         String[] arguments = ArgumentParser.getInstance().dropFirstArgument(args);
 

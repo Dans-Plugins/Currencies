@@ -2,19 +2,30 @@ package dansplugins.currencies.commands;
 
 import dansplugins.currencies.services.LocalConfigService;
 import dansplugins.currencies.utils.ArgumentParser;
+import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class ConfigCommand {
+/**
+ * @author Daniel McCoy Stephenson
+ */
+public class ConfigCommand extends AbstractPluginCommand {
+
+    public ConfigCommand() {
+        super(new ArrayList<>(Arrays.asList("config")), new ArrayList<>(Arrays.asList("currencies.config")));
+    }
+
+    @Override
+    public boolean execute(CommandSender sender) {
+        sender.sendMessage(ChatColor.RED + "Sub-commands: show, set");
+        return false;
+    }
 
     public boolean execute(CommandSender sender, String[] args) {
-        if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Sub-commands: show, set");
-            return false;
-        }
-
         if (args[0].equalsIgnoreCase("show")) {
             LocalConfigService.getInstance().sendConfigList(sender);
             return true;
@@ -47,5 +58,4 @@ public class ConfigCommand {
             return false;
         }
     }
-
 }
