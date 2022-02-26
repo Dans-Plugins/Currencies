@@ -24,7 +24,7 @@ import org.bukkit.inventory.ItemStack;
 public class MintCommand extends AbstractPluginCommand {
 
     public MintCommand() {
-        super(new ArrayList<>(Arrays.asList("list")), new ArrayList<>(Arrays.asList("currencies.list")));
+        super(new ArrayList<>(Arrays.asList("mint")), new ArrayList<>(Arrays.asList("currencies.mint")));
     }
 
     @Override

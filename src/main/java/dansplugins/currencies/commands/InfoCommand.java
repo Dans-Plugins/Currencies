@@ -4,9 +4,9 @@ import dansplugins.currencies.integrators.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.services.LocalConfigService;
 import dansplugins.currencies.objects.Currency;
-import dansplugins.currencies.utils.ArgumentParser;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import preponderous.ponder.misc.ArgumentParser;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -64,14 +64,15 @@ public class InfoCommand extends AbstractPluginCommand {
             return false;
         }
 
-        ArrayList<String> singleQuoteArgs = ArgumentParser.getInstance().getArgumentsInsideSingleQuotes(args);
+        ArgumentParser argumentParser = new ArgumentParser();
+        ArrayList<String> quotationMarks = argumentParser.getArgumentsInsideDoubleQuotes(args);
 
-        if (singleQuoteArgs.size() == 0) {
-            player.sendMessage(ChatColor.RED + "Currency name must be designated between single quotes.");
+        if (quotationMarks.size() == 0) {
+            player.sendMessage(ChatColor.RED + "Currency name must be designated in between quotation marks.");
             return false;
         }
 
-        String currencyName = singleQuoteArgs.get(0);
+        String currencyName = quotationMarks.get(0);
         Currency currency = PersistentData.getInstance().getCurrency(currencyName);
 
         sendCurrencyInfo(currency, player);

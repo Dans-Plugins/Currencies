@@ -3,9 +3,9 @@ package dansplugins.currencies.commands;
 import dansplugins.currencies.integrators.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.services.LocalCurrencyService;
-import dansplugins.currencies.utils.ArgumentParser;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import preponderous.ponder.misc.ArgumentParser;
 
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
@@ -56,14 +56,15 @@ public class CreateCommand extends AbstractPluginCommand {
             return false;
         }
 
-        ArrayList<String> singleQuoteArgs = ArgumentParser.getInstance().getArgumentsInsideSingleQuotes(args);
+        ArgumentParser argumentParser = new ArgumentParser();
+        ArrayList<String> quotationMarks = argumentParser.getArgumentsInsideDoubleQuotes(args);
 
-        if (singleQuoteArgs.size() == 0) {
-            player.sendMessage(ChatColor.RED + "Name must be designated between single quotes.");
+        if (quotationMarks.size() == 0) {
+            player.sendMessage(ChatColor.RED + "Name must be specified in between quotation marks.");
             return false;
         }
 
-        String name = singleQuoteArgs.get(0);
+        String name = quotationMarks.get(0);
 
         if (PersistentData.getInstance().isCurrencyNameTaken(name)) {
             player.sendMessage(ChatColor.RED + "That name is taken by an active or retired currency.");

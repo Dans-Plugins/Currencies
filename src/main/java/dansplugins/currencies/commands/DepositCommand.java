@@ -4,8 +4,8 @@ import dansplugins.currencies.factories.CurrencyFactory;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.objects.Coinpurse;
 import dansplugins.currencies.objects.Currency;
-import dansplugins.currencies.utils.ArgumentParser;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import preponderous.ponder.misc.ArgumentParser;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -42,16 +42,17 @@ public class DepositCommand extends AbstractPluginCommand {
             return false;
         }
 
-        ArrayList<String> singleQuoteArgs = ArgumentParser.getInstance().getArgumentsInsideSingleQuotes(args);
+        ArgumentParser argumentParser = new ArgumentParser();
+        ArrayList<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
 
-        if (singleQuoteArgs.size() < 2) {
-            player.sendMessage(ChatColor.RED + "Arguments must be in between single quotes.");
+        if (specifiedArguments.size() < 2) {
+            player.sendMessage(ChatColor.RED + "Arguments must be specified in between quotation marks.");
             return false;
         }
 
-        String currencyName = singleQuoteArgs.get(0);
+        String currencyName = specifiedArguments.get(0);
 
-        String amountString = singleQuoteArgs.get(1);
+        String amountString = specifiedArguments.get(1);
         int amount = Integer.parseInt(amountString); // TODO: handle error here
 
         if (amount < 0) {

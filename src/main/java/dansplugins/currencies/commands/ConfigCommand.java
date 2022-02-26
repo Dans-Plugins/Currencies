@@ -1,8 +1,8 @@
 package dansplugins.currencies.commands;
 
 import dansplugins.currencies.services.LocalConfigService;
-import dansplugins.currencies.utils.ArgumentParser;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import preponderous.ponder.misc.ArgumentParser;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -39,9 +39,10 @@ public class ConfigCommand extends AbstractPluginCommand {
 
             String value = "";
             if (option.equalsIgnoreCase("denyUsageMessage") || option.equalsIgnoreCase("denyCreationMessage")) {
-                ArrayList<String> singleQuoteArgs = ArgumentParser.getInstance().getArgumentsInsideSingleQuotes(args);
+                ArgumentParser argumentParser = new ArgumentParser();
+                ArrayList<String> singleQuoteArgs = argumentParser.getArgumentsInsideDoubleQuotes(args);
                 if (singleQuoteArgs.size() == 0) {
-                    sender.sendMessage(ChatColor.RED + "New message must be in between single quotes.");
+                    sender.sendMessage(ChatColor.RED + "New message must be in between quotation marks.");
                     return false;
                 }
                 value = singleQuoteArgs.get(0);

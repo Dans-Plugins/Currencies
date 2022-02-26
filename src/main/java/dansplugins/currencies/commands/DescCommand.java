@@ -3,9 +3,9 @@ package dansplugins.currencies.commands;
 import dansplugins.currencies.integrators.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.objects.Currency;
-import dansplugins.currencies.utils.ArgumentParser;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import preponderous.ponder.misc.ArgumentParser;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
@@ -55,14 +55,15 @@ public class DescCommand extends AbstractPluginCommand {
             return false;
         }
 
-        ArrayList<String> singleQuoteArgs = ArgumentParser.getInstance().getArgumentsInsideSingleQuotes(args);
+        ArgumentParser argumentParser = new ArgumentParser();
+        ArrayList<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
 
-        if (singleQuoteArgs.size() == 0) {
-            player.sendMessage(ChatColor.RED + "Description must be designated between single quotes.");
+        if (specifiedArguments.size() == 0) {
+            player.sendMessage(ChatColor.RED + "Description must be designated in between quotation marks.");
             return false;
         }
 
-        String description = singleQuoteArgs.get(0);
+        String description = specifiedArguments.get(0);
 
         currency.setDescription(description);
         player.sendMessage(ChatColor.GREEN + "Description set.");

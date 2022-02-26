@@ -5,6 +5,11 @@ import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.services.LocalCurrencyService;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
+import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
@@ -12,12 +17,15 @@ import org.bukkit.entity.Player;
 /**
  * @author Daniel McCoy Stephenson
  */
-public class RetireCommand {
+public class RetireCommand extends AbstractPluginCommand {
+
+    public RetireCommand() {
+        super(new ArrayList<>(Arrays.asList("retire")), new ArrayList<>(Arrays.asList("currencies.retire")));
+    }
 
     public boolean execute(CommandSender sender) {
-
         if (!(sender instanceof Player)) {
-            // TODO: add message
+            sender.sendMessage("This command can't be used in the console.");
             return false;
         }
 
@@ -52,4 +60,8 @@ public class RetireCommand {
         return true;
     }
 
+    @Override
+    public boolean execute(CommandSender sender, String[] args) {
+        return execute(sender);
+    }
 }
