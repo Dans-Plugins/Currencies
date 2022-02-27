@@ -3,19 +3,35 @@ package dansplugins.currencies.commands;
 import dansplugins.currencies.integrators.MedievalFactionsIntegrator;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.objects.Currency;
-import dansplugins.currencies.utils.ArgumentParser;
 import dansplugins.factionsystem.externalapi.MF_Faction;
+import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import preponderous.ponder.misc.ArgumentParser;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class RenameCommand {
+/**
+ * @author Daniel McCoy Stephenson
+ */
+public class RenameCommand extends AbstractPluginCommand {
+
+    public RenameCommand() {
+        super(new ArrayList<>(Arrays.asList("rename")), new ArrayList<>(Arrays.asList("currencies.rename")));
+    }
+
+    @Override
+    public boolean execute(CommandSender sender) {
+        sender.sendMessage(ChatColor.RED + "Usage: /c create (currencyName)");
+        return false;
+    }
 
     public boolean execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            // TODO: add message
+            sender.sendMessage("This command can't be used in the console.");
             return false;
         }
 
@@ -39,19 +55,15 @@ public class RenameCommand {
             return false;
         }
 
-        if (args.length == 0) {
-            player.sendMessage(ChatColor.RED + "Usage: /c create (currencyName)");
+        ArgumentParser argumentParser = new ArgumentParser();
+        ArrayList<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
+
+        if (specifiedArguments.size() == 0) {
+            player.sendMessage(ChatColor.RED + "Name must be specified in between quotation marks.");
             return false;
         }
 
-        ArrayList<String> singleQuoteArgs = ArgumentParser.getInstance().getArgumentsInsideSingleQuotes(args);
-
-        if (singleQuoteArgs.size() == 0) {
-            player.sendMessage(ChatColor.RED + "Name must be designated between single quotes.");
-            return false;
-        }
-
-        String newName = singleQuoteArgs.get(0);
+        String newName = specifiedArguments.get(0);
 
         if (PersistentData.getInstance().isCurrencyNameTaken(newName)) {
             player.sendMessage(ChatColor.RED + "That name is taken by an active or retired currency.");
@@ -62,5 +74,4 @@ public class RenameCommand {
         player.sendMessage(ChatColor.GREEN + "Renamed.");
         return true;
     }
-
 }

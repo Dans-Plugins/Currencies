@@ -61,6 +61,10 @@
             <id>sonatype</id>
             <url>https://oss.sonatype.org/content/groups/public/</url>
         </repository>
+        <repository>
+		    <id>jitpack.io</id>
+		    <url>https://jitpack.io</url>
+		</repository>
     </repositories>
 
     <dependencies>
@@ -71,16 +75,15 @@
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>dansplugins</groupId>
+            <groupId>com.github.Dans-Plugins</groupId>
             <artifactId>Medieval-Factions</artifactId>
-            <version>4.5.1</version>
-            <scope>system</scope>
-            <systemPath>${project.basedir}/src/main/resources/Medieval-Factions-4.5.1.jar</systemPath>
+            <version>4.6.2</version>
+            <scope>compile</scope>
         </dependency>
         <dependency>
-            <groupId>preponderous</groupId>
+            <groupId>com.github.Preponderous-Software</groupId>
             <artifactId>ponder</artifactId>
-            <version>v0.15-alpha-2</version>
+            <version>1.0</version>
             <scope>compile</scope>
         </dependency>
     </dependencies>

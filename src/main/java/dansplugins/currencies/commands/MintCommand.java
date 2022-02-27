@@ -6,6 +6,11 @@ import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.services.LocalConfigService;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
+import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.bukkit.ChatColor;
 import org.bukkit.Material;
 import org.bukkit.command.CommandSender;
@@ -13,7 +18,20 @@ import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
 
-public class MintCommand {
+/**
+ * @author Daniel McCoy Stephenson
+ */
+public class MintCommand extends AbstractPluginCommand {
+
+    public MintCommand() {
+        super(new ArrayList<>(Arrays.asList("mint")), new ArrayList<>(Arrays.asList("currencies.mint")));
+    }
+
+    @Override
+    public boolean execute(CommandSender sender) {
+        sender.sendMessage(ChatColor.RED + "Usage: /c mint (amount)");
+        return false;
+    }
 
     public boolean execute(CommandSender sender, String[] args) {
 
@@ -44,16 +62,10 @@ public class MintCommand {
             }
         }
 
-
         Currency currency = PersistentData.getInstance().getActiveCurrency(faction);
 
         if (currency == null) {
             player.sendMessage(ChatColor.RED + "Your faction doesn't have a currency yet.");
-            return false;
-        }
-
-        if (args.length == 0) {
-            player.sendMessage(ChatColor.RED + "Usage: /c mint (amount)");
             return false;
         }
 
@@ -110,5 +122,4 @@ public class MintCommand {
         currency.increaseAmount(amount);
         return true;
     }
-
 }

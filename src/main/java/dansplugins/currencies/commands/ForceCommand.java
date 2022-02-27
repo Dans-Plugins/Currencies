@@ -3,32 +3,46 @@ package dansplugins.currencies.commands;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.services.LocalCurrencyService;
 import dansplugins.currencies.objects.Currency;
-import dansplugins.currencies.utils.ArgumentParser;
-import dansplugins.currencies.utils.PermissionChecker;
+import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import preponderous.ponder.minecraft.bukkit.tools.PermissionChecker;
+import preponderous.ponder.misc.ArgumentParser;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class ForceCommand {
+/**
+ * @author Daniel McCoy Stephenson
+ */
+public class ForceCommand extends AbstractPluginCommand {
+    private ArgumentParser argumentParser = new ArgumentParser();
+    private PermissionChecker permissionChecker = new PermissionChecker();
+
+    public ForceCommand() {
+        super(new ArrayList<>(Arrays.asList("force")), new ArrayList<>(Arrays.asList("currencies.force")));
+    }
+
+    @Override
+    public boolean execute(CommandSender sender) {
+        sender.sendMessage(ChatColor.RED + "Sub-commands: retire, rename");
+        return false;
+    }
 
     public boolean execute(CommandSender sender, String[] args) {
-        
-        if (args.length == 0) {
-            sender.sendMessage(ChatColor.RED + "Sub-commands: retire, rename");
-            return false;
-        }
-
         String secondaryLabel = args[0];
-        String[] arguments = ArgumentParser.getInstance().dropFirstArgument(args);
+        
+        String[] arguments = argumentParser.dropFirstArgument(args);
 
+        
         if (secondaryLabel.equalsIgnoreCase("retire")) {
-            if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.force.retire")) { return false; }
+            if (!permissionChecker.checkPermission(sender, "currencies.force.retire")) { return false; }
             return forceRetire(sender, arguments);
         }
 
         if (secondaryLabel.equalsIgnoreCase("rename")) {
-            if (!PermissionChecker.getInstance().checkPermission(sender, "currencies.force.rename")) { return false; }
+            if (!permissionChecker.checkPermission(sender, "currencies.force.rename")) { return false; }
             return forceRename(sender, arguments);
         }
 
@@ -43,14 +57,14 @@ public class ForceCommand {
             return false;
         }
 
-        ArrayList<String> singleQuoteArgs = ArgumentParser.getInstance().getArgumentsInsideSingleQuotes(args);
+        ArrayList<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
 
-        if (singleQuoteArgs.size() == 0) {
-            sender.sendMessage(ChatColor.RED + "Name must be designated between single quotes.");
+        if (specifiedArguments.size() == 0) {
+            sender.sendMessage(ChatColor.RED + "Name must be specified in between quotation marks.");
             return false;
         }
 
-        String currencyName = singleQuoteArgs.get(0);
+        String currencyName = specifiedArguments.get(0);
 
         Currency currency = PersistentData.getInstance().getActiveCurrency(currencyName);
 
@@ -73,14 +87,14 @@ public class ForceCommand {
             return false;
         }
 
-        ArrayList<String> singleQuoteArgs = ArgumentParser.getInstance().getArgumentsInsideSingleQuotes(args);
+        ArrayList<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
 
-        if (singleQuoteArgs.size() < 2) {
-            sender.sendMessage(ChatColor.RED + "Name and new name must be designated between single quotes.");
+        if (specifiedArguments.size() < 2) {
+            sender.sendMessage(ChatColor.RED + "Name and new name must be designated in between quotation marks.");
             return false;
         }
 
-        String currencyName = singleQuoteArgs.get(0);
+        String currencyName = specifiedArguments.get(0);
 
         Currency currency = PersistentData.getInstance().getCurrency(currencyName);
 
@@ -89,7 +103,7 @@ public class ForceCommand {
             return false;
         }
 
-        String newName = singleQuoteArgs.get(1);
+        String newName = specifiedArguments.get(1);
 
         Currency newNameCurrency = PersistentData.getInstance().getCurrency(newName);
 

@@ -4,18 +4,34 @@ import dansplugins.currencies.factories.CurrencyFactory;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.objects.Coinpurse;
 import dansplugins.currencies.objects.Currency;
-import dansplugins.currencies.utils.ArgumentParser;
+import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import preponderous.ponder.misc.ArgumentParser;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 import java.util.ArrayList;
+import java.util.Arrays;
 
-public class WithdrawCommand {
+public class WithdrawCommand extends AbstractPluginCommand {
+
+    public WithdrawCommand() {
+        super(new ArrayList<>(Arrays.asList("withdraw")), new ArrayList<>(Arrays.asList("currencies.withdraw")));
+    }
+
+    @Override
+    public boolean execute(CommandSender sender) {
+        sender.sendMessage(ChatColor.RED + "Usage: /c withdraw 'currency' 'amount'");
+        return false;
+    }
 
     public boolean execute(CommandSender sender, String[] args) {
         if (!(sender instanceof Player)) {
-            // TODO: add message
+            sender.sendMessage("This command can't be used in the console.");
             return false;
         }
 
@@ -26,16 +42,17 @@ public class WithdrawCommand {
             return false;
         }
 
-        ArrayList<String> singleQuoteArgs = ArgumentParser.getInstance().getArgumentsInsideSingleQuotes(args);
+        ArgumentParser argumentParser = new ArgumentParser();
+        ArrayList<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
 
-        if (singleQuoteArgs.size() < 2) {
-            player.sendMessage(ChatColor.RED + "Arguments must be in between single quotes.");
+        if (specifiedArguments.size() < 2) {
+            player.sendMessage(ChatColor.RED + "Arguments must be specified in between quotation marks.");
             return false;
         }
 
-        String currencyName = singleQuoteArgs.get(0);
+        String currencyName = specifiedArguments.get(0);
 
-        String amountString = singleQuoteArgs.get(1);
+        String amountString = specifiedArguments.get(1);
         int amount = Integer.parseInt(amountString); // TODO: handle error here
 
         if (amount < 0) {
@@ -99,5 +116,4 @@ public class WithdrawCommand {
         player.sendMessage(ChatColor.GREEN + "Withdrew " + withdrawn + ".");
         return true;
     }
-
 }

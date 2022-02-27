@@ -1,11 +1,24 @@
 package dansplugins.currencies.commands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 
-public class HelpCommand {
+import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
-    public boolean execute(CommandSender sender, String[] arguments) {
+/**
+ * @author Daniel McCoy Stephenson
+ */
+public class HelpCommand extends AbstractPluginCommand {
+
+    public HelpCommand() {
+        super(new ArrayList<>(Arrays.asList("help")), new ArrayList<>(Arrays.asList("currencies.help")));
+    }
+
+    @Override
+    public boolean execute(CommandSender sender) {
         sender.sendMessage(ChatColor.AQUA + "/c help - View a list of helpful commands.");
         sender.sendMessage(ChatColor.AQUA + "/c info - View information about your currency.");
         sender.sendMessage(ChatColor.AQUA + "/c list - List existing currencies.");
@@ -22,4 +35,7 @@ public class HelpCommand {
         return true;
     }
 
+    public boolean execute(CommandSender sender, String[] arguments) {
+        return execute(sender);
+    }
 }
