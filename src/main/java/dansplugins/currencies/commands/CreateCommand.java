@@ -22,7 +22,7 @@ import java.util.Arrays;
 public class CreateCommand extends AbstractPluginCommand {
 
     public CreateCommand() {
-        super(new ArrayList<>(Arrays.asList("balance")), new ArrayList<>(Arrays.asList("currencies.balance")));
+        super(new ArrayList<>(Arrays.asList("create")), new ArrayList<>(Arrays.asList("currencies.create")));
     }
 
     @Override
