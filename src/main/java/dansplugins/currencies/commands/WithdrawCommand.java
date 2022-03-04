@@ -25,7 +25,7 @@ public class WithdrawCommand extends AbstractPluginCommand {
 
     @Override
     public boolean execute(CommandSender sender) {
-        sender.sendMessage(ChatColor.RED + "Usage: /c withdraw 'currency' 'amount'");
+        sender.sendMessage(ChatColor.RED + "Usage: /c withdraw \"currency\" \"amount\"");
         return false;
     }
 
@@ -38,7 +38,7 @@ public class WithdrawCommand extends AbstractPluginCommand {
         Player player = (Player) sender;
 
         if (args.length < 2) {
-            player.sendMessage(ChatColor.RED + "Usage: /c withdraw 'currency' 'amount'");
+            player.sendMessage(ChatColor.RED + "Usage: /c withdraw \"currency\" \"amount\"");
             return false;
         }
 
