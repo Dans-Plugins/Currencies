@@ -38,6 +38,7 @@ Name | Main Contributions
 Daniel Stephenson | Creator
 Deej | Added the FurnaceHandler.
 tdlotrring | Fixed a bug with minting costing power even upon failure.
+Rykurock | Corrected some usage messages and fixed some typos.
 
 It was Ricortix's suggestion to create a plugin like this one.
 
