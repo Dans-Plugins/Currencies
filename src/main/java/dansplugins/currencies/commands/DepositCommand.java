@@ -25,7 +25,7 @@ public class DepositCommand extends AbstractPluginCommand {
 
     @Override
     public boolean execute(CommandSender sender) {
-        sender.sendMessage(ChatColor.RED + "Usage: /c deposit 'currency' 'amount'");
+        sender.sendMessage(ChatColor.RED + "Usage: /c deposit \"currency\" \"amount\"");
         return false;
     }
 
@@ -38,7 +38,7 @@ public class DepositCommand extends AbstractPluginCommand {
         Player player = (Player) sender;
 
         if (args.length < 2) {
-            player.sendMessage(ChatColor.RED + "Usage: /c deposit 'currency' 'amount'");
+            player.sendMessage(ChatColor.RED + "Usage: /c deposit \"currency\" \"amount\"");
             return false;
         }
 

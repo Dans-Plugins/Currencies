@@ -27,7 +27,7 @@ public class InfoCommand extends AbstractPluginCommand {
     @Override
     public boolean execute(CommandSender sender) {
         if (!(sender instanceof Player)) {
-            sender.sendMessage("This command can't be used int the console.");
+            sender.sendMessage("This command can't be used in the console.");
             return false;
         }
 
