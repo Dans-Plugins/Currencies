@@ -2,13 +2,13 @@ package dansplugins.currencies.commands;
 
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.objects.Coinpurse;
-import dansplugins.fiefs.utils.UUIDChecker;
 
 import org.bukkit.ChatColor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
+import preponderous.ponder.minecraft.bukkit.tools.UUIDChecker;
 
 import java.util.ArrayList;
 import java.util.Arrays;
