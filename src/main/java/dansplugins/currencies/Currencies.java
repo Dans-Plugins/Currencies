@@ -77,6 +77,7 @@ public final class Currencies extends PonderBukkitPlugin {
         try {
             this.medievalFactionsAPI = MedievalFactions.getInstance().getAPI();
         } catch(Exception e) {
+            this.medievalFactionsAPI = null;
             Logger.getInstance().log("Something went wrong initializing the MF API.");
         }
     }
