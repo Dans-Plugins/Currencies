@@ -1,7 +1,7 @@
 package dansplugins.currencies.services;
 
-import dansplugins.currencies.integrators.MedievalFactionsIntegrator;
 import dansplugins.currencies.utils.Messenger;
+import dansplugins.currencies.Currencies;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.objects.Currency;
 import dansplugins.factionsystem.externalapi.MF_Faction;
@@ -93,7 +93,7 @@ public class LocalCurrencyService {
         if (currency.getAmount() > 0) {
             PersistentData.getInstance().addRetiredCurrency(currency);
         }
-        MF_Faction faction = MedievalFactionsIntegrator.getInstance().getAPI().getFaction(currency.getFactionName());
+        MF_Faction faction = Currencies.getInstance().getMedievalFactionsAPI().getFaction(currency.getFactionName());
         Messenger.getInstance().sendMessageToOnlinePlayersInFaction(faction, ChatColor.RED + "The currency known as " + currency.getName() + " has been retired.");
     }
 

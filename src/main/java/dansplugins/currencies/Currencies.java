@@ -24,6 +24,8 @@ import dansplugins.currencies.eventhandlers.PlacementHandler;
 import dansplugins.currencies.services.LocalConfigService;
 import dansplugins.currencies.services.LocalStorageService;
 import dansplugins.currencies.utils.Scheduler;
+import dansplugins.factionsystem.MedievalFactions;
+import dansplugins.factionsystem.externalapi.MedievalFactionsAPI;
 import preponderous.ponder.minecraft.bukkit.PonderMC;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
@@ -44,6 +46,7 @@ import java.util.Arrays;
 public final class Currencies extends PonderBukkitPlugin {
     private static Currencies instance;
     private final String pluginVersion = "v" + getDescription().getVersion();
+    private final MedievalFactionsAPI medievalFactionsAPI = MedievalFactions.getInstance().getAPI();
     private CommandService commandService = new CommandService((PonderMC) getPonder());
 
     /**
@@ -108,6 +111,10 @@ public final class Currencies extends PonderBukkitPlugin {
      */
     public boolean isDebugEnabled() {
         return LocalConfigService.getInstance().getBoolean("debugMode");
+    }
+
+    public MedievalFactionsAPI getMedievalFactionsAPI() {
+        return medievalFactionsAPI;
     }
 
     /**

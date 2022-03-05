@@ -1,7 +1,7 @@
 package dansplugins.currencies.commands;
 
 import dansplugins.currencies.factories.CurrencyFactory;
-import dansplugins.currencies.integrators.MedievalFactionsIntegrator;
+import dansplugins.currencies.Currencies;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.services.LocalConfigService;
 import dansplugins.currencies.objects.Currency;
@@ -42,7 +42,7 @@ public class MintCommand extends AbstractPluginCommand {
 
         Player player = (Player) sender;
 
-        MF_Faction faction = MedievalFactionsIntegrator.getInstance().getAPI().getFaction(player);
+        MF_Faction faction = Currencies.getInstance().getMedievalFactionsAPI().getFaction(player);
 
         if (faction == null) {
             player.sendMessage(ChatColor.RED + "You must be in a faction to use this command.");
@@ -87,7 +87,7 @@ public class MintCommand extends AbstractPluginCommand {
                 powerRequired = minimumPowerCost;
             }
 
-            double playerPower = MedievalFactionsIntegrator.getInstance().getAPI().getPower(player);
+            double playerPower = Currencies.getInstance().getMedievalFactionsAPI().getPower(player);
 
             if (playerPower < powerRequired) {
                 player.sendMessage(ChatColor.RED + "You need " + powerRequired + " power to mint that much currency.");
@@ -112,7 +112,7 @@ public class MintCommand extends AbstractPluginCommand {
         player.getInventory().addItem(itemStack); // TODO: handle full inventory
 
         if (powerCostEnabled) {
-            MedievalFactionsIntegrator.getInstance().getAPI().decreasePower(player, powerRequired);
+            Currencies.getInstance().getMedievalFactionsAPI().decreasePower(player, powerRequired);
             player.sendMessage(ChatColor.GREEN + "Minted. Power has been decreased by " + powerRequired + ".");
         }
         else {

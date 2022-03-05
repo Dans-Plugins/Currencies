@@ -1,6 +1,6 @@
 package dansplugins.currencies.commands;
 
-import dansplugins.currencies.integrators.MedievalFactionsIntegrator;
+import dansplugins.currencies.Currencies;
 import dansplugins.currencies.data.PersistentData;
 import dansplugins.currencies.services.LocalCurrencyService;
 import dansplugins.currencies.objects.Currency;
@@ -31,7 +31,7 @@ public class RetireCommand extends AbstractPluginCommand {
 
         Player player = (Player) sender;
 
-        MF_Faction faction = MedievalFactionsIntegrator.getInstance().getAPI().getFaction(player);
+        MF_Faction faction = Currencies.getInstance().getMedievalFactionsAPI().getFaction(player);
 
         if (faction == null) {
             player.sendMessage(ChatColor.RED + "You must be in a faction to use this command.");
