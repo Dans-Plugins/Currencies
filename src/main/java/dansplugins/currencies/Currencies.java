@@ -24,7 +24,9 @@ import dansplugins.currencies.eventhandlers.PlacementHandler;
 import dansplugins.currencies.services.LocalConfigService;
 import dansplugins.currencies.services.LocalStorageService;
 import dansplugins.currencies.utils.Scheduler;
+import dansplugins.factionsystem.MedievalFactions;
 import dansplugins.factionsystem.externalapi.MedievalFactionsAPI;
+import dansplugins.factionsystem.utils.Logger;
 import preponderous.ponder.minecraft.bukkit.PonderMC;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
@@ -45,7 +47,7 @@ import java.util.Arrays;
 public final class Currencies extends PonderBukkitPlugin {
     private static Currencies instance;
     private final String pluginVersion = "v" + getDescription().getVersion();
-    private MedievalFactionsAPI medievalFactionsAPI = new MedievalFactionsAPI();
+    private MedievalFactionsAPI medievalFactionsAPI;
     private CommandService commandService = new CommandService((PonderMC) getPonder());
 
     /**
@@ -62,12 +64,21 @@ public final class Currencies extends PonderBukkitPlugin {
     @Override
     public void onEnable() {
         instance = this;
+        initializeMFAPI();
         initializeConfig();
         registerEventHandlers();
         initializeCommandService();
         LocalStorageService.getInstance().load();
         Scheduler.getInstance().scheduleAutosave();
         handlebStatsIntegration();
+    }
+
+    private void initializeMFAPI() {
+        try {
+            this.medievalFactionsAPI = MedievalFactions.getInstance().getAPI();
+        } catch(Exception e) {
+            Logger.getInstance().log("Something went wrong initializing the MF API.");
+        }
     }
 
     /**
@@ -113,6 +124,9 @@ public final class Currencies extends PonderBukkitPlugin {
     }
 
     public MedievalFactionsAPI getMedievalFactionsAPI() {
+        if (medievalFactionsAPI == null) {
+           initializeMFAPI();
+        }
         return medievalFactionsAPI;
     }
 
