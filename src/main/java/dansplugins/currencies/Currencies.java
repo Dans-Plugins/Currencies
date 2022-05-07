@@ -2,6 +2,7 @@ package dansplugins.currencies;
 
 import dansplugins.currencies.bstats.Metrics;
 import dansplugins.currencies.commands.BalanceCommand;
+import dansplugins.currencies.commands.ConfigCommand;
 import dansplugins.currencies.commands.CreateCommand;
 import dansplugins.currencies.commands.DefaultCommand;
 import dansplugins.currencies.commands.DepositCommand;
@@ -202,7 +203,8 @@ public final class Currencies extends PonderBukkitPlugin {
                 new MintCommand(),
                 new RenameCommand(),
                 new RetireCommand(),
-                new WithdrawCommand()
+                new WithdrawCommand(),
+                new ConfigCommand()
         ));
         commandService.initialize(commands, "That command wasn't found.");
     }

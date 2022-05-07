@@ -38,7 +38,7 @@ public class ConfigCommand extends AbstractPluginCommand {
             String option = args[1];
 
             String value = "";
-            if (option.equalsIgnoreCase("denyUsageMessage") || option.equalsIgnoreCase("denyCreationMessage")) {
+            if (option.equalsIgnoreCase("denyUsageMessage") || option.equalsIgnoreCase("denyCreationMessage")) { // is this relevant to this project?
                 ArgumentParser argumentParser = new ArgumentParser();
                 ArrayList<String> singleQuoteArgs = argumentParser.getArgumentsInsideDoubleQuotes(args);
                 if (singleQuoteArgs.size() == 0) {
