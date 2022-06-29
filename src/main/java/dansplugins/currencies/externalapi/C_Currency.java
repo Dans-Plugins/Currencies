@@ -2,6 +2,9 @@ package dansplugins.currencies.externalapi;
 
 import dansplugins.currencies.objects.Currency;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class C_Currency implements IC_Currency {
 
     Currency currency;

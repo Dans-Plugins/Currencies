@@ -1,10 +1,10 @@
 package dansplugins.currencies.commands;
 
-import dansplugins.currencies.factories.CurrencyFactory;
 import dansplugins.currencies.Currencies;
 import dansplugins.currencies.data.PersistentData;
-import dansplugins.currencies.services.LocalConfigService;
+import dansplugins.currencies.factories.CurrencyFactory;
 import dansplugins.currencies.objects.Currency;
+import dansplugins.currencies.services.ConfigService;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 
@@ -22,9 +22,17 @@ import org.bukkit.inventory.ItemStack;
  * @author Daniel McCoy Stephenson
  */
 public class MintCommand extends AbstractPluginCommand {
+    private final Currencies currencies;
+    private final PersistentData persistentData;
+    private final ConfigService configService;
+    private final CurrencyFactory currencyFactory;
 
-    public MintCommand() {
+    public MintCommand(Currencies currencies, PersistentData persistentData, ConfigService configService, CurrencyFactory currencyFactory) {
         super(new ArrayList<>(Arrays.asList("mint")), new ArrayList<>(Arrays.asList("currencies.mint")));
+        this.currencies = currencies;
+        this.persistentData = persistentData;
+        this.configService = configService;
+        this.currencyFactory = currencyFactory;
     }
 
     @Override
@@ -42,7 +50,7 @@ public class MintCommand extends AbstractPluginCommand {
 
         Player player = (Player) sender;
 
-        MF_Faction faction = Currencies.getInstance().getMedievalFactionsAPI().getFaction(player);
+        MF_Faction faction = currencies.getMedievalFactionsAPI().getFaction(player);
 
         if (faction == null) {
             player.sendMessage(ChatColor.RED + "You must be in a faction to use this command.");
@@ -62,7 +70,7 @@ public class MintCommand extends AbstractPluginCommand {
             }
         }
 
-        Currency currency = PersistentData.getInstance().getActiveCurrency(faction);
+        Currency currency = persistentData.getActiveCurrency(faction);
 
         if (currency == null) {
             player.sendMessage(ChatColor.RED + "Your faction doesn't have a currency yet.");
@@ -76,18 +84,18 @@ public class MintCommand extends AbstractPluginCommand {
             return false;
         }
 
-        boolean powerCostEnabled = LocalConfigService.getInstance().getBoolean("powerCostEnabled");
+        boolean powerCostEnabled = configService.getBoolean("powerCostEnabled");
         int powerRequired = -1;
         if (powerCostEnabled) {
-            double powerCost = LocalConfigService.getInstance().getDouble("powerCost");
+            double powerCost = configService.getDouble("powerCost");
             powerRequired = (int) (amount * powerCost);
 
-            int minimumPowerCost = 1; LocalConfigService.getInstance().getInt("minimumPowerCost");
+            int minimumPowerCost = 1; configService.getInt("minimumPowerCost");
             if (powerRequired < 1) {
                 powerRequired = minimumPowerCost;
             }
 
-            double playerPower = Currencies.getInstance().getMedievalFactionsAPI().getPower(player);
+            double playerPower = currencies.getMedievalFactionsAPI().getPower(player);
 
             if (playerPower < powerRequired) {
                 player.sendMessage(ChatColor.RED + "You need " + powerRequired + " power to mint that much currency.");
@@ -95,7 +103,7 @@ public class MintCommand extends AbstractPluginCommand {
             }
         }
 
-        if (LocalConfigService.getInstance().getBoolean("itemCost")) {
+        if (configService.getBoolean("itemCost")) {
             // require player to have enough items to mint
             Material material = Material.getMaterial(currency.getMaterial());
             ItemStack itemStack = new ItemStack(material);
@@ -107,12 +115,12 @@ public class MintCommand extends AbstractPluginCommand {
             inventory.removeItem(new ItemStack(material, amount));
         }
 
-        ItemStack itemStack = CurrencyFactory.getInstance().createCurrencyItem(currency, amount);
+        ItemStack itemStack = currencyFactory.createCurrencyItem(currency, amount);
 
         player.getInventory().addItem(itemStack); // TODO: handle full inventory
 
         if (powerCostEnabled) {
-            Currencies.getInstance().getMedievalFactionsAPI().decreasePower(player, powerRequired);
+            currencies.getMedievalFactionsAPI().decreasePower(player, powerRequired);
             player.sendMessage(ChatColor.GREEN + "Minted. Power has been decreased by " + powerRequired + ".");
         }
         else {

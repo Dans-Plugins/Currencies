@@ -8,6 +8,9 @@ import org.bukkit.Material;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class Currency implements ICurrency, Savable {
     private String name;
     private String factionName;

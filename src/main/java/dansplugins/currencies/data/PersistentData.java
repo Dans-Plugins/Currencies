@@ -9,23 +9,13 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.UUID;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class PersistentData {
-    private static PersistentData instance;
-
-    private ArrayList<Currency> activeCurrencies = new ArrayList<>();
-    private ArrayList<Currency> retiredCurrencies = new ArrayList<>();
-    private ArrayList<Coinpurse> coinpurses = new ArrayList<>();
-
-    private PersistentData() {
-
-    }
-
-    public static PersistentData getInstance() {
-        if (instance == null) {
-            instance = new PersistentData();
-        }
-        return instance;
-    }
+    private final ArrayList<Currency> activeCurrencies = new ArrayList<>();
+    private final ArrayList<Currency> retiredCurrencies = new ArrayList<>();
+    private final ArrayList<Coinpurse> coinpurses = new ArrayList<>();
 
     public ArrayList<Currency> getActiveCurrencies() {
         return activeCurrencies;

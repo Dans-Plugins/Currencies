@@ -1,7 +1,7 @@
 package dansplugins.currencies.commands;
 
-import dansplugins.currencies.factories.CurrencyFactory;
 import dansplugins.currencies.data.PersistentData;
+import dansplugins.currencies.factories.CurrencyFactory;
 import dansplugins.currencies.objects.Coinpurse;
 import dansplugins.currencies.objects.Currency;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
@@ -13,14 +13,19 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Daniel McCoy Stephenson
  */
 public class DepositCommand extends AbstractPluginCommand {
+    private final PersistentData persistentData;
+    private final CurrencyFactory currencyFactory;
 
-    public DepositCommand() {
+    public DepositCommand(PersistentData persistentData, CurrencyFactory currencyFactory) {
         super(new ArrayList<>(Arrays.asList("deposit")), new ArrayList<>(Arrays.asList("currencies.deposit")));
+        this.persistentData = persistentData;
+        this.currencyFactory = currencyFactory;
     }
 
     @Override
@@ -43,7 +48,7 @@ public class DepositCommand extends AbstractPluginCommand {
         }
 
         ArgumentParser argumentParser = new ArgumentParser();
-        ArrayList<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
+        List<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
 
         if (specifiedArguments.size() < 2) {
             player.sendMessage(ChatColor.RED + "Arguments must be specified in between quotation marks.");
@@ -60,27 +65,27 @@ public class DepositCommand extends AbstractPluginCommand {
             return false;
         }
 
-        Currency currency = PersistentData.getInstance().getCurrency(currencyName);
+        Currency currency = persistentData.getCurrency(currencyName);
         if (currency == null) {
             player.sendMessage(ChatColor.RED + "That currency wasn't found.");
             return false;
         }
 
-        Coinpurse coinpurse = PersistentData.getInstance().getCoinpurse(player.getUniqueId());
+        Coinpurse coinpurse = persistentData.getCoinpurse(player.getUniqueId());
 
         if (coinpurse == null) {
             player.sendMessage(ChatColor.RED + "[Error] Coinpurse not found.");
             return false;
         }
 
-        if (!player.getInventory().containsAtLeast(CurrencyFactory.getInstance().createCurrencyItem(currency, 1), amount)) {
+        if (!player.getInventory().containsAtLeast(currencyFactory.createCurrencyItem(currency, 1), amount)) {
             player.sendMessage(ChatColor.RED + "Not enough currency.");
             return false;
         }
 
         coinpurse.addCurrencyAmount(currency, amount);
 
-        player.getInventory().removeItem(CurrencyFactory.getInstance().createCurrencyItem(currency, amount));
+        player.getInventory().removeItem(currencyFactory.createCurrencyItem(currency, amount));
 
         player.sendMessage(ChatColor.GREEN + "Deposited " + amount + ".");
         return true;

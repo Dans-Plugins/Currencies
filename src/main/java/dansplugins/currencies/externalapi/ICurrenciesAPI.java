@@ -5,6 +5,9 @@ import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public interface ICurrenciesAPI {
     C_Currency getCurrency(String currencyName);
     C_Currency getCurrency(int currencyID);

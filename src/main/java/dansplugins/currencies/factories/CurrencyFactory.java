@@ -8,20 +8,10 @@ import org.bukkit.inventory.meta.ItemMeta;
 
 import static java.util.Arrays.asList;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class CurrencyFactory {
-
-    private static CurrencyFactory instance;
-
-    private CurrencyFactory() {
-
-    }
-
-    public static CurrencyFactory getInstance() {
-        if (instance == null) {
-            instance = new CurrencyFactory();
-        }
-        return instance;
-    }
 
     public ItemStack createCurrencyItem(Currency currency, int amount) {
         Material material = Material.getMaterial(currency.getMaterial());

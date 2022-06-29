@@ -1,7 +1,7 @@
 package dansplugins.currencies.commands;
 
-import dansplugins.currencies.factories.CurrencyFactory;
 import dansplugins.currencies.data.PersistentData;
+import dansplugins.currencies.factories.CurrencyFactory;
 import dansplugins.currencies.objects.Coinpurse;
 import dansplugins.currencies.objects.Currency;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
@@ -16,11 +16,16 @@ import org.bukkit.entity.Player;
  */
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class WithdrawCommand extends AbstractPluginCommand {
+    private final PersistentData persistentData;
+    private final CurrencyFactory currencyFactory;
 
-    public WithdrawCommand() {
+    public WithdrawCommand(PersistentData persistentData, CurrencyFactory currencyFactory) {
         super(new ArrayList<>(Arrays.asList("withdraw")), new ArrayList<>(Arrays.asList("currencies.withdraw")));
+        this.persistentData = persistentData;
+        this.currencyFactory = currencyFactory;
     }
 
     @Override
@@ -43,7 +48,7 @@ public class WithdrawCommand extends AbstractPluginCommand {
         }
 
         ArgumentParser argumentParser = new ArgumentParser();
-        ArrayList<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
+        List<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
 
         if (specifiedArguments.size() < 2) {
             player.sendMessage(ChatColor.RED + "Arguments must be specified in between quotation marks.");
@@ -60,13 +65,13 @@ public class WithdrawCommand extends AbstractPluginCommand {
             return false;
         }
 
-        Currency currency = PersistentData.getInstance().getCurrency(currencyName);
+        Currency currency = persistentData.getCurrency(currencyName);
         if (currency == null) {
             player.sendMessage(ChatColor.RED + "That currency wasn't found.");
             return false;
         }
 
-        Coinpurse coinpurse = PersistentData.getInstance().getCoinpurse(player.getUniqueId());
+        Coinpurse coinpurse = persistentData.getCoinpurse(player.getUniqueId());
 
         if (coinpurse == null) {
             player.sendMessage(ChatColor.RED + "[Error] Coinpurse not found.");
@@ -89,7 +94,7 @@ public class WithdrawCommand extends AbstractPluginCommand {
         for (int i = 0; i < amount; i++) {
             if (!(player.getInventory().firstEmpty() == -1)) {
                 coinpurse.subtractCurrencyAmount(currency,1);
-                player.getInventory().addItem(CurrencyFactory.getInstance().createCurrencyItem(currency, 1));
+                player.getInventory().addItem(currencyFactory.createCurrencyItem(currency, 1));
                 withdrawn++;
             }
             else {
@@ -98,14 +103,14 @@ public class WithdrawCommand extends AbstractPluginCommand {
                 if (remainder < 64) {
                     // we can fit this in the last slot
                     coinpurse.subtractCurrencyAmount(currency,remainder);
-                    player.getInventory().addItem(CurrencyFactory.getInstance().createCurrencyItem(currency, remainder));
+                    player.getInventory().addItem(currencyFactory.createCurrencyItem(currency, remainder));
                     withdrawn = withdrawn + remainder;
                     break;
                 }
                 else {
                     // we can't fit this in the last slot, but we can fit 63
                     coinpurse.subtractCurrencyAmount(currency,63);
-                    player.getInventory().addItem(CurrencyFactory.getInstance().createCurrencyItem(currency, 63));
+                    player.getInventory().addItem(currencyFactory.createCurrencyItem(currency, 63));
                     withdrawn = withdrawn + 63;
                     break;
                 }

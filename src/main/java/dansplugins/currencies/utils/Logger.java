@@ -2,23 +2,18 @@ package dansplugins.currencies.utils;
 
 import dansplugins.currencies.Currencies;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class Logger {
+    private final Currencies currencies;
 
-    private static Logger instance;
-
-    private Logger() {
-
-    }
-
-    public static Logger getInstance() {
-        if (instance == null) {
-            instance = new Logger();
-        }
-        return instance;
+    public Logger(Currencies currencies) {
+        this.currencies = currencies;
     }
 
     public void log(String message) {
-        if (Currencies.getInstance().isDebugEnabled()) {
+        if (currencies.isDebugEnabled()) {
             System.out.println("[Currencies] " + message);
         }
     }

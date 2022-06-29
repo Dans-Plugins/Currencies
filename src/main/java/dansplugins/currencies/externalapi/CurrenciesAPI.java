@@ -1,19 +1,29 @@
 package dansplugins.currencies.externalapi;
 
 import dansplugins.currencies.data.PersistentData;
-import dansplugins.currencies.services.LocalCurrencyService;
 import dansplugins.currencies.objects.Currency;
+import dansplugins.currencies.services.CurrencyService;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 
 import java.util.ArrayList;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class CurrenciesAPI implements ICurrenciesAPI {
+    private final PersistentData persistentData;
+    private final CurrencyService currencyService;
+
+    public CurrenciesAPI(PersistentData persistentData, CurrencyService currencyService) {
+        this.persistentData = persistentData;
+        this.currencyService = currencyService;
+    }
 
     @Override
     public C_Currency getCurrency(String currencyName) {
-        Currency currency = PersistentData.getInstance().getCurrency(currencyName);
+        Currency currency = persistentData.getCurrency(currencyName);
         if (currency != null) {
             return new C_Currency(currency);
         }
@@ -22,7 +32,7 @@ public class CurrenciesAPI implements ICurrenciesAPI {
 
     @Override
     public C_Currency getCurrency(int currencyID) {
-        Currency currency = PersistentData.getInstance().getCurrency(currencyID);
+        Currency currency = persistentData.getCurrency(currencyID);
         if (currency != null) {
             return new C_Currency(currency);
         }
@@ -31,7 +41,7 @@ public class CurrenciesAPI implements ICurrenciesAPI {
 
     @Override
     public C_Currency getCurrency(MF_Faction faction) {
-        Currency currency = PersistentData.getInstance().getCurrency(faction);
+        Currency currency = persistentData.getCurrency(faction);
         if (currency != null) {
             return new C_Currency(currency);
         }
@@ -41,10 +51,10 @@ public class CurrenciesAPI implements ICurrenciesAPI {
     @Override
     public ArrayList<C_Currency> getCurrencies() {
         ArrayList<C_Currency> toReturn = new ArrayList<>();
-        for (Currency currency : PersistentData.getInstance().getActiveCurrencies()) {
+        for (Currency currency : persistentData.getActiveCurrencies()) {
             toReturn.add(new C_Currency(currency));
         }
-        for (Currency currency : PersistentData.getInstance().getActiveCurrencies()) {
+        for (Currency currency : persistentData.getActiveCurrencies()) {
             toReturn.add(new C_Currency(currency));
         }
         return toReturn;
@@ -52,12 +62,12 @@ public class CurrenciesAPI implements ICurrenciesAPI {
 
     @Override
     public boolean isCurrency(ItemStack itemStack) {
-        return LocalCurrencyService.getInstance().isCurrency(itemStack);
+        return currencyService.isCurrency(itemStack);
     }
 
     @Override
     public String getCurrencyID(ItemStack itemStack) {
         ItemMeta meta = itemStack.getItemMeta();
-        return LocalCurrencyService.getInstance().getCurrencyID(meta);
+        return currencyService.getCurrencyID(meta);
     }
 }
