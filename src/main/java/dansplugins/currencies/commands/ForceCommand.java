@@ -1,8 +1,8 @@
 package dansplugins.currencies.commands;
 
 import dansplugins.currencies.data.PersistentData;
-import dansplugins.currencies.services.LocalCurrencyService;
 import dansplugins.currencies.objects.Currency;
+import dansplugins.currencies.services.CurrencyService;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 import preponderous.ponder.minecraft.bukkit.tools.PermissionChecker;
 import preponderous.ponder.misc.ArgumentParser;
@@ -12,16 +12,22 @@ import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Daniel McCoy Stephenson
  */
 public class ForceCommand extends AbstractPluginCommand {
-    private ArgumentParser argumentParser = new ArgumentParser();
-    private PermissionChecker permissionChecker = new PermissionChecker();
+    private final PersistentData persistentData;
+    private final CurrencyService currencyService;
 
-    public ForceCommand() {
+    private final ArgumentParser argumentParser = new ArgumentParser();
+    private final PermissionChecker permissionChecker = new PermissionChecker();
+
+    public ForceCommand(PersistentData persistentData, CurrencyService currencyService) {
         super(new ArrayList<>(Arrays.asList("force")), new ArrayList<>(Arrays.asList("currencies.force")));
+        this.persistentData = persistentData;
+        this.currencyService = currencyService;
     }
 
     @Override
@@ -57,7 +63,7 @@ public class ForceCommand extends AbstractPluginCommand {
             return false;
         }
 
-        ArrayList<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
+        List<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
 
         if (specifiedArguments.size() == 0) {
             sender.sendMessage(ChatColor.RED + "Name must be specified in between quotation marks.");
@@ -66,7 +72,7 @@ public class ForceCommand extends AbstractPluginCommand {
 
         String currencyName = specifiedArguments.get(0);
 
-        Currency currency = PersistentData.getInstance().getActiveCurrency(currencyName);
+        Currency currency = persistentData.getActiveCurrency(currencyName);
 
         if (currency == null) {
             sender.sendMessage(ChatColor.RED + "There are no active currencies named " + currencyName);
@@ -75,7 +81,7 @@ public class ForceCommand extends AbstractPluginCommand {
 
         // TODO: insert an "are you sure?" prompt here
 
-        LocalCurrencyService.getInstance().retireCurrency(currency);
+        currencyService.retireCurrency(currency);
         sender.sendMessage(ChatColor.GREEN + "Retired.");
         return true;
     }
@@ -87,7 +93,7 @@ public class ForceCommand extends AbstractPluginCommand {
             return false;
         }
 
-        ArrayList<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
+        List<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
 
         if (specifiedArguments.size() < 2) {
             sender.sendMessage(ChatColor.RED + "Name and new name must be designated in between quotation marks.");
@@ -96,7 +102,7 @@ public class ForceCommand extends AbstractPluginCommand {
 
         String currencyName = specifiedArguments.get(0);
 
-        Currency currency = PersistentData.getInstance().getCurrency(currencyName);
+        Currency currency = persistentData.getCurrency(currencyName);
 
         if (currency == null) {
             sender.sendMessage(ChatColor.RED + "There are no currencies named " + currencyName);
@@ -105,7 +111,7 @@ public class ForceCommand extends AbstractPluginCommand {
 
         String newName = specifiedArguments.get(1);
 
-        Currency newNameCurrency = PersistentData.getInstance().getCurrency(newName);
+        Currency newNameCurrency = persistentData.getCurrency(newName);
 
         if (newNameCurrency != null) {
             sender.sendMessage(ChatColor.RED + "That name is taken by an active or retired currency.");

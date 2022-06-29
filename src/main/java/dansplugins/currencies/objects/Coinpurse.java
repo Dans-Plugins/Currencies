@@ -13,16 +13,25 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public class Coinpurse implements ICoinpurse, Savable {
+    private final PersistentData persistentData;
+    private final Currencies currencies;
 
     private UUID ownerUUID;
     private HashMap<Integer, Integer> currencyAmounts = new HashMap<>(); // map of currencyID -> amount
 
-    public Coinpurse(UUID playerUUID) {
+    public Coinpurse(PersistentData persistentData, Currencies currencies, UUID playerUUID) {
+        this.persistentData = persistentData;
+        this.currencies = currencies;
         this.ownerUUID = playerUUID;
     }
 
-    public Coinpurse(Map<String, String> data) {
+    public Coinpurse(Map<String, String> data, PersistentData persistentData, Currencies currencies) {
+        this.persistentData = persistentData;
+        this.currencies = currencies;
         this.load(data);
     }
 
@@ -71,9 +80,9 @@ public class Coinpurse implements ICoinpurse, Savable {
         }
         player.sendMessage(ChatColor.AQUA + "=== Coinpurse Contents ===");
         for (int currencyID : currencyAmounts.keySet()) {
-            Currency currency = PersistentData.getInstance().getCurrency(currencyID);
+            Currency currency = persistentData.getCurrency(currencyID);
             if (currency == null) {
-                if (Currencies.getInstance().isDebugEnabled()) { System.out.println("[ERROR] Currency was null when attempting to list in the output of the balance command."); }
+                if (currencies.isDebugEnabled()) { System.out.println("[ERROR] Currency was null when attempting to list in the output of the balance command."); }
                 continue;
             }
             if (!currency.isRetired()) {

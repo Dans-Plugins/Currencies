@@ -1,6 +1,6 @@
 package dansplugins.currencies.commands;
 
-import dansplugins.currencies.services.LocalConfigService;
+import dansplugins.currencies.services.ConfigService;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 import preponderous.ponder.misc.ArgumentParser;
 
@@ -9,14 +9,17 @@ import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Daniel McCoy Stephenson
  */
 public class ConfigCommand extends AbstractPluginCommand {
+    private final ConfigService configService;
 
-    public ConfigCommand() {
+    public ConfigCommand(ConfigService configService) {
         super(new ArrayList<>(Arrays.asList("config")), new ArrayList<>(Arrays.asList("currencies.config")));
+        this.configService = configService;
     }
 
     @Override
@@ -27,7 +30,7 @@ public class ConfigCommand extends AbstractPluginCommand {
 
     public boolean execute(CommandSender sender, String[] args) {
         if (args[0].equalsIgnoreCase("show")) {
-            LocalConfigService.getInstance().sendConfigList(sender);
+            configService.sendConfigList(sender);
             return true;
         }
         else if (args[0].equalsIgnoreCase("set")) {
@@ -40,7 +43,7 @@ public class ConfigCommand extends AbstractPluginCommand {
             String value = "";
             if (option.equalsIgnoreCase("denyUsageMessage") || option.equalsIgnoreCase("denyCreationMessage")) { // is this relevant to this project?
                 ArgumentParser argumentParser = new ArgumentParser();
-                ArrayList<String> singleQuoteArgs = argumentParser.getArgumentsInsideDoubleQuotes(args);
+                List<String> singleQuoteArgs = argumentParser.getArgumentsInsideDoubleQuotes(args);
                 if (singleQuoteArgs.size() == 0) {
                     sender.sendMessage(ChatColor.RED + "New message must be in between quotation marks.");
                     return false;
@@ -51,7 +54,7 @@ public class ConfigCommand extends AbstractPluginCommand {
                 value = args[2];
             }
 
-            LocalConfigService.getInstance().setConfigOption(option, value, sender);
+            configService.setConfigOption(option, value, sender);
             return true;
         }
         else {

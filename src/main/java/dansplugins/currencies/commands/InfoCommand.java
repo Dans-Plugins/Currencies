@@ -2,8 +2,8 @@ package dansplugins.currencies.commands;
 
 import dansplugins.currencies.Currencies;
 import dansplugins.currencies.data.PersistentData;
-import dansplugins.currencies.services.LocalConfigService;
 import dansplugins.currencies.objects.Currency;
+import dansplugins.currencies.services.ConfigService;
 import dansplugins.factionsystem.externalapi.MF_Faction;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 import preponderous.ponder.misc.ArgumentParser;
@@ -14,14 +14,21 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Daniel McCoy Stephenson
  */
 public class InfoCommand extends AbstractPluginCommand {
+    private final Currencies currencies;
+    private final PersistentData persistentData;
+    private final ConfigService configService;
 
-    public InfoCommand() {
+    public InfoCommand(Currencies currencies, PersistentData persistentData, ConfigService configService) {
         super(new ArrayList<>(Arrays.asList("info")), new ArrayList<>(Arrays.asList("currencies.info")));
+        this.currencies = currencies;
+        this.persistentData = persistentData;
+        this.configService = configService;
     }
 
     @Override
@@ -33,14 +40,14 @@ public class InfoCommand extends AbstractPluginCommand {
 
         Player player = (Player) sender;
 
-        MF_Faction faction = Currencies.getInstance().getMedievalFactionsAPI().getFaction(player);
+        MF_Faction faction = currencies.getMedievalFactionsAPI().getFaction(player);
 
         if (faction == null) {
             player.sendMessage(ChatColor.RED + "You must be in a faction to use this command.");
             return false;
         }
 
-        Currency currency = PersistentData.getInstance().getActiveCurrency(faction);
+        Currency currency = persistentData.getActiveCurrency(faction);
 
         if (currency == null) {
             player.sendMessage(ChatColor.RED + "Your faction doesn't have a currency yet.");
@@ -65,7 +72,7 @@ public class InfoCommand extends AbstractPluginCommand {
         }
 
         ArgumentParser argumentParser = new ArgumentParser();
-        ArrayList<String> quotationMarks = argumentParser.getArgumentsInsideDoubleQuotes(args);
+        List<String> quotationMarks = argumentParser.getArgumentsInsideDoubleQuotes(args);
 
         if (quotationMarks.size() == 0) {
             player.sendMessage(ChatColor.RED + "Currency name must be designated in between quotation marks.");
@@ -73,7 +80,7 @@ public class InfoCommand extends AbstractPluginCommand {
         }
 
         String currencyName = quotationMarks.get(0);
-        Currency currency = PersistentData.getInstance().getCurrency(currencyName);
+        Currency currency = persistentData.getCurrency(currencyName);
 
         sendCurrencyInfo(currency, player);
         return true;
@@ -91,7 +98,7 @@ public class InfoCommand extends AbstractPluginCommand {
         player.sendMessage(ChatColor.AQUA + "Faction: " + currency.getFactionName());
         player.sendMessage(ChatColor.AQUA + "Material: " + currency.getMaterial());
         player.sendMessage(ChatColor.AQUA + "ID: " + currency.getCurrencyID());
-        if (LocalConfigService.getInstance().getBoolean("showAmountMinted")) {
+        if (configService.getBoolean("showAmountMinted")) {
             player.sendMessage(ChatColor.AQUA + "Minted: " + currency.getAmount());
         }
     }

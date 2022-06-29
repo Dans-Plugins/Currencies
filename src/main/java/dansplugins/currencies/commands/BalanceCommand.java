@@ -18,9 +18,11 @@ import java.util.UUID;
  * @author Daniel McCoy Stephenson
  */
 public class BalanceCommand extends AbstractPluginCommand {
+    private final PersistentData persistentData;
 
-    public BalanceCommand() {
+    public BalanceCommand(PersistentData persistentData) {
         super(new ArrayList<>(Arrays.asList("balance")), new ArrayList<>(Arrays.asList("currencies.balance")));
+        this.persistentData = persistentData;
     }
 
     @Override
@@ -32,7 +34,7 @@ public class BalanceCommand extends AbstractPluginCommand {
 
         Player player = (Player) sender;
 
-        Coinpurse coinpurse = PersistentData.getInstance().getCoinpurse(player.getUniqueId());
+        Coinpurse coinpurse = persistentData.getCoinpurse(player.getUniqueId());
 
         if (coinpurse == null) {
             player.sendMessage(ChatColor.RED + "[Error] Coinpurse not found.");
@@ -63,7 +65,7 @@ public class BalanceCommand extends AbstractPluginCommand {
             player.sendMessage(ChatColor.RED + "That player wasn't found.");
             return false;
         }
-        Coinpurse coinpurse = PersistentData.getInstance().getCoinpurse(playerUUID);
+        Coinpurse coinpurse = persistentData.getCoinpurse(playerUUID);
 
         if (coinpurse == null) {
             player.sendMessage(ChatColor.RED + "That player doesn't have a coinpurse yet.");

@@ -1,6 +1,5 @@
 package dansplugins.currencies;
 
-import dansplugins.currencies.bstats.Metrics;
 import dansplugins.currencies.commands.BalanceCommand;
 import dansplugins.currencies.commands.ConfigCommand;
 import dansplugins.currencies.commands.CreateCommand;
@@ -15,20 +14,23 @@ import dansplugins.currencies.commands.MintCommand;
 import dansplugins.currencies.commands.RenameCommand;
 import dansplugins.currencies.commands.RetireCommand;
 import dansplugins.currencies.commands.WithdrawCommand;
-import dansplugins.currencies.eventhandlers.AnvilUsageHandler;
-import dansplugins.currencies.eventhandlers.CraftingHandler;
-import dansplugins.currencies.eventhandlers.FactionEventHandler;
-import dansplugins.currencies.eventhandlers.FurnaceUsageHandler;
-import dansplugins.currencies.eventhandlers.InteractionHandler;
-import dansplugins.currencies.eventhandlers.JoinHandler;
-import dansplugins.currencies.eventhandlers.PlacementHandler;
-import dansplugins.currencies.services.LocalConfigService;
-import dansplugins.currencies.services.LocalStorageService;
+import dansplugins.currencies.data.PersistentData;
+import dansplugins.currencies.factories.CurrencyFactory;
+import dansplugins.currencies.listeners.AnvilUsageListener;
+import dansplugins.currencies.listeners.CraftingListener;
+import dansplugins.currencies.listeners.FactionEventListener;
+import dansplugins.currencies.listeners.FurnaceUsageListener;
+import dansplugins.currencies.listeners.InteractionListener;
+import dansplugins.currencies.listeners.JoinListener;
+import dansplugins.currencies.listeners.PlacementListener;
+import dansplugins.currencies.services.ConfigService;
+import dansplugins.currencies.services.CurrencyService;
+import dansplugins.currencies.services.StorageService;
 import dansplugins.currencies.utils.Logger;
+import dansplugins.currencies.utils.Messenger;
 import dansplugins.currencies.utils.Scheduler;
-import dansplugins.factionsystem.MedievalFactions;
 import dansplugins.factionsystem.externalapi.MedievalFactionsAPI;
-import preponderous.ponder.minecraft.bukkit.PonderMC;
+import dansplugins.factionsystem.shadow.org.bstats.bukkit.Metrics;
 import preponderous.ponder.minecraft.bukkit.abs.AbstractPluginCommand;
 import preponderous.ponder.minecraft.bukkit.abs.PonderBukkitPlugin;
 import preponderous.ponder.minecraft.bukkit.services.CommandService;
@@ -46,40 +48,40 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public final class Currencies extends PonderBukkitPlugin {
-    private static Currencies instance;
     private final String pluginVersion = "v" + getDescription().getVersion();
     private MedievalFactionsAPI medievalFactionsAPI;
-    private CommandService commandService = new CommandService((PonderMC) getPonder());
 
-    /**
-     * This can be used to get the instance of the main class that is managed by itself.
-     * @return The managed instance of the main class.
-     */
-    public static Currencies getInstance() {
-        return instance;
-    }
+    private final CommandService commandService = new CommandService(getPonder());
+    private final ConfigService configService = new ConfigService(this);
+    private final PersistentData persistentData = new PersistentData();
+    private final Messenger messenger = new Messenger();
+    private final CurrencyService currencyService = new CurrencyService(persistentData, this, messenger, configService);
+    private final StorageService storageService = new StorageService(configService, this, persistentData);
+    private final Logger logger = new Logger(this);
+    private final Scheduler scheduler = new Scheduler(logger, this, storageService);
+    private final CurrencyFactory currencyFactory = new CurrencyFactory();
+
 
     /**
      * This runs when the server starts.
      */
     @Override
     public void onEnable() {
-        instance = this;
         initializeMFAPI();
         initializeConfig();
         registerEventHandlers();
         initializeCommandService();
-        LocalStorageService.getInstance().load();
-        Scheduler.getInstance().scheduleAutosave();
+        storageService.load();
+        scheduler.scheduleAutosave();
         handlebStatsIntegration();
     }
 
     private void initializeMFAPI() {
         try {
-            this.medievalFactionsAPI = MedievalFactions.getInstance().getAPI();
+            this.medievalFactionsAPI = new MedievalFactionsAPI();
         } catch(Exception e) {
             this.medievalFactionsAPI = null;
-            Logger.getInstance().log("Something went wrong initializing the MF API.");
+            logger.log("Something went wrong initializing the MF API.");
         }
     }
 
@@ -88,7 +90,7 @@ public final class Currencies extends PonderBukkitPlugin {
      */
     @Override
     public void onDisable() {
-        LocalStorageService.getInstance().save();
+        storageService.save();
     }
 
     /**
@@ -102,7 +104,7 @@ public final class Currencies extends PonderBukkitPlugin {
     @Override
     public boolean onCommand(CommandSender sender, Command cmd, String label, String[] args) {
         if (args.length == 0) {
-            DefaultCommand defaultCommand = new DefaultCommand();
+            DefaultCommand defaultCommand = new DefaultCommand(this);
             return defaultCommand.execute(sender);
         }
 
@@ -122,7 +124,7 @@ public final class Currencies extends PonderBukkitPlugin {
      * @return Whether debug is enabled.
      */
     public boolean isDebugEnabled() {
-        return LocalConfigService.getInstance().getBoolean("debugMode");
+        return configService.getBoolean("debugMode");
     }
 
     public MedievalFactionsAPI getMedievalFactionsAPI() {
@@ -150,7 +152,7 @@ public final class Currencies extends PonderBukkitPlugin {
             performCompatibilityChecks();
         }
         else {
-            LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
+            configService.saveMissingConfigDefaultsIfNotPresent();
         }
     }
 
@@ -160,7 +162,7 @@ public final class Currencies extends PonderBukkitPlugin {
 
     private void performCompatibilityChecks() {
         if (isVersionMismatched()) {
-            LocalConfigService.getInstance().saveMissingConfigDefaultsIfNotPresent();
+            configService.saveMissingConfigDefaultsIfNotPresent();
         }
         reloadConfig();
     }
@@ -176,13 +178,13 @@ public final class Currencies extends PonderBukkitPlugin {
     private void registerEventHandlers() {
         EventHandlerRegistry eventHandlerRegistry = new EventHandlerRegistry();
         ArrayList<Listener> listeners = new ArrayList<>(Arrays.asList(
-                new AnvilUsageHandler(),
-                new CraftingHandler(),
-                new FactionEventHandler(),
-                new FurnaceUsageHandler(),
-                new InteractionHandler(),
-                new JoinHandler(),
-                new PlacementHandler()
+                new AnvilUsageListener(configService, currencyService, this),
+                new CraftingListener(configService, logger, currencyService),
+                new FactionEventListener(persistentData, logger, currencyService),
+                new FurnaceUsageListener(configService, logger, currencyService),
+                new InteractionListener(currencyService, persistentData, logger, currencyFactory),
+                new JoinListener(persistentData, this),
+                new PlacementListener(configService, logger, currencyService)
         ));
         eventHandlerRegistry.registerEventHandlers(listeners, this);
     }
@@ -193,18 +195,18 @@ public final class Currencies extends PonderBukkitPlugin {
     private void initializeCommandService() {
         ArrayList<AbstractPluginCommand> commands = new ArrayList<>(Arrays.asList(
                 new HelpCommand(),
-                new BalanceCommand(),
-                new CreateCommand(),
-                new DepositCommand(),
-                new DescCommand(),
-                new ForceCommand(),
-                new InfoCommand(),
-                new ListCommand(),
-                new MintCommand(),
-                new RenameCommand(),
-                new RetireCommand(),
-                new WithdrawCommand(),
-                new ConfigCommand()
+                new BalanceCommand(persistentData),
+                new CreateCommand(this, persistentData, currencyService),
+                new DepositCommand(persistentData, currencyFactory),
+                new DescCommand(this, persistentData),
+                new ForceCommand(persistentData, currencyService),
+                new InfoCommand(this, persistentData, configService),
+                new ListCommand(persistentData, logger),
+                new MintCommand(this, persistentData, configService, currencyFactory),
+                new RenameCommand(this, persistentData),
+                new RetireCommand(this, persistentData, currencyService),
+                new WithdrawCommand(persistentData, currencyFactory),
+                new ConfigCommand(configService)
         ));
         commandService.initialize(commands, "That command wasn't found.");
     }

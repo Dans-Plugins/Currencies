@@ -1,5 +1,8 @@
 package dansplugins.currencies.objects;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public interface ICurrency {
     String getName();
     void setName(String name);

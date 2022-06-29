@@ -13,14 +13,19 @@ import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 /**
  * @author Daniel McCoy Stephenson
  */
 public class RenameCommand extends AbstractPluginCommand {
+    private final Currencies currencies;
+    private final PersistentData persistentData;
 
-    public RenameCommand() {
+    public RenameCommand(Currencies currencies, PersistentData persistentData) {
         super(new ArrayList<>(Arrays.asList("rename")), new ArrayList<>(Arrays.asList("currencies.rename")));
+        this.currencies = currencies;
+        this.persistentData = persistentData;
     }
 
     @Override
@@ -37,7 +42,7 @@ public class RenameCommand extends AbstractPluginCommand {
 
         Player player = (Player) sender;
 
-        MF_Faction faction = Currencies.getInstance().getMedievalFactionsAPI().getFaction(player);
+        MF_Faction faction = currencies.getMedievalFactionsAPI().getFaction(player);
 
         if (faction == null) {
             player.sendMessage(ChatColor.RED + "You must be in a faction to use this command.");
@@ -49,14 +54,14 @@ public class RenameCommand extends AbstractPluginCommand {
             return false;
         }
 
-        Currency currency = PersistentData.getInstance().getActiveCurrency(faction);
+        Currency currency = persistentData.getActiveCurrency(faction);
         if (currency == null) {
             player.sendMessage(ChatColor.RED + "Your faction doesn't have a currency.");
             return false;
         }
 
         ArgumentParser argumentParser = new ArgumentParser();
-        ArrayList<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
+        List<String> specifiedArguments = argumentParser.getArgumentsInsideDoubleQuotes(args);
 
         if (specifiedArguments.size() == 0) {
             player.sendMessage(ChatColor.RED + "Name must be specified in between quotation marks.");
@@ -65,7 +70,7 @@ public class RenameCommand extends AbstractPluginCommand {
 
         String newName = specifiedArguments.get(0);
 
-        if (PersistentData.getInstance().isCurrencyNameTaken(newName)) {
+        if (persistentData.isCurrencyNameTaken(newName)) {
             player.sendMessage(ChatColor.RED + "That name is taken by an active or retired currency.");
             return false;
         }

@@ -13,14 +13,16 @@ import java.util.Arrays;
  * @author Daniel McCoy Stephenson
  */
 public class DefaultCommand extends AbstractPluginCommand {
+    private final Currencies currencies;
 
-    public DefaultCommand() {
+    public DefaultCommand(Currencies currencies) {
         super(new ArrayList<>(Arrays.asList("default")), new ArrayList<>(Arrays.asList("currencies.default")));
+        this.currencies = currencies;
     }
 
     @Override
     public boolean execute(CommandSender commandSender) {
-        commandSender.sendMessage(ChatColor.AQUA + "Currencies " + Currencies.getInstance().getVersion());
+        commandSender.sendMessage(ChatColor.AQUA + "Currencies " + currencies.getVersion());
         commandSender.sendMessage(ChatColor.AQUA + "Developer: Daniel McCoy Stephenson");
         commandSender.sendMessage(ChatColor.AQUA + "Wiki: https://github.com/dmccoystephenson/Currencies/wiki");
         return true;

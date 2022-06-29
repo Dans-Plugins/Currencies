@@ -4,6 +4,9 @@ import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
+/**
+ * @author Daniel McCoy Stephenson
+ */
 public interface ICoinpurse {
     UUID getOwnerUUID();
     void addCurrencyAmount(Currency currency, int amount);
