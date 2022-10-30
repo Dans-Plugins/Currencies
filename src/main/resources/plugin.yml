@@ -1,45 +1,48 @@
 name: Currencies
-version: '${project.version}'
-main: dansplugins.currencies.Currencies
+version: @version@
+main: com.dansplugins.currencies.Currencies
 api-version: 1.13
 depend: [MedievalFactions]
-
 commands:
-  currencies:
-  c:
-
+  currency:
+    description: |
+      Currency management command
+      /currency balance - Views your current balance
+      /currency create [name] - Creates a new currency
+    usage: /<command>
+    aliases: [currencies]
+  coinpurse:
+    description: View your coinpurse
+    usage: /<command>
+    aliases: [purse, wallet]
 permissions:
-  currencies.help:
-    default: true
-  currencies.create:
-    default: true
-  currencies.info:
-    default: true
-  currencies.info.others:
-    default: true
-  currencies.list:
-    default: true
-  currencies.mint:
-    default: true
-  currencies.deposit:
-    default: true
-  currencies.withdraw:
-    default: true
-  currencies.desc:
-    default: true
-  currencies.rename:
-    default: true
-  currencies.retire:
+  currencies.coinpurse:
+    description: Allows opening your coinpurse
     default: true
   currencies.balance:
+    description: Allows viewing your balance
     default: true
-  currencies.balance.others:
+  currencies.create:
+    description: Allows creating currencies
+    default: true
+  currencies.list:
+    description: Allows listing currencies
+    default: true
+  currencies.mint:
+    description: Allows minting currencies
+    default: true
+  currencies.retire:
+    description: Allows retiring currencies
+    default: true
+  currencies.desc:
+    description: Allows setting the description of currencies
+    default: true
+  currencies.force.desc:
+    description: Allows setting the description of currencies without being a member of the faction or having the faction permission
     default: op
-  currencies.config:
-    default: op
-  currencies.force:
-    default: op
-  currencies.force.retire:
-    default: op
+  currencies.rename:
+    description: Allows setting the name of currencies
+    default: true
   currencies.force.rename:
+    description: Allows setting the name of currencies without being a member of the faction or having the faction permission
     default: op
