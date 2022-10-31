@@ -1,0 +1,17 @@
+version: @version@
+database:
+  url: 'jdbc:h2:./medieval_factions_db;AUTO_SERVER=true;MODE=MYSQL;DATABASE_TO_UPPER=false'
+  dialect: 'H2'
+  username: 'sa'
+  password: ''
+coinpurse:
+  slots: 54
+currencies:
+  showAmountMinted: true
+  powerCostEnabled: true
+  powerCost: 1
+  itemCostEnabled: true
+  disallowCrafting: true
+  disallowSmelting: true
+  disallowPlacement: true
+  disallowAnvilUsage: ture
