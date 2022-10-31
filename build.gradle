@@ -135,7 +135,7 @@ shadowJar {
 }
 
 artifacts {
-    archives jar
+    archives shadowJar
 }
 
 tasks.named('test') {
