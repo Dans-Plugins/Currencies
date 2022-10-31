@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.dansplugins'
-version = '2.0.0-SNAPSHOT'
+version = '2.0.0-beta.1'
 
 def repoUsername = ""
 def repoPassword = ""
@@ -135,7 +135,7 @@ shadowJar {
 }
 
 artifacts {
-    archives shadowJar
+    archives jar
 }
 
 tasks.named('test') {
