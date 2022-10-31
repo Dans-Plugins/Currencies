@@ -47,7 +47,7 @@ class CurrencyCommand(private val plugin: Currencies) : CommandExecutor, TabComp
             "mint" -> mintCommand.onCommand(sender, command, label, args.drop(1).toTypedArray())
             "retire" -> retireCommand.onCommand(sender, command, label, args.drop(1).toTypedArray())
             else -> {
-                sender.sendMessage("${RED}Usage: /currency [balance|create]")
+                sender.sendMessage("${RED}Usage: /currency [balance|create|info|set|list|mint|retire]")
                 true
             }
         }
