@@ -37,16 +37,15 @@ class InventoryCloseListener(private val plugin: Currencies) : Listener {
                         player.world.dropItem(player.location, item)
                     })
                 }
-                newBalances.forEach { (currency, newBalance) ->
-                    if (currency != null) {
-                        val balance = balanceService.getBalance(MfPlayerId.fromBukkitPlayer(player), currency.id)
-                            ?.copy(balance = newBalance)
-                            ?: Balance(MfPlayerId.fromBukkitPlayer(player), currency.id, balance = newBalance)
-                        balanceService.save(balance).onFailure {
-                            player.sendMessage("${RED}Failed to save balance for ${currency.name}: ${it.reason.message}")
-                            plugin.logger.log(SEVERE, "Failed to save balance: ${it.reason.message}", it.reason.cause)
-                            return@forEach
-                        }
+                currencyService.currencies.forEach { currency ->
+                    val newBalance = newBalances[currency] ?: 0
+                    val balance = balanceService.getBalance(MfPlayerId.fromBukkitPlayer(player), currency.id)
+                        ?.copy(balance = newBalance)
+                        ?: Balance(MfPlayerId.fromBukkitPlayer(player), currency.id, balance = newBalance)
+                    balanceService.save(balance).onFailure {
+                        player.sendMessage("${RED}Failed to save balance for ${currency.name}: ${it.reason.message}")
+                        plugin.logger.log(SEVERE, "Failed to save balance: ${it.reason.message}", it.reason.cause)
+                        return@forEach
                     }
                 }
             })

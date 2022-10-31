@@ -6,7 +6,7 @@ plugins {
 }
 
 group = 'com.dansplugins'
-version = '2.0.0-beta.1'
+version = '2.0.0-beta.2'
 
 def repoUsername = ""
 def repoPassword = ""
@@ -36,7 +36,7 @@ configurations {
 
 dependencies {
     implementation 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
-    implementation 'com.dansplugins:medieval-factions:5.0.0-beta.7'
+    implementation 'com.dansplugins:medieval-factions:5.0.0-beta.8'
     implementation 'org.bstats:bstats-bukkit:3.0.0'
     implementation 'com.dansplugins:ponder-bukkit:2.0.0'
     implementation 'me.clip:placeholderapi:2.11.2'
@@ -135,7 +135,7 @@ shadowJar {
 }
 
 artifacts {
-    archives jar
+    archives shadowJar
 }
 
 tasks.named('test') {
