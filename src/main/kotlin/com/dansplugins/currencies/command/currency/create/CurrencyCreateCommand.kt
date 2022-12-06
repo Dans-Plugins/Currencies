@@ -43,6 +43,7 @@ class CurrencyCreateCommand(private val plugin: Currencies) : CommandExecutor, T
         item.amount = 1
         item.itemMeta = (item.itemMeta ?: plugin.server.itemFactory.getItemMeta(item.type))?.apply {
             persistentDataContainer.set(currencyIdKey, STRING, currencyId.value)
+            setDisplayName(args.joinToString(" "))
         }
         val medievalFactions = plugin.medievalFactions
         plugin.server.scheduler.runTaskAsynchronously(plugin, Runnable {
