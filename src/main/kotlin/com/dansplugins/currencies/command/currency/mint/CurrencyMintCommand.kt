@@ -53,7 +53,7 @@ class CurrencyMintCommand(private val plugin: Currencies) : CommandExecutor, Tab
             }
             val playerId = MfPlayerId.fromBukkitPlayer(sender)
             val playerService = plugin.medievalFactions.services.playerService
-            val mfPlayer = playerService.getPlayer(playerId) ?: playerService.save(MfPlayer(plugin.medievalFactions, playerId)).onFailure {
+            val mfPlayer = playerService.getPlayer(playerId) ?: playerService.save(MfPlayer(plugin.medievalFactions, sender)).onFailure {
                 sender.sendMessage("${RED}Failed to save player information.")
                 plugin.logger.log(SEVERE, "Failed to save player: ${it.reason.message}", it.reason.cause)
                 return@Runnable
