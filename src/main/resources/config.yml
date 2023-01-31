@@ -14,4 +14,4 @@ currencies:
   disallowCrafting: true
   disallowSmelting: true
   disallowPlacement: true
-  disallowAnvilUsage: ture
+  disallowAnvilUsage: true
