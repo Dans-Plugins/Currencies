@@ -27,6 +27,9 @@ repositories {
     maven { url 'https://jitpack.io' }
     maven { url 'https://repo.rpkit.com/repository/maven-public/' }
     maven { url 'https://repo.dansplugins.com/repository/maven-public/' }
+    flatDir {
+        dirs 'lib'
+    }
 }
 
 
@@ -36,10 +39,10 @@ configurations {
 
 dependencies {
     implementation 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
-    implementation 'com.dansplugins:medieval-factions:5.0.6'
+    implementation files('lib/medieval-factions-5.5.0-all.jar')
     implementation 'org.bstats:bstats-bukkit:3.0.0'
     implementation 'com.dansplugins:ponder-bukkit:2.0.0'
-    implementation 'me.clip:placeholderapi:2.11.2'
+    implementation 'me.clip:placeholderapi:2.11.6'
     implementation platform("dev.forkhandles:forkhandles-bom:2.2.0.0")
     implementation 'dev.forkhandles:result4k'
     implementation 'org.jooq:jooq:3.17.4'
