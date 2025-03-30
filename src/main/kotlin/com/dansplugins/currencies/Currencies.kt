@@ -184,6 +184,8 @@ class Currencies : JavaPlugin() {
         val medievalFactionsFound = pluginManager.plugins.any { it.name == MEDIEVAL_FACTIONS_PLUGIN_NAME }
         if (!medievalFactionsFound) {
             logger.severe("Medieval Factions was not found in the list of plugins provided by the plugin manager.")
+            // Log available plugins for debugging
+            logger.info("Available plugins: ${pluginManager.plugins.joinToString { it.name }}")
             return false
         }
 
@@ -194,13 +196,28 @@ class Currencies : JavaPlugin() {
             return false
         }
 
+        // Add version information logging
+        logger.info("Found Medieval Factions version: ${medievalFactionsPlugin.description.version}")
+        logger.info("Medieval Factions plugin class: ${medievalFactionsPlugin.javaClass.name}")
+        logger.info("Medieval Factions plugin classloader: ${medievalFactionsPlugin.javaClass.classLoader}")
+        logger.info("Expected MedievalFactions class: ${MedievalFactions::class.java.name}")
+        logger.info("Expected MedievalFactions classloader: ${MedievalFactions::class.java.classLoader}")
+
         logger.info("Attempting to cast Medieval Factions to the MedievalFactions class...")
         val medievalFactions = try {
+            // First try to verify if it's the correct instance
+            if (!MedievalFactions::class.java.isInstance(medievalFactionsPlugin)) {
+                logger.severe("Medieval Factions plugin is not an instance of the expected MedievalFactions class")
+                return false
+            }
             medievalFactionsPlugin as? MedievalFactions
         } catch (e: Exception) {
-            logger.severe("An exception occurred while attempting to cast Medieval Factions to the MedievalFactions class.")
+            logger.severe("An exception occurred while attempting to cast Medieval Factions to the MedievalFactions class:")
+            logger.severe("Error message: ${e.message}")
+            e.printStackTrace()
             return false
         }
+
         if (medievalFactions == null) {
             logger.severe("Failed to cast the Medieval Factions plugin to the expected MedievalFactions class. Ensure the plugin version is compatible.")
             return false
