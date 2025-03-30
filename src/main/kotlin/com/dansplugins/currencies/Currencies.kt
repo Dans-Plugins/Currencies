@@ -24,6 +24,8 @@ import preponderous.ponder.minecraft.bukkit.plugin.registerListeners
 import java.util.logging.Level.SEVERE
 import javax.sql.DataSource
 
+private const val MEDIEVAL_FACTIONS_PLUGIN_NAME = "MedievalFactions"
+
 class Currencies : JavaPlugin() {
 
     lateinit var medievalFactions: MedievalFactions
@@ -56,13 +58,9 @@ class Currencies : JavaPlugin() {
 
         Metrics(this, 12810)
 
-        val medievalFactions = server.pluginManager.getPlugin("MedievalFactions") as? MedievalFactions
-        if (medievalFactions == null) {
-            logger.severe("A compatible version of Medieval Factions was not found. Are you using Medieval Factions 5?")
+        if (!initializeMedievalFactions()) {
             isEnabled = false
             return
-        } else {
-            this.medievalFactions = medievalFactions
         }
 
         Class.forName("org.h2.Driver")
@@ -175,6 +173,42 @@ class Currencies : JavaPlugin() {
 
         getCommand("coinpurse")?.setExecutor(CoinpurseCommand(this))
         getCommand("currency")?.setExecutor(CurrencyCommand(this))
+    }
+
+    private fun initializeMedievalFactions(): Boolean {
+        logger.info("Starting initialization of the Medieval Factions integration...")
+
+        val pluginManager = server.pluginManager
+
+        logger.info("Verifying if the Medieval Factions plugin is installed on the server...")
+        val medievalFactionsFound = pluginManager.plugins.any { it.name == MEDIEVAL_FACTIONS_PLUGIN_NAME }
+        if (!medievalFactionsFound) {
+            logger.severe("Medieval Factions was not found in the list of plugins provided by the plugin manager.")
+            return false
+        }
+
+        logger.info("Attempting to retrieve Medieval Factions from the plugin manager...")
+        val medievalFactionsPlugin = pluginManager.getPlugin(MEDIEVAL_FACTIONS_PLUGIN_NAME)
+        if (medievalFactionsPlugin == null) {
+            logger.severe("Medieval Factions could not be retrieved from the plugin manager.")
+            return false
+        }
+
+        logger.info("Attempting to cast Medieval Factions to the MedievalFactions class...")
+        val medievalFactions = try {
+            medievalFactionsPlugin as? MedievalFactions
+        } catch (e: Exception) {
+            logger.severe("An exception occurred while attempting to cast Medieval Factions to the MedievalFactions class.")
+            return false
+        }
+        if (medievalFactions == null) {
+            logger.severe("Failed to cast the Medieval Factions plugin to the expected MedievalFactions class. Ensure the plugin version is compatible.")
+            return false
+        }
+
+        this.medievalFactions = medievalFactions
+        logger.info("Medieval Factions successfully initialized.")
+        return true
     }
 
 }
