@@ -36,20 +36,20 @@ class CurrencyListCommand(private val plugin: Currencies) : CommandExecutor, Tab
             val currencyService = plugin.services.currencyService
             val filter = when {
                 args.isEmpty() || args.firstOrNull()?.toIntOrNull() != null -> ""
-                args[0].equals("active", ignoreCase = true) -> "active "
+                args[0].equals("all", ignoreCase = true) -> "all "
                 args[0].equals("retired", ignoreCase = true) -> "retired "
                 faction != null -> "${faction.id.value} "
                 else -> ""
             }
             val currencies = when {
-                args.isEmpty() || args.firstOrNull()?.toIntOrNull() != null -> currencyService.currencies
-                args[0].equals("active", ignoreCase = true) -> currencyService.getCurrencies(ACTIVE)
+                args.isEmpty() || args.firstOrNull()?.toIntOrNull() != null -> currencyService.getCurrencies(ACTIVE)
+                args[0].equals("all", ignoreCase = true) -> currencyService.currencies
                 args[0].equals("retired", ignoreCase = true) -> currencyService.getCurrencies(RETIRED)
                 faction != null -> currencyService.getCurrencies(faction.id)
                 else -> null
             }
             if (currencies == null) {
-                sender.sendMessage("${BukkitChatColor.RED}Invalid filter, you must specify 'active', 'retired' or a faction name.")
+                sender.sendMessage("${BukkitChatColor.RED}Invalid filter, you must specify 'all', 'retired' or a faction name.")
                 return@Runnable
             }
             val pageNumber = args.lastOrNull()?.toIntOrNull()?.minus(1) ?: 0
@@ -98,8 +98,8 @@ class CurrencyListCommand(private val plugin: Currencies) : CommandExecutor, Tab
         alias: String,
         args: Array<out String>
     ) = when {
-        args.isEmpty() -> listOf("active", "retired") + plugin.medievalFactions.services.factionService.factions.map(MfFaction::name)
-        args.size == 1 -> (listOf("active", "retired") + plugin.medievalFactions.services.factionService.factions.map(MfFaction::name)).filter { it.lowercase().startsWith(args[0].lowercase()) }
+        args.isEmpty() -> listOf("all", "retired") + plugin.medievalFactions.services.factionService.factions.map(MfFaction::name)
+        args.size == 1 -> (listOf("all", "retired") + plugin.medievalFactions.services.factionService.factions.map(MfFaction::name)).filter { it.lowercase().startsWith(args[0].lowercase()) }
         else -> emptyList()
     }
 }
