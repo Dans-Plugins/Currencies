@@ -38,7 +38,7 @@ configurations {
 }
 
 dependencies {
-    implementation 'org.spigotmc:spigot-api:1.17.1-R0.1-SNAPSHOT'
+    implementation 'org.spigotmc:spigot-api:1.19.2-R0.1-SNAPSHOT'
     implementation files('lib/medieval-factions-5.5.0.jar')
     implementation 'org.bstats:bstats-bukkit:3.0.0'
     implementation 'com.dansplugins:ponder-bukkit:2.0.0'
