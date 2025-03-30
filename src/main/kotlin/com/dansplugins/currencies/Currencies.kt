@@ -180,30 +180,28 @@ class Currencies : JavaPlugin() {
 
         val pluginManager = server.pluginManager
 
-        logger.info("Verifying if the Medieval Factions plugin is installed on the server...")
         val medievalFactionsFound = pluginManager.plugins.any { it.name == MEDIEVAL_FACTIONS_PLUGIN_NAME }
         if (!medievalFactionsFound) {
             logger.severe("Medieval Factions was not found in the list of plugins provided by the plugin manager.")
-            // Log available plugins for debugging
             logger.info("Available plugins: ${pluginManager.plugins.joinToString { it.name }}")
             return false
         }
 
-        logger.info("Attempting to retrieve Medieval Factions from the plugin manager...")
         val medievalFactionsPlugin = pluginManager.getPlugin(MEDIEVAL_FACTIONS_PLUGIN_NAME)
         if (medievalFactionsPlugin == null) {
             logger.severe("Medieval Factions could not be retrieved from the plugin manager.")
             return false
         }
 
-        // Add version information logging
-        logger.info("Found Medieval Factions version: ${medievalFactionsPlugin.description.version}")
-        logger.info("Medieval Factions plugin class: ${medievalFactionsPlugin.javaClass.name}")
-        logger.info("Medieval Factions plugin classloader: ${medievalFactionsPlugin.javaClass.classLoader}")
-        logger.info("Expected MedievalFactions class: ${MedievalFactions::class.java.name}")
-        logger.info("Expected MedievalFactions classloader: ${MedievalFactions::class.java.classLoader}")
+        logger.info("""
+            Medieval Factions Details:
+            - Version: ${medievalFactionsPlugin.description.version}
+            - Actual Class: ${medievalFactionsPlugin.javaClass.name}
+            - Expected Class: ${MedievalFactions::class.java.name}
+            - Plugin ClassLoader: ${medievalFactionsPlugin.javaClass.classLoader}
+            - Expected ClassLoader: ${MedievalFactions::class.java.classLoader}
+        """.trimIndent())
 
-        logger.info("Attempting to cast Medieval Factions to the MedievalFactions class...")
         val medievalFactions = try {
             // First try to verify if it's the correct instance
             if (!MedievalFactions::class.java.isInstance(medievalFactionsPlugin)) {
