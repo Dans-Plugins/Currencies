@@ -43,7 +43,15 @@ Rykurock | Corrected some usage messages and fixed some typos.
 It was Ricortix's suggestion to create a plugin like this one.
 
 ## License
-GPL3
+This project is licensed under the **Dan’s Plugins Community Non-Commercial License (DPC-NC)**,  
+based on the GNU General Public License, Version 3 (GPLv3), with additional terms restricting commercial use.  
+© 2025 Daniel McCoy Stephenson. All rights reserved.  
+
+You may use, modify, and share this software for **non-commercial purposes only**.  
+Commercial use is prohibited without explicit written permission from the copyright holder.  
+
+Full license text: [DPC-NC License](https://github.com/Dans-Plugins/dpc-nc-license)  
+SPDX Identifier: `DPC-NC`
 
 ## Project Status
 This project is in active development.
