@@ -6,7 +6,6 @@ import com.dansplugins.currencies.command.coinpurse.CoinpurseCommand
 import com.dansplugins.currencies.command.currency.CurrencyCommand
 import com.dansplugins.currencies.currency.CurrencyService
 import com.dansplugins.currencies.currency.JooqCurrencyRepository
-import com.dansplugins.currencies.legacy.CurrenciesLegacyDataMigrator
 import com.dansplugins.currencies.listener.*
 import com.dansplugins.currencies.permission.CurrenciesFactionPermissions
 import com.dansplugins.currencies.service.Services
@@ -36,21 +35,6 @@ class Currencies : JavaPlugin() {
     lateinit var services: Services
 
     override fun onEnable() {
-        val migrator = CurrenciesLegacyDataMigrator(this)
-        if (config.getString("version")?.startsWith("v1.") == true) {
-            migrator.backup()
-            saveDefaultConfig()
-            reloadConfig()
-            config.options().copyDefaults(true)
-            config.set("migrateCurrencies1", true)
-            saveConfig()
-            logger.warning("Shutting down the server due to Currencies 1 migration.")
-            logger.warning("If you have a database, please configure it before starting the server again.")
-            logger.warning("Otherwise, simply start your server again to begin migration.")
-            server.shutdown()
-            return
-        }
-
         saveDefaultConfig()
         config.options().copyDefaults(true)
         config.set("version", description.version)
@@ -154,12 +138,6 @@ class Currencies : JavaPlugin() {
             }
         }
         logger.info("Added Currencies faction permissions to $factionsUpdated factions.")
-
-        if (config.getBoolean("migrateCurrencies1")) {
-            migrator.migrate()
-            config.set("migrateCurrencies1", null)
-            saveConfig()
-        }
 
         registerListeners(
             BlockPlaceListener(this),
