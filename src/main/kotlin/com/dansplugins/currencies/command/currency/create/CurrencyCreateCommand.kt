@@ -93,7 +93,7 @@ class CurrencyCreateCommand(private val plugin: Currencies) : CommandExecutor, T
                 return@Runnable
             }
             val currencyService = plugin.services.currencyService
-            val existingCurrency = currencyService.getCurrency(args.joinToString(" "))
+            val existingCurrency = currencyService.getCurrency(currencyName)
             if (existingCurrency != null) {
                 sender.sendMessage("${RED}There is already a currency with that name.")
                 return@Runnable
