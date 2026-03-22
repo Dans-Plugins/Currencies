@@ -37,8 +37,6 @@ You can find the support Discord server [here](https://discord.gg/xXtuAQ2).
 
 Please fill out a bug report [here](https://github.com/Dans-Plugins/Currencies/issues/new).
 
-- [Known Bugs](https://github.com/Dans-Plugins/Currencies/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
-
 ## Contributing
 
 - [CONTRIBUTING.md](CONTRIBUTING.md)
