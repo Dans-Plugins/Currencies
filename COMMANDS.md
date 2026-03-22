@@ -23,7 +23,7 @@
 ### /currency info \<currency\>
 
 **Description:** View information about a specific currency.
-**Permission:** `currencies.list`
+**Permission:** None (available to all players)
 **Usage:** `/currency info <currency>`
 **Example:** `/currency info GoldCoin`
 
@@ -47,9 +47,19 @@
 
 ---
 
+### /currency set name \<currency\> \<new-name\>
+
+**Description:** Set the name of an existing currency. Requires the appropriate faction permission or `currencies.force.rename`.
+**Aliases:** `/currency rename <currency> <new-name>`
+**Permission:** `currencies.rename`
+**Usage:** `/currency set name <currency> <new-name>`
+**Example:** `/currency set name GoldCoin SilverCoin`
+
+---
+
 ### /currency rename \<currency\> \<new-name\>
 
-**Description:** Rename an existing currency. Requires the appropriate faction permission or `currencies.force.rename`.
+**Description:** Alias for `/currency set name`. Rename an existing currency. Requires the appropriate faction permission or `currencies.force.rename`.
 **Permission:** `currencies.rename`
 **Usage:** `/currency rename <currency> <new-name>`
 **Example:** `/currency rename GoldCoin SilverCoin`
@@ -59,6 +69,7 @@
 ### /currency set description \<currency\> \<description\>
 
 **Description:** Set or update the description of a currency. Requires the appropriate faction permission or `currencies.force.desc`.
+**Aliases:** `/currency set desc <currency> <description>`
 **Permission:** `currencies.desc`
 **Usage:** `/currency set description <currency> <description>`
 **Example:** `/currency set description GoldCoin "The official coin of the Northern Kingdom"`

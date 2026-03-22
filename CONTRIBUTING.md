@@ -49,7 +49,7 @@ Issues are grouped into [milestones](https://github.com/Dans-Plugins/Currencies/
 
 ### Language Files
 
-Update `src/main/resources/lang/` for any user-facing string changes.
+For any user-facing string changes, update the appropriate resource files under `src/main/resources/` (for example, `plugin.yml` or `config.yml`). If you add a new localization or language file structure, document it in your pull request.
 
 ## Testing
 
@@ -58,9 +58,13 @@ Run the unit tests with:
 Linux: `./gradlew clean test`
 Windows: `.\gradlew.bat clean test`
 
-For manual testing, start a local Spigot server:
+For manual testing, start a local Spigot server using the helper script:
 
-    docker compose up
+    ./up.sh
+
+To stop the local Spigot server when you're done testing:
+
+    ./down.sh
 
 ## Questions
 

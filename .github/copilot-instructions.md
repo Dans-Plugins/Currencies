@@ -14,16 +14,17 @@ making any changes.
 ## Project Structure
 
 - `src/main/kotlin/` – Plugin source code
-- `src/main/resources/` – `plugin.yml`, `config.yml`, and `lang/` files
+- `src/main/resources/` – `plugin.yml`, `config.yml`, and other resource files
 - `src/test/kotlin/` – Unit tests
 - `.github/workflows/` – CI and release workflows
 
 ## Coding Conventions
 
-- Use the `lang/` resource files for every user-facing string; never hard-code
-  messages in Kotlin.
+- Prefer using `lang/` resource files for user-facing strings. When introducing new
+  messages, avoid hard-coding them in Kotlin where a suitable `lang/` resource
+  structure already exists in this project.
 - Follow the existing package structure when adding new classes.
-- Annotate every command executor and event listener with `@Override` where applicable.
+- In Kotlin, use the `override` keyword for overridden members, and annotate Bukkit event listener methods with `@EventHandler`.
 - This plugin depends on Medieval Factions; use its API where faction data is needed.
 
 ## Contribution Workflow

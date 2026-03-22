@@ -99,14 +99,6 @@ You are free to use, modify, and distribute this software, provided that:
 
 See the [LICENSE](LICENSE) file for the full text of the GPL-3.0 license.
 
-## Project Status
-
-This project is in active development.
-
-### bStats
-
-You can view the bStats page for the plugin [here](https://bstats.org/plugin/bukkit/Currencies/12810).
-
 ## Roadmap
 
 - [Known Bugs](https://github.com/Dans-Plugins/Currencies/issues?q=is%3Aopen+is%3Aissue+label%3Abug)
@@ -116,3 +108,11 @@ You can view the bStats page for the plugin [here](https://bstats.org/plugin/buk
 ## Changelog
 
 - [CHANGELOG.md](CHANGELOG.md)
+
+## Project Status
+
+This project is in active development.
+
+### bStats
+
+You can view the bStats page for the plugin [here](https://bstats.org/plugin/bukkit/Currencies/12810).
