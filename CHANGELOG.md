@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Removed
+- Removed Currencies 1 migration code (`legacy` package and the associated startup migration checks), since servers now run exclusively on Currencies 2
+
 ### Fixed
 - Fixed `/currency create` with `--rename`/`--no-rename` failing with a database constraint error when a currency with that name already existed, because the duplicate-name check compared against the raw arguments (including the flag) instead of the parsed currency name
 
