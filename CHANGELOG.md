@@ -6,6 +6,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- Added attribution for alyphen to the developers table in `README.md`
+
+### Changed
+- Corrected documentation drift found by verifying `COMMANDS.md`, `CONFIG.md`, and `USER_GUIDE.md` against the command and listener sources: `/currency create` now documents its held-item requirement and `--rename`/`--no-rename` flags, `/currency list` documents its `all`/`retired`/faction filters and pagination, `/currency mint` documents that the amount is optional, `/currency retire` documents its `confirm` argument, `/currency set name` and `/currency set description` document their chat prompts, `currencies.showAmountMinted` is described as controlling the `Minted:` line in `/currency info`, `currencies.powerCost` is documented as a decimal charged per coin, and the power cost is described as the minting player's power rather than faction power
+
 ### Removed
 - Removed Currencies 1 migration code (`legacy` package and the associated startup migration checks), since servers now run exclusively on Currencies 2
 

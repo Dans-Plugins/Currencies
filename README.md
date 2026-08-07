@@ -79,6 +79,7 @@ A Docker-based test server is available for development.
 | Name | Main Contributions |
 |------|---------------------|
 | Daniel Stephenson | Creator |
+| alyphen | Wrote Currencies 2 — the Kotlin rewrite, the jOOQ/Flyway database storage layer, and the coinpurse and currency item systems built on it |
 | Deej | Added the FurnaceHandler |
 | tdlotrring | Fixed a bug with minting costing power even upon failure |
 | Rykurock | Corrected some usage messages and fixed some typos |
