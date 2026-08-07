@@ -14,11 +14,11 @@
 ### /currency create \<name\> \[--rename|--no-rename\]
 
 **Description:** Create a new currency for your faction. The item held in your main hand is used as the currency's item, so an item must be held when the command is run.
-
-If the held item's display name does not already match the currency name, the command stops and offers a clickable choice rather than creating the currency: **Yes** re-runs the command with `--rename` (the item is renamed to the currency name), and **No** re-runs it with `--no-rename` (the item keeps its own name). Passing either flag directly skips the prompt.
 **Permission:** `currencies.create`
 **Usage:** `/currency create <name> [--rename|--no-rename]`
 **Example:** `/currency create GoldCoin --rename`
+
+If the held item's display name does not already match the currency name, the command stops and offers a clickable choice rather than creating the currency: **Yes** re-runs the command with `--rename` (the item is renamed to the currency name), and **No** re-runs it with `--no-rename` (the item keeps its own name). Passing either flag directly skips the prompt.
 
 ---
 

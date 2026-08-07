@@ -10,7 +10,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added attribution for alyphen to the developers table in `README.md`
 
 ### Changed
-- Corrected documentation drift found by verifying `COMMANDS.md`, `CONFIG.md`, and `USER_GUIDE.md` against the command and listener sources: `/currency create` now documents its held-item requirement and `--rename`/`--no-rename` flags, `/currency list` documents its `all`/`retired`/faction filters and pagination, `/currency mint` documents that the amount is optional, `/currency retire` documents its `confirm` argument, `/currency set name` and `/currency set description` document their chat prompts, `currencies.showAmountMinted` is described as controlling the `Minted:` line in `/currency info`, `currencies.powerCost` is documented as a decimal charged per coin, and the power cost is described as the minting player's power rather than faction power
+- Documented that `/currency create` uses the item held in the main hand and accepts `--rename`/`--no-rename` to answer its rename prompt up front
+- Corrected `/currency list`, which lists every active currency on the server rather than only the caller's faction's, and documented its `all`/`retired`/faction filters and page argument
+- Documented that the amount argument of `/currency mint` is optional and defaults to `1`
+- Documented the `confirm` argument of `/currency retire` and the confirmation prompt shown without it
+- Documented that `/currency set name` and `/currency set description` fall back to a chat prompt when the new value is omitted
+- Corrected the description of `currencies.showAmountMinted`, which controls the `Minted:` line in `/currency info` rather than a message shown after minting
+- Corrected `currencies.powerCost`, which is a decimal charged per coin minted rather than an integer charged per mint operation
+- Corrected the power cost wording throughout, since the cost is deducted from the minting player's power rather than faction power
+- Corrected the description of `currencies.itemCostEnabled`, which consumes the currency's own item type per coin rather than a cost configured per currency
 
 ### Removed
 - Removed Currencies 1 migration code (`legacy` package and the associated startup migration checks), since servers now run exclusively on Currencies 2
