@@ -71,7 +71,7 @@ coinpurse:
 
 **Type:** boolean
 **Default:** `true`
-**Description:** When `true`, the amount minted is shown to the player after a successful mint operation.
+**Description:** When `true`, `/currency info` includes a `Minted:` line showing the total amount of that currency minted so far. When `false`, the line is omitted.
 
 **Example:**
 ```yaml
@@ -85,7 +85,7 @@ currencies:
 
 **Type:** boolean
 **Default:** `true`
-**Description:** When `true`, minting a currency costs faction power.
+**Description:** When `true`, minting a currency costs the minting player power.
 
 **Example:**
 ```yaml
@@ -97,14 +97,14 @@ currencies:
 
 ## currencies.powerCost
 
-**Type:** integer
+**Type:** decimal
 **Default:** `1`
-**Description:** The amount of faction power deducted per mint operation. Only relevant when `powerCostEnabled` is `true`.
+**Description:** The amount of power deducted from the minting player per coin minted, so minting `n` coins costs `n × powerCost`. Decimal values are supported. Only relevant when `powerCostEnabled` is `true`.
 
 **Example:**
 ```yaml
 currencies:
-  powerCost: 2
+  powerCost: 0.5
 ```
 
 ---
@@ -113,7 +113,7 @@ currencies:
 
 **Type:** boolean
 **Default:** `true`
-**Description:** When `true`, minting a currency requires an item cost (configured per currency).
+**Description:** When `true`, minting consumes one item of the currency's own item type per coin minted. The item type is whatever was held when the currency was created, so the cost is fixed per currency rather than configured here.
 
 **Example:**
 ```yaml
