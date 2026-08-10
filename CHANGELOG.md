@@ -7,8 +7,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Added
-
+- Added the project's first unit tests, covering `/currency` subcommand routing and its usage message. The Medieval Factions jar is now also on the test runtime classpath, which mocking the plugin class requires; it remains `compileOnly` for the shaded jar
 - A `Dev Release` workflow, which republishes a rolling `dev` prerelease of `main` on every non-documentation push. This is what Dan's Plugin Manager's experimental channel installs from: `/dpm get currencies --experimental` reads `releases/tags/dev`, so without it there is nothing for that command to download. The prerelease is unreleased, unreviewed code and is marked as such.
+
+### Fixed
+- Fixed the `/currency` usage message omitting the `rename` subcommand, which is both routed and tab-completed but was never advertised
 
 ## [3.0.0-SNAPSHOT-8-8-2026] – 2026-08-08
 

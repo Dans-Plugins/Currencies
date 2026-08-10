@@ -57,6 +57,9 @@ dependencies {
     implementation 'com.dansplugins:ponder-commands:2.0.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
     testImplementation 'io.mockk:mockk:1.13.2'
+    // Declared compileOnly above, but mocking Currencies requires its Medieval Factions
+    // members to be resolvable at test runtime.
+    testImplementation files('lib/medieval-factions-5.5.0.jar')
     jooqGenerator 'org.jooq:jooq-meta-extensions:3.17.4'
 }
 
