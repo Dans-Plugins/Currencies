@@ -27,11 +27,12 @@ class CurrencyCommandTest {
     }
 
     @Test
-    fun `usage message advertises every routed subcommand`() {
-        assertEquals(
-            listOf("${RED}Usage: /currency [balance|create|info|set|rename|list|mint|retire]"),
-            messagesSentBy("notasubcommand")
-        )
+    fun `usage message advertises every subcommand offered by tab completion`() {
+        val subcommands = currencyCommand.onTabComplete(mockk(relaxed = true), bukkitCommand, "currency", emptyArray())
+        val usage = messagesSentBy("notasubcommand").single()
+        subcommands.forEach { subcommand ->
+            assertTrue(usage.contains(subcommand), "Usage message does not advertise '$subcommand': $usage")
+        }
     }
 
     @Test
