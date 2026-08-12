@@ -68,7 +68,7 @@ class CurrencySetCommandTest {
     @Test
     fun `desc is an alias of description`() {
         assertEquals(
-            messagesSentBy("description", "Gold", "Shiny"),
+            listOf("${RED}You do not have permission to change the description of currencies."),
             messagesSentBy("desc", "Gold", "Shiny")
         )
     }
