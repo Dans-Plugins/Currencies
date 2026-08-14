@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- The `Dev Release` workflow now retries publishing the `dev` prerelease before giving up. The release and its tag have to be deleted and recreated for the tag to move to the new commit, and a transient API failure inside that window previously left the repository with no `dev` release at all until the workflow was re-run by hand. Each attempt now starts from a clean slate, and an exhausted retry fails loudly.
+
 ### Added
 - Added the project's first unit tests, covering `/currency` subcommand routing and its usage message. The Medieval Factions jar is now also on the test runtime classpath, which mocking the plugin class requires; it remains `compileOnly` for the shaded jar
 - Extended the unit tests to `/currency set` routing and tab completion, and to `/currency balance`, whose report is built on the scheduler's async thread and is now exercised by capturing and running the scheduled task
