@@ -53,7 +53,6 @@ dependencies {
     implementation 'com.zaxxer:HikariCP:5.0.1'
     implementation 'com.google.code.gson:gson:2.9.0'
     implementation 'org.slf4j:slf4j-api:1.8.0-beta4'
-    implementation 'com.dansplugins:ponder-bukkit:2.0.0'
     implementation 'com.dansplugins:ponder-commands:2.0.0'
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.0'
     testImplementation 'io.mockk:mockk:1.13.2'
@@ -118,7 +117,12 @@ processResources {
 shadowJar {
     mergeServiceFiles()
     dependencies {
-        exclude(dependency("::"))
+        // Everything else is deliberately not bundled: Medieval Factions already
+        // shades those libraries and Currencies borrows them at runtime. Ponder is
+        // the exception — no Medieval Factions build ships it, so relocating into
+        // MF's namespace pointed at classes that were never there. Bundle it here.
+        include(dependency('com.dansplugins:ponder-bukkit'))
+        include(dependency('com.dansplugins:ponder-commands'))
     }
 
     // Exclude the medieval-factions jar file specifically
@@ -140,7 +144,7 @@ shadowJar {
     relocate 'org.jetbrains', 'com.dansplugins.factionsystem.shadow.org.jetbrains'
     relocate 'org.jooq', 'com.dansplugins.factionsystem.shadow.org.jooq'
     relocate 'org.reactivestreams', 'com.dansplugins.factionsystem.shadow.org.reactivestreams'
-    relocate 'preponderous.ponder', 'com.dansplugins.factionsystem.shadow.preponderous.ponder'
+    relocate 'preponderous.ponder', 'com.dansplugins.currencies.shadow.preponderous.ponder'
 }
 
 artifacts {
