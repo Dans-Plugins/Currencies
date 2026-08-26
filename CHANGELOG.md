@@ -13,6 +13,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Added
 - Added the project's first unit tests, covering `/currency` subcommand routing and its usage message. The Medieval Factions jar is now also on the test runtime classpath, which mocking the plugin class requires; it remains `compileOnly` for the shaded jar
 - Extended the unit tests to `/currency set` routing and tab completion, and to `/currency balance`, whose report is built on the scheduler's async thread and is now exercised by capturing and running the scheduled task
+- Extended the unit tests to `/currency retire`, covering its permission and faction-role gates, the confirmation prompt and its clickable confirm component, multi-word currency name resolution, and the save-failure path. Retiring a currency is one of the two supply-mutating commands, so its behaviour is now locked in against regression
 - A `Dev Release` workflow, which republishes a rolling `dev` prerelease of `main` on every non-documentation push. This is what Dan's Plugin Manager's experimental channel installs from: `/dpm get currencies --experimental` reads `releases/tags/dev`, so without it there is nothing for that command to download. The prerelease is unreleased, unreviewed code and is marked as such.
 
 ### Fixed
