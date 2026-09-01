@@ -29,6 +29,8 @@ If the held item's display name does not already match the currency name, the co
 **Usage:** `/currency info <currency>`
 **Example:** `/currency info GoldCoin`
 
+A currency name containing spaces may be given either as-is or wrapped in double quotes: `/currency info Gold Coin` and `/currency info "Gold Coin"` both resolve.
+
 ---
 
 ### /currency list \[all|retired|\<faction\>\] \[page\]
@@ -84,6 +86,8 @@ If the held item's display name does not already match the currency name, the co
 **Permission:** `currencies.retire`
 **Usage:** `/currency retire <currency> [confirm]`
 **Example:** `/currency retire GoldCoin confirm`
+
+A currency name containing spaces may be given either as-is or wrapped in double quotes: `/currency retire Gold Coin confirm` and `/currency retire "Gold Coin" confirm` both resolve.
 
 ---
 
