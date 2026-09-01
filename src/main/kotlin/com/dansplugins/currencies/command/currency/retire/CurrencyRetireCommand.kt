@@ -18,6 +18,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
+import preponderous.ponder.command.unquote
 import java.util.logging.Level.SEVERE
 import net.md_5.bungee.api.ChatColor as SpigotChatColor
 import org.bukkit.ChatColor as BukkitChatColor
@@ -36,11 +37,12 @@ class CurrencyRetireCommand(private val plugin: Currencies) : CommandExecutor, T
             sender.sendMessage("${BukkitChatColor.RED}Usage: /currency retire [currency]")
             return true
         }
+        val unquotedArgs = args.unquote()
         plugin.server.scheduler.runTaskAsynchronously(plugin, Runnable {
-            val isConfirm = args.size > 1 && args.last().equals("confirm", ignoreCase = true)
+            val isConfirm = unquotedArgs.size > 1 && unquotedArgs.last().equals("confirm", ignoreCase = true)
             val currencyService = plugin.services.currencyService
-            val currency = currencyService.getCurrency(CurrencyId(args[0]))
-                ?: currencyService.getCurrency(args.dropLast(if (isConfirm) 1 else 0).joinToString(" "))
+            val currency = currencyService.getCurrency(CurrencyId(unquotedArgs[0]))
+                ?: currencyService.getCurrency(unquotedArgs.dropLast(if (isConfirm) 1 else 0).joinToString(" "))
             if (currency == null) {
                 sender.sendMessage("${BukkitChatColor.RED}There is no currency by that name.")
                 return@Runnable

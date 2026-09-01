@@ -216,6 +216,34 @@ class CurrencyRetireCommandTest {
         assertEquals(shinyGold.copy(status = RETIRED), saved.captured)
     }
 
+    /**
+     * Bukkit splits on spaces before the plugin sees the arguments, so the quoted form documented in
+     * COMMANDS.md arrives as separate arguments with the quote characters still attached.
+     */
+    @Test
+    fun `a quoted multi-word currency name is resolved`() {
+        currencyLookupReturns(shinyGold)
+        factionOwning(shinyGold)
+        val saved = slot<Currency>()
+        every { currencyService.save(capture(saved)) } answers { Success(saved.captured) }
+        assertEquals(
+            listOf("${BukkitChatColor.GREEN}Currency retired."),
+            messagesSentBy(player(), "\"Shiny", "Gold\"", "confirm")
+        )
+        assertEquals(shinyGold.copy(status = RETIRED), saved.captured)
+    }
+
+    @Test
+    fun `a quoted multi-word currency name is resolved without confirm`() {
+        currencyLookupReturns(shinyGold)
+        factionOwning(shinyGold)
+        assertEquals(
+            listOf("${BukkitChatColor.GRAY}Are you sure you wish to retire Shiny Gold? This action is irreversible and will prevent it being minted."),
+            messagesSentBy(player(), "\"Shiny", "Gold\"")
+        )
+        verify(exactly = 0) { currencyService.save(any()) }
+    }
+
     @Test
     fun `confirm is matched regardless of case`() {
         currencyLookupReturns(gold)

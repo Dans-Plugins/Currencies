@@ -19,6 +19,7 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
+import preponderous.ponder.command.unquote
 import net.md_5.bungee.api.ChatColor as SpigotChatColor
 import org.bukkit.ChatColor as BukkitChatColor
 
@@ -28,6 +29,7 @@ class CurrencyInfoCommand(private val plugin: Currencies) : CommandExecutor, Tab
             sender.sendMessage("${BukkitChatColor.RED}Usage: /currency info [currency]")
             return true
         }
+        val unquotedArgs = args.unquote()
         val showAmountMinted = plugin.config.getBoolean("currencies.showAmountMinted")
         plugin.server.scheduler.runTaskAsynchronously(plugin, Runnable {
             val playerId = if (sender is Player) MfPlayerId.fromBukkitPlayer(sender) else null
@@ -35,7 +37,7 @@ class CurrencyInfoCommand(private val plugin: Currencies) : CommandExecutor, Tab
             val playerFaction = playerId?.let { factionService.getFaction(it) }
             val playerRole = playerFaction?.getRole(playerId)
             val currencyService = plugin.services.currencyService
-            val currency = currencyService.getCurrency(CurrencyId(args[0])) ?: currencyService.getCurrency(args.joinToString(" "))
+            val currency = currencyService.getCurrency(CurrencyId(unquotedArgs[0])) ?: currencyService.getCurrency(unquotedArgs.joinToString(" "))
             if (currency == null) {
                 sender.sendMessage("${BukkitChatColor.RED}There is no currency by that name.")
                 return@Runnable

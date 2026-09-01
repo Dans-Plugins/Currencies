@@ -18,6 +18,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 - Fixed the `/currency` usage message omitting the `rename` subcommand, which is both routed and tab-completed but was never advertised
+- Fixed `/currency retire` and `/currency info` failing to resolve a currency whose name was given in double quotes. Bukkit splits arguments on spaces before the plugin sees them, and neither command stripped the quote characters afterwards, so `/currency retire "Gold Coin" confirm` reported that no such currency existed. Both commands now unquote their arguments, as `/currency mint`, `/currency set name` and `/currency set description` already did
 
 ## [3.0.0-SNAPSHOT-8-8-2026] – 2026-08-08
 
