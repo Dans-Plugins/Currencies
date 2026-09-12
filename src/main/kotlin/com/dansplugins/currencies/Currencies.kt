@@ -9,6 +9,9 @@ import com.dansplugins.currencies.currency.JooqCurrencyRepository
 import com.dansplugins.currencies.listener.*
 import com.dansplugins.currencies.permission.CurrenciesFactionPermissions
 import com.dansplugins.currencies.service.Services
+import com.dansplugins.currencies.trace.TraceClient
+import com.dansplugins.currencies.trace.TraceReportingCommand
+import com.dansplugins.currencies.trace.UsageReportingConfig
 import com.dansplugins.factionsystem.MedievalFactions
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -34,6 +37,10 @@ class Currencies : JavaPlugin() {
     lateinit var factionPermissions: CurrenciesFactionPermissions
     lateinit var services: Services
 
+    // A no-op until the config has been read, so a command arriving before
+    // onEnable() finishes has something safe to report to.
+    private var trace: TraceClient = TraceClient.disabled()
+
     override fun onEnable() {
         saveDefaultConfig()
         config.options().copyDefaults(true)
@@ -41,6 +48,15 @@ class Currencies : JavaPlugin() {
         saveConfig()
 
         Metrics(this, 12810)
+
+        // usage reporting: one event now, one per command; see config.yml
+        val usageReporting = UsageReportingConfig.read(config)
+        trace = TraceClient.builder(usageReporting.endpoint, name)
+            .key(usageReporting.key)
+            .enabled(usageReporting.enabled)
+            .logger(logger)
+            .build()
+        trace.report("startup", null, mapOf("version" to description.version))
 
         if (!initializeMedievalFactions()) {
             isEnabled = false
@@ -149,8 +165,12 @@ class Currencies : JavaPlugin() {
             PrepareItemCraftListener(this)
         )
 
-        getCommand("coinpurse")?.setExecutor(CoinpurseCommand(this))
-        getCommand("currency")?.setExecutor(CurrencyCommand(this))
+        getCommand("coinpurse")?.setExecutor(TraceReportingCommand(trace, CoinpurseCommand(this)))
+        getCommand("currency")?.setExecutor(TraceReportingCommand(trace, CurrencyCommand(this)))
+    }
+
+    override fun onDisable() {
+        trace.close()
     }
 
     private fun initializeMedievalFactions(): Boolean {
