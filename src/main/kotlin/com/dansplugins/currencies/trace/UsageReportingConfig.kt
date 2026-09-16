@@ -17,6 +17,23 @@ data class UsageReportingConfig(
         const val ENDPOINT_KEY = "usage-reporting.endpoint"
         const val KEY_KEY = "usage-reporting.key"
         const val DEFAULT_ENDPOINT = "https://trace.danielstephenson.dev"
+        const val DETAILS_URL = "https://github.com/Stephenson-Software/trace#usage-reporting"
+
+        /**
+         * The line logged on every startup: what is sent and how to turn it off
+         * when reporting is on, or why it is off ([TraceClient.disabledReason])
+         * when it is not.
+         */
+        fun startupNotice(pluginName: String, endpoint: String, disabledReason: String?): String =
+            if (disabledReason == null) {
+                "Usage reporting is on: $pluginName sends its name, version and command names to $endpoint" +
+                    " - nothing about players or the server." +
+                    " Turn it off with usage-reporting.enabled: false in this plugin's config.yml," +
+                    " or for every plugin with enabled: false in plugins/trace/config.yml." +
+                    " Details: $DETAILS_URL"
+            } else {
+                "Usage reporting is off ($disabledReason)."
+            }
 
         // The one-argument getters, deliberately. saveDefaultConfig() never touches a
         // config.yml that already exists, so a server upgraded from a version before
