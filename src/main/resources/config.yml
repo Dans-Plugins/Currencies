@@ -22,6 +22,13 @@ currencies:
 # actually in use. Nothing about players or the server is included. Sending
 # happens off the main thread, never blocks a tick, and is dropped silently
 # if the server cannot be reached. Set enabled to false to turn it off.
+#
+# To turn it off for every plugin on this server at once, set enabled to
+# false in plugins/trace/config.yml (created the first time such a plugin
+# starts); that file wins over this one. The environment variables
+# TRACE_USAGE_REPORTING=off and DO_NOT_TRACK=1 turn it off as well, and win
+# over both files. The plugin says which applies on every startup.
+# Details: https://github.com/Stephenson-Software/trace#usage-reporting
 usage-reporting:
   enabled: true
   endpoint: https://trace.danielstephenson.dev

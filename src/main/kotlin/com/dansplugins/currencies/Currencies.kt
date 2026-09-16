@@ -49,13 +49,18 @@ class Currencies : JavaPlugin() {
 
         Metrics(this, 12810)
 
-        // usage reporting: one event now, one per command; see config.yml
+        // usage reporting: one event now, one per command; see config.yml. The
+        // copyDefaults + saveConfig above already put the usage-reporting block
+        // on disk; the server-wide plugins/trace/config.yml and the environment
+        // get the last word.
         val usageReporting = UsageReportingConfig.read(config)
         trace = TraceClient.builder(usageReporting.endpoint, name)
             .key(usageReporting.key)
             .enabled(usageReporting.enabled)
+            .serverWideConfig(dataFolder.parentFile)
             .logger(logger)
             .build()
+        logger.info(UsageReportingConfig.startupNotice(name, usageReporting.endpoint, trace.disabledReason()))
         trace.report("startup", null, mapOf("version" to description.version))
 
         if (!initializeMedievalFactions()) {

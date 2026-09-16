@@ -61,4 +61,30 @@ class UsageReportingConfigTest {
 
         assertFalse(UsageReportingConfig.read(config).enabled)
     }
+
+    @Test
+    fun `startup notice says what is sent and how to turn it off when reporting is on`() {
+        val notice = UsageReportingConfig.startupNotice("Currencies", "https://trace.danielstephenson.dev", null)
+
+        assertEquals(
+            "Usage reporting is on: Currencies sends its name, version and command names to " +
+                "https://trace.danielstephenson.dev - nothing about players or the server. " +
+                "Turn it off with usage-reporting.enabled: false in this plugin's config.yml, " +
+                "or for every plugin with enabled: false in plugins/trace/config.yml. " +
+                "Details: https://github.com/Stephenson-Software/trace#usage-reporting",
+            notice
+        )
+    }
+
+    @Test
+    fun `startup notice names the reason when reporting is off`() {
+        assertEquals(
+            "Usage reporting is off (server-wide config: plugins/trace/config.yml).",
+            UsageReportingConfig.startupNotice("Currencies", "https://trace.danielstephenson.dev", TraceClient.REASON_SERVER_WIDE)
+        )
+        assertEquals(
+            "Usage reporting is off (environment).",
+            UsageReportingConfig.startupNotice("Currencies", "https://trace.danielstephenson.dev", TraceClient.REASON_ENVIRONMENT)
+        )
+    }
 }
