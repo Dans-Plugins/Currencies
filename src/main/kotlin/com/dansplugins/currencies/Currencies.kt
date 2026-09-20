@@ -212,18 +212,21 @@ class Currencies : JavaPlugin() {
     companion object {
         private const val H2_PREFIX = "jdbc:h2:"
         private const val CLOSE_ON_EXIT_SETTING = "DB_CLOSE_ON_EXIT"
+        private val AUTO_SERVER_ON = Regex(";\\s*AUTO_SERVER\\s*=\\s*TRUE\\s*(;|$)", RegexOption.IGNORE_CASE)
 
         /**
          * For embedded H2, appends `;DB_CLOSE_ON_EXIT=FALSE` unless the operator set the
          * setting, so H2 registers no JVM shutdown hook for a database this plugin shares
          * with Medieval Factions: such a hook runs after Bukkit has unloaded both plugins'
          * classloaders and fails there, leaving the store unflushed with a `*.trace.db`
-         * beside it. The pool is closed explicitly in `onDisable` instead. Other URLs are
-         * returned unchanged.
+         * beside it. The pool is closed explicitly in `onDisable` instead. H2 refuses the
+         * setting together with `AUTO_SERVER=TRUE` (50100) — which the default URL uses so the
+         * file can be shared — so such a URL, like every non-H2 URL, is returned unchanged.
          */
         fun hardenJdbcUrl(url: String): String {
             if (!url.startsWith(H2_PREFIX, ignoreCase = true)) return url
             if (url.contains(CLOSE_ON_EXIT_SETTING, ignoreCase = true)) return url
+            if (AUTO_SERVER_ON.containsMatchIn(url)) return url
             return "$url;$CLOSE_ON_EXIT_SETTING=FALSE"
         }
     }
