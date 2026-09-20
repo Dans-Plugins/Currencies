@@ -24,7 +24,6 @@ import org.jooq.conf.Settings
 import org.jooq.impl.DSL
 import preponderous.ponder.minecraft.bukkit.plugin.registerListeners
 import java.util.logging.Level.SEVERE
-import javax.sql.DataSource
 
 private const val MEDIEVAL_FACTIONS_PLUGIN_NAME = "MedievalFactions"
 
@@ -32,7 +31,7 @@ class Currencies : JavaPlugin() {
 
     lateinit var medievalFactions: MedievalFactions
 
-    private lateinit var dataSource: DataSource
+    private var dataSource: HikariDataSource? = null
 
     lateinit var factionPermissions: CurrenciesFactionPermissions
     lateinit var services: Services
@@ -70,7 +69,7 @@ class Currencies : JavaPlugin() {
 
         Class.forName("org.h2.Driver")
         val hikariConfig = HikariConfig()
-        hikariConfig.jdbcUrl = config.getString("database.url")
+        hikariConfig.jdbcUrl = hardenJdbcUrl(config.getString("database.url") ?: "")
         val databaseUsername = config.getString("database.username")
         if (databaseUsername != null) {
             hikariConfig.username = databaseUsername
@@ -79,7 +78,21 @@ class Currencies : JavaPlugin() {
         if (databasePassword != null) {
             hikariConfig.password = databasePassword
         }
-        dataSource = HikariDataSource(hikariConfig)
+        val dataSource = HikariDataSource(hikariConfig)
+        this.dataSource = dataSource
+        try {
+            initialize(dataSource)
+        } catch (e: Exception) {
+            // The database is shared with Medieval Factions. A pool left open past a failed
+            // enable is a connection nobody closes, which keeps that database from closing
+            // cleanly at shutdown — so the pool goes with the failure, before the plugin does.
+            logger.log(SEVERE, "Currencies could not be enabled: ${e.message}", e)
+            closeDataSource()
+            isEnabled = false
+        }
+    }
+
+    private fun initialize(dataSource: HikariDataSource) {
         val oldClassLoader = Thread.currentThread().contextClassLoader
         Thread.currentThread().contextClassLoader = classLoader
         val flyway = Flyway.configure()
@@ -176,6 +189,43 @@ class Currencies : JavaPlugin() {
 
     override fun onDisable() {
         trace.close()
+        closeDataSource()
+    }
+
+    /**
+     * Closes the connection pool while this plugin's classloader is still loaded. The H2
+     * database file is Medieval Factions' as well; a connection of ours left open at
+     * shutdown is what stops it from being closed cleanly (#219).
+     */
+    private fun closeDataSource() {
+        val ds = dataSource ?: return
+        dataSource = null
+        try {
+            logger.info("Closing database connection...")
+            ds.close()
+            logger.info("Database connection closed")
+        } catch (e: Exception) {
+            logger.log(SEVERE, "Failed to close the database connection: ${e.message}", e)
+        }
+    }
+
+    companion object {
+        private const val H2_PREFIX = "jdbc:h2:"
+        private const val CLOSE_ON_EXIT_SETTING = "DB_CLOSE_ON_EXIT"
+
+        /**
+         * For embedded H2, appends `;DB_CLOSE_ON_EXIT=FALSE` unless the operator set the
+         * setting, so H2 registers no JVM shutdown hook for a database this plugin shares
+         * with Medieval Factions: such a hook runs after Bukkit has unloaded both plugins'
+         * classloaders and fails there, leaving the store unflushed with a `*.trace.db`
+         * beside it. The pool is closed explicitly in `onDisable` instead. Other URLs are
+         * returned unchanged.
+         */
+        fun hardenJdbcUrl(url: String): String {
+            if (!url.startsWith(H2_PREFIX, ignoreCase = true)) return url
+            if (url.contains(CLOSE_ON_EXIT_SETTING, ignoreCase = true)) return url
+            return "$url;$CLOSE_ON_EXIT_SETTING=FALSE"
+        }
     }
 
     private fun initializeMedievalFactions(): Boolean {
