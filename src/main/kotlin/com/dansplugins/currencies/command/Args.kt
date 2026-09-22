@@ -9,8 +9,8 @@ import preponderous.ponder.command.unquote
  * Ponder's [unquote] throws [StringIndexOutOfBoundsException] on an argument that is an empty or
  * unbalanced pair of quotes (`""` or `"`), which reached the player as "An internal error occurred".
  * This falls back to the arguments as given instead. It also guarantees a non-empty array never
- * unquotes to nothing, since every caller indexes `[0]` straight after its own `args.isEmpty()`
- * guard, which is checked against the array *before* unquoting.
+ * unquotes to nothing, since the callers that check `args.isEmpty()` *before* unquoting index
+ * `[0]` straight afterwards.
  */
 fun Array<out String>.unquoteSafely(): List<String> {
     val unquoted = try {
