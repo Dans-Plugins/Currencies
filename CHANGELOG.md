@@ -25,7 +25,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - Fixed the `/currency` usage message omitting the `rename` subcommand, which is both routed and tab-completed but was never advertised
 - Fixed `/currency retire` and `/currency info` failing to resolve a currency whose name was given in double quotes. Bukkit splits arguments on spaces before the plugin sees them, and neither command stripped the quote characters afterwards, so `/currency retire "Gold Coin" confirm` reported that no such currency existed. Both commands now unquote their arguments, as `/currency mint`, `/currency set name` and `/currency set description` already did
-- Fixed `/currency mint`, `/currency retire`, `/currency info`, `/currency set name` and `/currency set description` crashing with "An internal error occurred" when an argument was an empty or unbalanced pair of double quotes (`""` or `"`). The bundled Ponder `unquote` throws on that input; the five commands now fall back to the arguments as typed, so the player is told there is no currency by that name instead. Nothing was ever written before the crash, so no stored data is affected (#213)
+- Fixed `/currency mint`, `/currency retire`, `/currency info`, `/currency set name` and `/currency set description` crashing with "An internal error occurred" when an argument was an empty or unbalanced pair of double quotes (`""` or `"`). The bundled Ponder `unquote` throws on that input; the five commands now fall back to the arguments as typed, so a malformed currency name is reported as unknown instead of crashing. Nothing was ever written before the crash, so no stored data is affected (#213)
 
 ## [3.0.0-SNAPSHOT-8-8-2026] – 2026-08-08
 
