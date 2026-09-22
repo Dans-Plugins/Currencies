@@ -155,6 +155,18 @@ class CurrencyInfoCommandTest {
         )
     }
 
+    /**
+     * Ponder's unquote throws on these, which previously reached the player as an internal error
+     * rather than a message (#213).
+     */
+    @Test
+    fun `an empty or unbalanced quote is reported as an unrecognised currency`() {
+        currencyLookupReturns(gold)
+        assertEquals(listOf("${RED}There is no currency by that name."), messagesSentBy(player(), "\"\""))
+        assertEquals(listOf("${RED}There is no currency by that name."), messagesSentBy(player(), "\""))
+        assertEquals(listOf("${RED}There is no currency by that name."), messagesSentBy(player(), ""))
+    }
+
     @Test
     fun `the minted amount is reported only when the config enables it`() {
         currencyLookupReturns(gold)

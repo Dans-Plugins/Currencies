@@ -1,6 +1,7 @@
 package com.dansplugins.currencies.command.currency.retire
 
 import com.dansplugins.currencies.Currencies
+import com.dansplugins.currencies.command.unquoteSafely
 import com.dansplugins.currencies.currency.Currency
 import com.dansplugins.currencies.currency.CurrencyId
 import com.dansplugins.currencies.currency.CurrencyStatus.ACTIVE
@@ -18,7 +19,6 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
-import preponderous.ponder.command.unquote
 import java.util.logging.Level.SEVERE
 import net.md_5.bungee.api.ChatColor as SpigotChatColor
 import org.bukkit.ChatColor as BukkitChatColor
@@ -37,7 +37,7 @@ class CurrencyRetireCommand(private val plugin: Currencies) : CommandExecutor, T
             sender.sendMessage("${BukkitChatColor.RED}Usage: /currency retire [currency]")
             return true
         }
-        val unquotedArgs = args.unquote()
+        val unquotedArgs = args.unquoteSafely()
         plugin.server.scheduler.runTaskAsynchronously(plugin, Runnable {
             val isConfirm = unquotedArgs.size > 1 && unquotedArgs.last().equals("confirm", ignoreCase = true)
             val currencyService = plugin.services.currencyService
