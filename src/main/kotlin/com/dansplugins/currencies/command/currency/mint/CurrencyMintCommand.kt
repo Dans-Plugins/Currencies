@@ -1,6 +1,7 @@
 package com.dansplugins.currencies.command.currency.mint
 
 import com.dansplugins.currencies.Currencies
+import com.dansplugins.currencies.command.unquoteSafely
 import com.dansplugins.currencies.currency.Currency
 import com.dansplugins.currencies.currency.CurrencyId
 import com.dansplugins.currencies.currency.CurrencyStatus.ACTIVE
@@ -15,7 +16,6 @@ import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
 import org.bukkit.inventory.ItemStack
-import preponderous.ponder.command.unquote
 import java.util.logging.Level.SEVERE
 
 class CurrencyMintCommand(private val plugin: Currencies) : CommandExecutor, TabCompleter {
@@ -32,7 +32,7 @@ class CurrencyMintCommand(private val plugin: Currencies) : CommandExecutor, Tab
             sender.sendMessage("${RED}Usage: /currency mint [currency] (amount)")
             return true
         }
-        val unquotedArgs = args.unquote()
+        val unquotedArgs = args.unquoteSafely()
         val powerCostEnabled = plugin.config.getBoolean("currencies.powerCostEnabled")
         val powerCost = plugin.config.getDouble("currencies.powerCost")
         val itemCostEnabled = plugin.config.getBoolean("currencies.itemCostEnabled")

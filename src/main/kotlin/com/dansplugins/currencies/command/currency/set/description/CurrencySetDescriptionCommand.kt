@@ -1,6 +1,7 @@
 package com.dansplugins.currencies.command.currency.set.description
 
 import com.dansplugins.currencies.Currencies
+import com.dansplugins.currencies.command.unquoteSafely
 import com.dansplugins.currencies.currency.Currency
 import com.dansplugins.currencies.currency.CurrencyId
 import com.dansplugins.factionsystem.player.MfPlayerId
@@ -15,7 +16,6 @@ import org.bukkit.conversations.ConversationFactory
 import org.bukkit.conversations.Prompt
 import org.bukkit.conversations.StringPrompt
 import org.bukkit.entity.Player
-import preponderous.ponder.command.unquote
 import java.util.logging.Level
 
 class CurrencySetDescriptionCommand(private val plugin: Currencies) : CommandExecutor, TabCompleter {
@@ -65,7 +65,7 @@ class CurrencySetDescriptionCommand(private val plugin: Currencies) : CommandExe
             sender.sendMessage("${ChatColor.RED}You must be a player to change the description of currencies.")
             return true
         }
-        val unquotedArgs = args.unquote()
+        val unquotedArgs = args.unquoteSafely()
         if (unquotedArgs.isEmpty()) {
             sender.sendMessage("${ChatColor.RED}Usage: /currency set description [currency name] (new description)")
             return true

@@ -126,6 +126,19 @@ class CurrencyRetireCommandTest {
         )
     }
 
+    /**
+     * Ponder's unquote throws on these, which previously reached the player as an internal error
+     * rather than a message (#213). Nothing is retired either way.
+     */
+    @Test
+    fun `an empty or unbalanced quote is reported as an unrecognised currency`() {
+        currencyLookupReturns(gold)
+        assertEquals(listOf("${BukkitChatColor.RED}There is no currency by that name."), messagesSentBy(player(), "\"\"", "confirm"))
+        assertEquals(listOf("${BukkitChatColor.RED}There is no currency by that name."), messagesSentBy(player(), "\"", "confirm"))
+        assertEquals(listOf("${BukkitChatColor.RED}There is no currency by that name."), messagesSentBy(player(), ""))
+        verify(exactly = 0) { currencyService.save(any()) }
+    }
+
     @Test
     fun `an already retired currency cannot be retired again`() {
         currencyLookupReturns(silver)

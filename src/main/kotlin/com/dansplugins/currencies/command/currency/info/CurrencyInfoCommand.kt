@@ -1,6 +1,7 @@
 package com.dansplugins.currencies.command.currency.info
 
 import com.dansplugins.currencies.Currencies
+import com.dansplugins.currencies.command.unquoteSafely
 import com.dansplugins.currencies.currency.Currency
 import com.dansplugins.currencies.currency.CurrencyId
 import com.dansplugins.currencies.item.tagToNbtJson
@@ -19,7 +20,6 @@ import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
 import org.bukkit.entity.Player
-import preponderous.ponder.command.unquote
 import net.md_5.bungee.api.ChatColor as SpigotChatColor
 import org.bukkit.ChatColor as BukkitChatColor
 
@@ -29,7 +29,7 @@ class CurrencyInfoCommand(private val plugin: Currencies) : CommandExecutor, Tab
             sender.sendMessage("${BukkitChatColor.RED}Usage: /currency info [currency]")
             return true
         }
-        val unquotedArgs = args.unquote()
+        val unquotedArgs = args.unquoteSafely()
         val showAmountMinted = plugin.config.getBoolean("currencies.showAmountMinted")
         plugin.server.scheduler.runTaskAsynchronously(plugin, Runnable {
             val playerId = if (sender is Player) MfPlayerId.fromBukkitPlayer(sender) else null
