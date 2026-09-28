@@ -40,6 +40,11 @@ class CurrencyMintCommand(private val plugin: Currencies) : CommandExecutor, Tab
             val parsedAmount = if (unquotedArgs.size > 1) unquotedArgs.last().toIntOrNull() else null
             val lastArgOffset = if (parsedAmount == null) 0 else 1
             val amount = parsedAmount ?: 1
+            // A zero or negative amount would credit power back and lower the minted total (#225).
+            if (amount < 1) {
+                sender.sendMessage("${RED}The amount must be at least 1.")
+                return@Runnable
+            }
             val currencyService = plugin.services.currencyService
             val currency = currencyService.getCurrency(CurrencyId(unquotedArgs[0]))
                 ?: currencyService.getCurrency(unquotedArgs.dropLast(lastArgOffset).joinToString(" "))

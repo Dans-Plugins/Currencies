@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Fixed
+
+- `/currency mint` rejects a zero or negative amount ("The amount must be at least 1."). Previously `/currency mint Gold -5` credited the minting player power and lowered the currency's minted total (#225).
+
 ### Changed
 
 - Usage reporting is now disclosed on every startup: the plugin logs whether reporting is on (and what is sent, and how to turn it off) or off (and why). Two new ways to turn reporting off: `enabled: false` in `plugins/trace/config.yml` (created on first start, shared by every plugin that reports this way) and the environment variables `TRACE_USAGE_REPORTING=off` or `DO_NOT_TRACK=1`. The vendored trace client is 0.2.0. Nothing about what is sent changed; see the README's Usage reporting section
