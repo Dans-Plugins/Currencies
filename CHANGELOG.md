@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Fixed
 
+- `/currency info` no longer fails partway through on Paper (and other servers whose CraftBukkit package is not versioned): it threw `StringIndexOutOfBoundsException` before printing the item and the minted total. Where the item's details cannot be read, the plain item name is shown.
 - `/currency mint` rejects a zero or negative amount ("The amount must be at least 1."). Previously `/currency mint Gold -5` credited the minting player power and lowered the currency's minted total (#225).
 
 ### Changed

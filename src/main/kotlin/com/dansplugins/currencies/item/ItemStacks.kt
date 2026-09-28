@@ -24,8 +24,26 @@ fun ByteArray.toItemStack(): ItemStack {
     }
 }
 
-fun ItemStack.tagToNbtJson(): String? {
-    val serverVersion = Bukkit.getServer().javaClass.packageName.substring(23)
+/**
+ * The item's NBT tag as JSON, for a chat hover, or null when it cannot be read on this server.
+ * The lookup is by server version and NMS method name, so it only covers the Spigot versions
+ * listed below. Paper has not versioned the CraftBukkit package since 1.20.5; there the
+ * package name has no version suffix and this answers null (the caller then prints the plain
+ * item name) instead of throwing.
+ */
+fun ItemStack.tagToNbtJson(): String? = try {
+    nbtJsonOrNull()
+} catch (e: ReflectiveOperationException) {
+    null
+} catch (e: RuntimeException) {
+    null
+}
+
+private fun ItemStack.nbtJsonOrNull(): String? {
+    val serverVersion = Bukkit.getServer().javaClass.packageName
+        .removePrefix("org.bukkit.craftbukkit")
+        .removePrefix(".")
+        .takeIf { it.isNotEmpty() && !it.contains('.') } ?: return null
     val craftItemStackClass = Class.forName("org.bukkit.craftbukkit.${serverVersion}.inventory.CraftItemStack")
     val asNmsCopyMethod = craftItemStackClass.getMethod("asNMSCopy", ItemStack::class.java)
     val nmsItemStackClass = Class.forName("net.minecraft.world.item.ItemStack")
