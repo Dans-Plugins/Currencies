@@ -388,21 +388,25 @@ class CurrencyMintCommandTest {
         assertEquals(listOf("${RED}Failed to save currency."), messagesSentBy(player(), "Gold"))
     }
 
-    /**
-     * Characterizes current behavior rather than intended behavior: a non-positive amount is not
-     * rejected, so the minted total goes down and, when minting costs power, the player gains power.
-     * Tracked as a bug in #225; this test should change when that is fixed.
-     */
+    /** #225: a zero or negative amount credited power back and lowered the minted total. */
     @Test
-    fun `a negative amount is currently accepted and credits power back`() {
+    fun `a negative amount is rejected before anything is saved`() {
         config(powerCostEnabled = true, powerCost = 2.0)
         currencyLookupReturns(gold)
         factionOwning(gold)
-        val savedPlayer = slot<MfPlayer>()
-        every { playerService.save(capture(savedPlayer)) } answers { Success(savedPlayer.captured) }
-        assertEquals(listOf("${GREEN}Minted -5 x Gold."), messagesSentBy(player(), "Gold", "-5"))
-        assertEquals(mfPlayer.copy(power = 20.0), savedPlayer.captured)
-        assertEquals(gold.copy(amount = 95), savedCurrency())
+        assertEquals(listOf("${RED}The amount must be at least 1."), messagesSentBy(player(), "Gold", "-5"))
+        verify(exactly = 0) { playerService.save(any()) }
+        verify(exactly = 0) { currencyService.save(any()) }
+    }
+
+    @Test
+    fun `a zero amount is rejected before anything is saved`() {
+        config(powerCostEnabled = true, powerCost = 2.0)
+        currencyLookupReturns(gold)
+        factionOwning(gold)
+        assertEquals(listOf("${RED}The amount must be at least 1."), messagesSentBy(player(), "Gold", "0"))
+        verify(exactly = 0) { playerService.save(any()) }
+        verify(exactly = 0) { currencyService.save(any()) }
     }
 
     @Test
