@@ -53,14 +53,14 @@ class Currencies : JavaPlugin() {
         // on disk; the server-wide plugins/trace/config.yml and the environment
         // get the last word.
         val usageReporting = UsageReportingConfig.read(config)
-        trace = TraceClient.builder(usageReporting.endpoint, name)
+        trace = TraceClient.builder(usageReporting.endpoint, name, description.version)
             .key(usageReporting.key)
             .enabled(usageReporting.enabled)
             .serverWideConfig(dataFolder.parentFile)
             .logger(logger)
             .build()
         logger.info(UsageReportingConfig.startupNotice(name, usageReporting.endpoint, trace.disabledReason()))
-        trace.report("startup", null, mapOf("version" to description.version))
+        trace.report("startup")
 
         if (!initializeMedievalFactions()) {
             isEnabled = false
