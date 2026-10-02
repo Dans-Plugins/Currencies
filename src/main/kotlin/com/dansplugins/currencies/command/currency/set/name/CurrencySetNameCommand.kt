@@ -83,7 +83,7 @@ class CurrencySetNameCommand(private val plugin: Currencies) : CommandExecutor, 
                 return@Runnable
             }
             val existingCurrency = currencyService.getCurrency(newName)
-            if (existingCurrency != null) {
+            if (existingCurrency != null && existingCurrency.id != currency.id) {
                 player.sendMessage("${RED}There is already a currency with that name.")
                 return@Runnable
             }
