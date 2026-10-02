@@ -148,19 +148,19 @@ class CurrencySetNameCommandTest {
     }
 
     /**
-     * Characterizes current behaviour: the clash check uses the case-insensitive name lookup and does
-     * not exclude the currency being renamed, so changing only the capitalization of a currency's own
-     * name is refused as a clash with itself (#235).
+     * The clash check's name lookup ignores case, so it finds the currency being renamed itself; that
+     * match is not a clash (#235).
      */
     @Test
-    fun `changing only the capitalization of a currency's name is refused as a clash with itself`() {
+    fun `changing only the capitalization of a currency's name renames it`() {
         currencyLookupReturns(gold)
         playerFaction()
+        val saved = savesSucceed()
         assertEquals(
-            listOf("${RED}There is already a currency with that name."),
+            listOf("${GREEN}Currency name changed from Gold to GOLD."),
             messagesSentBy(player(), "Gold", "GOLD")
         )
-        verify(exactly = 0) { currencyService.save(any()) }
+        assertEquals(gold.copy(name = "GOLD"), saved.captured)
     }
 
     @Test
