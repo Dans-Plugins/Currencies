@@ -19,6 +19,12 @@ This plugin is supported on the Minecraft versions listed in [`minecraft-version
 
 This plugin depends on [Medieval Factions](https://github.com/Dans-Plugins/Medieval-Factions) in order to work.
 
+**Compatibility:** Currencies v3.0.0 was enabled against [Medieval Factions](https://github.com/Dans-Plugins/Medieval-Factions) 7.0.0 by the [dependents gate](https://github.com/Dans-Plugins/release-gates/actions/runs/36957984824) before Medieval Factions 7.0.0 was published.
+
+**Other Medieval Factions expansions:** [Fiefs](https://github.com/Dans-Plugins/Fiefs) (sub-factions), [Democracy](https://github.com/Dans-Plugins/Democracy) (elections), [Bluemap_MedievalFactions](https://github.com/Dans-Plugins/Bluemap_MedievalFactions) (claims on a BlueMap web map). All of them are listed in the [Medieval Factions README](https://github.com/Dans-Plugins/Medieval-Factions#expansions).
+
+Currencies 2.x does not enable on Medieval Factions 5.8 or newer. Use Currencies 3.0.0 or later.
+
 ## Usage
 
 ### Documentation
