@@ -27,7 +27,7 @@ data class UsageReportingConfig(
         fun startupNotice(pluginName: String, endpoint: String, disabledReason: String?): String =
             if (disabledReason == null) {
                 "Usage reporting is on: $pluginName sends its name, version and command names to $endpoint" +
-                    " - nothing about players or the server." +
+                    ", plus a random server ID (server-id in plugins/trace/config.yml) - nothing about players." +
                     " Turn it off with usage-reporting.enabled: false in this plugin's config.yml," +
                     " or for every plugin with enabled: false in plugins/trace/config.yml." +
                     " Details: $DETAILS_URL"
