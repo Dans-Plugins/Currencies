@@ -31,7 +31,7 @@ currencies:
 # starts); that file wins over this one. The environment variables
 # TRACE_USAGE_REPORTING=off and DO_NOT_TRACK=1 turn it off as well, and win
 # over both files. The plugin says which applies on every startup.
-# Details: https://github.com/Stephenson-Software/trace#usage-reporting
+# Details: https://danielstephenson.dev/usage-reporting
 usage-reporting:
   enabled: true
   endpoint: https://trace.danielstephenson.dev

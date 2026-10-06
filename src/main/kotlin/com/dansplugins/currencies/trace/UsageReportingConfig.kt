@@ -17,7 +17,7 @@ data class UsageReportingConfig(
         const val ENDPOINT_KEY = "usage-reporting.endpoint"
         const val KEY_KEY = "usage-reporting.key"
         const val DEFAULT_ENDPOINT = "https://trace.danielstephenson.dev"
-        const val DETAILS_URL = "https://github.com/Stephenson-Software/trace#usage-reporting"
+        const val DETAILS_URL = "https://danielstephenson.dev/usage-reporting"
 
         /**
          * The line logged on every startup: what is sent and how to turn it off
