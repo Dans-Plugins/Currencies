@@ -224,4 +224,4 @@ it off; the plugin says on every startup whether reporting is on, and why not wh
 Two further switches win over this file: `enabled: false` in `plugins/trace/config.yml` (created the
 first time a plugin that reports this way starts) turns reporting off for every such plugin on the
 server, and the environment variables `TRACE_USAGE_REPORTING=off` or `DO_NOT_TRACK=1` turn it off for
-the whole process. Details: https://github.com/Stephenson-Software/trace#usage-reporting
+the whole process. Details: https://danielstephenson.dev/usage-reporting
