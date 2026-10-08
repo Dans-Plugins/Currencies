@@ -45,6 +45,9 @@ Once a currency exists, authorised faction members can mint coins. Minting costs
 - When a currency is created, every role of the faction that has `CREATE_CURRENCY` is given permission to mint, rename, describe and retire that currency. Other roles, including the default Member role, get none of these, so an ordinary member cannot mint or rename it until the owner grants their role the permission.
 - Only members of the faction that owns a currency can mint it. Members of other factions (allies included), players in no faction and server operators are refused: there is no permission that lets anyone else mint.
 - Only members of the owning faction whose role has the permission can rename a currency; members of other factions (allies included) and players in no faction are refused. A player with `currencies.force.rename` (server operators, by default) can rename any currency.
+- Changing a currency's description follows the same rule: only members of the owning faction whose role has the permission can do it, and a player with `currencies.force.desc` (server operators, by default) can describe any currency.
+- Only members of the owning faction whose role has the permission can retire a currency. There is no permission that lets anyone else retire it, server operators included.
+- Players in no faction cannot create a currency, and neither can a member whose role lacks `CREATE_CURRENCY`.
 
 ### Viewing Your Balance
 
