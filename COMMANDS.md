@@ -72,7 +72,7 @@ A currency name containing spaces may be given either as-is or wrapped in double
 
 ### /currency set description \<currency\> \[description\]
 
-**Description:** Set or update the description of a currency. Requires the appropriate faction permission or `currencies.force.desc`. When the description is omitted, it is asked for in a chat prompt, which can be exited by typing `cancel`.
+**Description:** Set or update the description of a currency. Requires the appropriate faction permission or `currencies.force.desc`. When the description is omitted, it is asked for in a chat prompt, which accepts several lines of text, joined with spaces, until `end` is typed; typing `cancel` exits without saving.
 **Aliases:** `/currency set desc <currency> [description]`
 **Permission:** `currencies.desc`
 **Usage:** `/currency set description <currency> [description]`

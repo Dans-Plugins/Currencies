@@ -92,7 +92,7 @@ Rename an existing currency (requires faction permission). Leaving the new name 
 
 ### Setting a Currency Description
 
-Set or update the description of a currency (requires faction permission). Leaving the description off asks for it in a chat prompt, which can be exited by typing `cancel`:
+Set or update the description of a currency (requires faction permission). Leaving the description off asks for it in a chat prompt, which accepts several lines of text, joined with spaces, until `end` is typed; typing `cancel` exits without saving:
 
 ```
 /currency set description <currency> <description>
