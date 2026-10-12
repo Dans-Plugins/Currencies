@@ -17,13 +17,20 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [3.1.0] – 2026-10-06
 
 ### Added
+- Extended the unit tests to `/currency set name`, covering its permission gate, the faction, role and change-name permission checks and the `currencies.force.rename` bypass, the name-clash refusal, currency ID and quoted multi-word name resolution, the save-failure path, the follow-up `/currency info`, the chat prompt used when the new name is omitted (including `cancel`), and tab completion. Two tests characterize current behaviour: an unquoted multi-word currency name is not resolved, and changing only the capitalization of a currency's own name is refused as a clash with itself, reported as #235
+
+### Fixed
+- `/currency set name` (and `/currency rename`) can change only the capitalization of a currency's name, e.g. `/currency set name Gold GOLD`. Previously the currency was found as a clash with itself and the rename was refused with "There is already a currency with that name." (#235).
+
+## [3.0.0] – 2026-09-28
+
+### Added
 - The plugin now reports usage events — `startup` on enable, `command` on each use of `/currency` or `/coinpurse` — to the author's trace server so it is known which plugins are in use. Events carry the plugin name, the event name, and the plugin version or command name; nothing about players or the server. Reporting runs off the main thread, never delays a tick, drops silently when the server is unreachable, and is turned off with `usage-reporting.enabled: false` in `config.yml`. The default config carries the plugin's key, so reporting is active out of the box unless turned off — including on servers upgraded from a version before the `usage-reporting` block existed, whose `config.yml` is never rewritten by `saveDefaultConfig()`: the plugin reads the bundled defaults for any key the file lacks
 - Added the project's first unit tests, covering `/currency` subcommand routing and its usage message. The Medieval Factions jar is now also on the test runtime classpath, which mocking the plugin class requires; it remains `compileOnly` for the shaded jar
 - Extended the unit tests to `/currency set` routing and tab completion, and to `/currency balance`, whose report is built on the scheduler's async thread and is now exercised by capturing and running the scheduled task
 - Extended the unit tests to `/currency retire`, covering its permission and faction-role gates, the confirmation prompt and its clickable confirm component, multi-word currency name resolution, and the save-failure path. Retiring a currency is one of the two supply-mutating commands, so its behaviour is now locked in against regression
 - Extended the unit tests to `/currency list`, covering its permission gate, the `all`, `retired` and faction filters (by faction ID and by multi-word faction name, with and without a trailing page number), the invalid-filter, empty-result and out-of-range page messages, and tab completion
 - Extended the unit tests to `/currency mint`, covering its permission and faction-role gates, the retired-currency refusal, default and explicit amounts, currency ID and multi-word (quoted and unquoted) name resolution, overflow coins dropped at the player's feet, the power and item costs, and both save-failure paths. Minting is the other supply-mutating command, so the minted total and the power deducted are now asserted. One test characterizes the current acceptance of a negative amount, reported as #225
-- Extended the unit tests to `/currency set name`, covering its permission gate, the faction, role and change-name permission checks and the `currencies.force.rename` bypass, the name-clash refusal, currency ID and quoted multi-word name resolution, the save-failure path, the follow-up `/currency info`, the chat prompt used when the new name is omitted (including `cancel`), and tab completion. Two tests characterize current behaviour: an unquoted multi-word currency name is not resolved, and changing only the capitalization of a currency's own name is refused as a clash with itself, reported as #235
 - A `Dev Release` workflow, which republishes a rolling `dev` prerelease of `main` on every non-documentation push. This is what Dan's Plugin Manager's experimental channel installs from: `/dpm get currencies --experimental` reads `releases/tags/dev`, so without it there is nothing for that command to download. The prerelease is unreleased, unreviewed code and is marked as such.
 
 ### Changed
@@ -38,7 +45,6 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The `Dev Release` workflow now retries publishing the `dev` prerelease before giving up. The release and its tag have to be deleted and recreated for the tag to move to the new commit, and a transient API failure inside that window previously left the repository with no `dev` release at all until the workflow was re-run by hand. Each attempt now starts from a clean slate, and an exhausted retry fails loudly.
 - `/currency info` no longer fails partway through on Paper (and other servers whose CraftBukkit package is not versioned): it threw `StringIndexOutOfBoundsException` before printing the item and the minted total. Where the item's details cannot be read, the plain item name is shown.
 - `/currency mint` rejects a zero or negative amount ("The amount must be at least 1."). Previously `/currency mint Gold -5` credited the minting player power and lowered the currency's minted total (#225).
-- `/currency set name` (and `/currency rename`) can change only the capitalization of a currency's name, e.g. `/currency set name Gold GOLD`. Previously the currency was found as a clash with itself and the rename was refused with "There is already a currency with that name." (#235).
 
 ## [3.0.0-SNAPSHOT-8-8-2026] – 2026-08-08
 
