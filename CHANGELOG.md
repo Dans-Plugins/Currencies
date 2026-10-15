@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- Extended the unit tests to `/currency create`, covering its permission gate, the player-only and usage checks, the empty-hand refusal, the display-name prompt and its `--rename`/`--no-rename` choices, the currency ID stamped onto the item, the faction, role and create-currency permission checks, the name-clash refusal, the faction permission save, and both save-failure paths. One test characterizes current behaviour: when saving the faction fails, the currency has already been saved and is left in place
+
 ## [3.2.0] – 2026-10-10
 
 ### Added
