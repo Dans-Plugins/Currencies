@@ -1,5 +1,9 @@
 # Currencies
 
+![Creating the currency Marks from a gold nugget, minting 16 coins and viewing /currency info](docs/images/currency-commands.png)
+
+*Real in-game output from Currencies 3.3.0 on a local throwaway Paper 1.21.11 test server: the commands were typed by a scripted bot client, and the chat it received is drawn as Minecraft-style chat (typed commands appear in the input bars; grey lines say what happened between commands).*
+
 ## Description
 
 Currencies is an expansion for [Medieval Factions](https://github.com/Dans-Plugins/Medieval-Factions) that allows faction owners to create and mint local currencies, which paves the way for the simulation of local economies.
