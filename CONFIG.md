@@ -141,7 +141,7 @@ currencies:
 
 **Type:** boolean
 **Default:** `true`
-**Description:** When `true`, currency items cannot be smelted in a furnace.
+**Description:** When `true`, currency items cannot be put into a furnace, blast furnace or smoker, whether by clicking, shift-clicking, dragging, swapping from the hotbar or off hand, or by a hopper.
 
 **Example:**
 ```yaml

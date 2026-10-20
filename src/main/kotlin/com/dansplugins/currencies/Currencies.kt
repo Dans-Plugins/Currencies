@@ -179,6 +179,8 @@ class Currencies : JavaPlugin() {
             FactionDisbandListener(this),
             InventoryClickListener(this),
             InventoryCloseListener(this),
+            InventoryDragListener(this),
+            InventoryMoveItemListener(this),
             PrepareAnvilListener(this),
             PrepareItemCraftListener(this)
         )
