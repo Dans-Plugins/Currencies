@@ -9,14 +9,20 @@ import io.mockk.mockk
 import io.mockk.verify
 import org.bukkit.ChatColor.RED
 import org.bukkit.entity.Player
+import org.bukkit.event.inventory.ClickType
+import org.bukkit.event.inventory.ClickType.LEFT
+import org.bukkit.event.inventory.ClickType.NUMBER_KEY
+import org.bukkit.event.inventory.ClickType.SWAP_OFFHAND
 import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.event.inventory.InventoryType.BLAST_FURNACE
 import org.bukkit.event.inventory.InventoryType.CHEST
 import org.bukkit.event.inventory.InventoryType.FURNACE
+import org.bukkit.event.inventory.InventoryType.PLAYER
 import org.bukkit.event.inventory.InventoryType.SMOKER
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
+import org.bukkit.inventory.PlayerInventory
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
@@ -29,7 +35,10 @@ class InventoryClickListenerTest {
     private val currencyService = plugin.services.currencyService
     private val listener = InventoryClickListener(plugin)
 
-    private val player = mockk<Player>(relaxed = true)
+    private val playerInventory = mockk<PlayerInventory>(relaxed = true)
+    private val player = mockk<Player>(relaxed = true) {
+        every { inventory } returns playerInventory
+    }
 
     @BeforeEach
     fun setUp() {
@@ -37,14 +46,27 @@ class InventoryClickListenerTest {
         every { currencyService.currencies } returns listOf(gold)
     }
 
-    private fun click(type: InventoryType, clicked: ItemStack?, cursor: ItemStack? = null): InventoryClickEvent {
+    private fun click(
+        type: InventoryType,
+        clicked: ItemStack?,
+        cursor: ItemStack? = null,
+        clickedType: InventoryType = type,
+        clickType: ClickType = LEFT,
+        hotbarButton: Int = -1
+    ): InventoryClickEvent {
         val inventory = mockk<Inventory>(relaxed = true) {
             every { this@mockk.type } returns type
         }
+        val clickedInventory = mockk<Inventory>(relaxed = true) {
+            every { this@mockk.type } returns clickedType
+        }
         val event = mockk<InventoryClickEvent>(relaxed = true) {
             every { this@mockk.inventory } returns inventory
+            every { this@mockk.clickedInventory } returns clickedInventory
             every { currentItem } returns clicked
             every { this@mockk.cursor } returns cursor
+            every { click } returns clickType
+            every { this@mockk.hotbarButton } returns hotbarButton
             every { whoClicked } returns player
         }
         listener.onInventoryClick(event)
@@ -88,23 +110,48 @@ class InventoryClickListenerTest {
         verify(exactly = 0) { event.isCancelled = any() }
     }
 
-    /**
-     * Characterizes current behaviour: only furnaces and blast furnaces are guarded, so a smoker
-     * accepts a currency (and would cook one made from a raw food item).
-     */
     @Test
-    fun `clicking a currency in a smoker is allowed`() {
+    fun `clicking a currency in a smoker is cancelled`() {
         val event = click(SMOKER, coin())
+        verify(exactly = 1) { event.isCancelled = true }
+    }
+
+    @Test
+    fun `a currency on the cursor clicked into an empty furnace slot is cancelled`() {
+        val event = click(FURNACE, clicked = null, cursor = coin())
+        verify(exactly = 1) { event.isCancelled = true }
+        verify(exactly = 1) { player.sendMessage("${RED}You can't smelt a currency.") }
+    }
+
+    @Test
+    fun `a currency on the cursor clicked onto an item that is not a currency in a furnace slot is cancelled`() {
+        val event = click(FURNACE, clicked = mockk(relaxed = true), cursor = coin())
+        verify(exactly = 1) { event.isCancelled = true }
+    }
+
+    @Test
+    fun `a currency on the cursor clicked into the player's own inventory below a furnace is allowed`() {
+        val event = click(FURNACE, clicked = null, cursor = coin(), clickedType = PLAYER)
         verify(exactly = 0) { event.isCancelled = any() }
     }
 
-    /**
-     * Characterizes current behaviour: only the clicked slot's item is checked, so a currency held
-     * on the cursor and clicked into an empty furnace slot is not cancelled.
-     */
     @Test
-    fun `a currency on the cursor clicked into an empty furnace slot is allowed`() {
-        val event = click(FURNACE, clicked = null, cursor = coin())
+    fun `a currency swapped from the hotbar into a furnace slot with a number key is cancelled`() {
+        every { playerInventory.getItem(3) } returns coin()
+        val event = click(FURNACE, clicked = null, clickType = NUMBER_KEY, hotbarButton = 3)
+        verify(exactly = 1) { event.isCancelled = true }
+    }
+
+    @Test
+    fun `a currency swapped from the off hand into a furnace slot is cancelled`() {
+        every { playerInventory.itemInOffHand } returns coin()
+        val event = click(FURNACE, clicked = null, clickType = SWAP_OFFHAND)
+        verify(exactly = 1) { event.isCancelled = true }
+    }
+
+    @Test
+    fun `an item that is not a currency on the cursor clicked into a furnace slot is allowed`() {
+        val event = click(FURNACE, clicked = null, cursor = mockk(relaxed = true))
         verify(exactly = 0) { event.isCancelled = any() }
     }
 }

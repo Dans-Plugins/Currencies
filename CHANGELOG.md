@@ -12,6 +12,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added unit tests for saving the coinpurse when it is closed, covering that other inventories and non-player closers save nothing, that each currency's balance is the sum of its stacks, that a currency absent from the coinpurse is saved as zero, that an existing balance is updated keeping its version, that non-currency items are dropped at the player's location, and that a failed save is reported to the player while the remaining currencies are still saved
 - Added unit tests for the listeners that keep currency items out of crafting, anvils, furnaces and block placement, covering that each guard refuses a currency with its message, lets other items through, does nothing when its `config.yml` switch is off, and (for crafting and anvils) reports once and ignores an inventory with no player viewing it. Two tests characterize current behaviour: a currency on the cursor clicked into an empty furnace slot is not refused, and smokers are not guarded, reported as #262
 
+### Fixed
+- `currencies.disallowSmelting` now keeps currencies out of furnaces by every route. Previously only the item already in the clicked slot was checked, so a currency could still be put into a furnace from the cursor, by a hotbar number key or off-hand swap, by dragging, or by a hopper, and smokers were not guarded at all (#262).
+
 ## [3.2.0] – 2026-10-10
 
 ### Added
