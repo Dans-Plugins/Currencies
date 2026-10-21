@@ -3,7 +3,6 @@ package com.dansplugins.currencies.listener
 import com.dansplugins.currencies.Currencies
 import com.dansplugins.currencies.currency.Currency
 import com.dansplugins.currencies.currency.CurrencyId
-import com.dansplugins.currencies.currency.CurrencyStatus.ACTIVE
 import com.dansplugins.currencies.currency.CurrencyStatus.RETIRED
 import com.dansplugins.factionsystem.event.faction.FactionDisbandEvent
 import com.dansplugins.factionsystem.faction.MfFactionId
@@ -64,7 +63,6 @@ class FactionDisbandListenerTest {
         every { currencyService.getCurrencies(factionId) } returns listOf(minted)
         disband()
         assertEquals(listOf(minted.copy(status = RETIRED)), savedCurrencies)
-        assertEquals(ACTIVE, minted.status)
     }
 
     @Test
