@@ -31,23 +31,19 @@ class CoinpurseCommand(private val plugin: Currencies) : CommandExecutor, TabCom
                 val coinpurseHolder = CoinpurseInventoryHolder(plugin)
                 balances.forEach { (currency, balance) ->
                     val currencyItem = currency.item
-                    val currencyItemStack = ItemStack(currencyItem).apply {
-                        amount = currencyItem.type.maxStackSize
-                    }
-                    val remainder = balance % currencyItem.type.maxStackSize
-                    var i = 0
-                    while (i < balance) {
+                    val maxStackSize = currencyItem.type.maxStackSize
+                    var remaining = balance
+                    while (remaining > 0) {
+                        // Each stack is added at its final size so that anything which does not fit
+                        // is dropped at exactly the amount owed (#267).
+                        val currencyItemStack = ItemStack(currencyItem).apply {
+                            amount = minOf(remaining, maxStackSize)
+                        }
                         val leftOver = coinpurseHolder.inventory.addItem(currencyItemStack)
                         if (leftOver.isNotEmpty()) {
                             leftOver.values.forEach { sender.world.dropItem(sender.location, it) }
                         }
-                        i += currencyItem.type.maxStackSize
-                    }
-                    if (remainder != 0) {
-                        val remove = ItemStack(currencyItem).apply {
-                            amount = currencyItem.type.maxStackSize - remainder
-                        }
-                        coinpurseHolder.inventory.removeItem(remove)
+                        remaining -= maxStackSize
                     }
                 }
                 sender.openInventory(coinpurseHolder.inventory)

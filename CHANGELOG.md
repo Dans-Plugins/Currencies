@@ -13,12 +13,14 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - Added unit tests for the listeners that keep currency items out of crafting, anvils, furnaces and block placement, covering that each guard refuses a currency with its message, lets other items through, does nothing when its `config.yml` switch is off, and (for crafting and anvils) reports once and ignores an inventory with no player viewing it. Two tests characterize current behaviour: a currency on the cursor clicked into an empty furnace slot is not refused, and smokers are not guarded, reported as #262
 - Added unit tests for retiring a faction's currencies when the faction is disbanded, covering that every active currency is retired, that an already-retired currency is not saved again, that retiring changes only the status, that only the disbanded faction's currencies are looked up, and that a failed save is logged while the remaining currencies are still retired
 - Added unit tests for setting up the create-currency permission on a newly created faction, covering that the faction defaults deny creating currencies and granting that permission while keeping its other defaults, that a role able to change the faction name may create currencies, that a role able to grant (or to grant the granting of) changing the name may grant (or grant the granting of) creating currencies, that a role with none of these keeps its own permissions unchanged, and that each role is judged on its own permissions
+- Added unit tests for `/coinpurse`, covering its permission gate, the player-only check, that the coinpurse is opened with the configured `coinpurse.slots`, that each balance is placed as full stacks plus one partial stack sized by the currency item's own maximum stack size, that a zero balance and a balance for a currency that no longer exists place nothing, that coins which do not fit are dropped at the player's location, and that tab completion offers nothing
 
 ### Changed
 - `USER_GUIDE.md` now states that disbanding a faction retires every currency it owns
 
 ### Fixed
 - `currencies.disallowSmelting` now keeps currencies out of furnaces by every route. Previously only the item already in the clicked slot was checked, so a currency could still be put into a furnace from the cursor, by a hotbar number key or off-hand swap, by dragging, or by a hopper, and smokers were not guarded at all (#262).
+- `/coinpurse` no longer duplicates coins when the coinpurse is too full to hold a balance. Each currency was added as whole stacks and the excess trimmed afterwards from inside the coinpurse, so a rounded-up stack that did not fit was dropped at the player's feet in full. A full coinpurse and a balance of 10 Gold dropped 64 Gold. Coins that do not fit are now dropped at exactly the amount owed (#267).
 
 ## [3.2.0] – 2026-10-10
 
