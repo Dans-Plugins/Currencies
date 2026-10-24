@@ -299,24 +299,12 @@ class CurrencyCreateCommandTest {
         verify(exactly = 1) { factionService.save(any()) }
     }
 
-    @Test
-    fun `a failure to save the currency leaves the faction unsaved`() {
-        currencyNameTaken()
-        playerFaction()
-        every { currencyService.save(any()) } returns Failure(ServiceFailure(GENERAL, "database unavailable", Exception("database unavailable")))
-        assertEquals(
-            listOf("${RED}Failed to save currency."),
-            messagesSentBy(player(), "Gold", "--no-rename")
-        )
-        verify(exactly = 0) { factionService.save(any()) }
-    }
-
     /**
-     * Characterizes current behaviour: the currency has already been saved by the time the faction
-     * save fails, so it is left in place without its per-currency faction permissions.
+     * The faction's per-currency permissions are saved before the currency, so a failed faction save
+     * leaves no currency behind holding the name without its permissions.
      */
     @Test
-    fun `a failure to save the faction is reported after the currency was saved`() {
+    fun `a failure to save the faction leaves the currency unsaved`() {
         currencyNameTaken()
         playerFaction()
         every { factionService.save(any()) } returns Failure(ServiceFailure(GENERAL, "database unavailable", Exception("database unavailable")))
@@ -324,7 +312,19 @@ class CurrencyCreateCommandTest {
             listOf("${RED}Failed to save faction."),
             messagesSentBy(player(), "Gold", "--no-rename")
         )
-        verify(exactly = 1) { currencyService.save(any()) }
+        verify(exactly = 0) { currencyService.save(any()) }
+    }
+
+    @Test
+    fun `a failure to save the currency is reported after the faction was saved`() {
+        currencyNameTaken()
+        playerFaction()
+        every { currencyService.save(any()) } returns Failure(ServiceFailure(GENERAL, "database unavailable", Exception("database unavailable")))
+        assertEquals(
+            listOf("${RED}Failed to save currency."),
+            messagesSentBy(player(), "Gold", "--no-rename")
+        )
+        verify(exactly = 1) { factionService.save(any()) }
     }
 
     @Test
