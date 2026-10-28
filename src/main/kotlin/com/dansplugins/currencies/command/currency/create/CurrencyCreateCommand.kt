@@ -98,38 +98,28 @@ class CurrencyCreateCommand(private val plugin: Currencies) : CommandExecutor, T
                 sender.sendMessage("${RED}There is already a currency with that name.")
                 return@Runnable
             }
-            val currency = currencyService.save(Currency(
-                id = currencyId,
-                name = currencyName,
-                factionId = faction.id,
-                item = item
-            )).onFailure {
-                sender.sendMessage("${RED}Failed to save currency.")
-                plugin.logger.log(SEVERE, "Failed to save currency: ${it.reason.message}", it.reason.cause)
-                return@Runnable
-            }
             factionService.save(faction.copy(
                 defaultPermissionsByName = faction.defaultPermissionsByName + mapOf(
-                    plugin.factionPermissions.retireCurrency(currency.id).name to false,
-                    plugin.factionPermissions.changeCurrencyName(currency.id).name to false,
-                    plugin.factionPermissions.changeCurrencyDescription(currency.id).name to false,
-                    plugin.factionPermissions.mintCurrency(currency.id).name to false,
-                    medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.retireCurrency(currency.id)).name to false,
-                    medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.changeCurrencyName(currency.id)).name to false,
-                    medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.changeCurrencyDescription(currency.id)).name to false,
-                    medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.mintCurrency(currency.id)).name to false
+                    plugin.factionPermissions.retireCurrency(currencyId).name to false,
+                    plugin.factionPermissions.changeCurrencyName(currencyId).name to false,
+                    plugin.factionPermissions.changeCurrencyDescription(currencyId).name to false,
+                    plugin.factionPermissions.mintCurrency(currencyId).name to false,
+                    medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.retireCurrency(currencyId)).name to false,
+                    medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.changeCurrencyName(currencyId)).name to false,
+                    medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.changeCurrencyDescription(currencyId)).name to false,
+                    medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.mintCurrency(currencyId)).name to false
                 ),
                 roles = faction.roles.copy(roles = faction.roles.map {
                     if (it.hasPermission(faction, plugin.factionPermissions.createCurrency)) {
                         it.copy(permissionsByName = it.permissionsByName + mapOf(
-                            plugin.factionPermissions.retireCurrency(currency.id).name to true,
-                            plugin.factionPermissions.changeCurrencyName(currency.id).name to true,
-                            plugin.factionPermissions.changeCurrencyDescription(currency.id).name to true,
-                            plugin.factionPermissions.mintCurrency(currency.id).name to true,
-                            medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.retireCurrency(currency.id)).name to true,
-                            medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.changeCurrencyName(currency.id)).name to true,
-                            medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.changeCurrencyDescription(currency.id)).name to true,
-                            medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.mintCurrency(currency.id)).name to true
+                            plugin.factionPermissions.retireCurrency(currencyId).name to true,
+                            plugin.factionPermissions.changeCurrencyName(currencyId).name to true,
+                            plugin.factionPermissions.changeCurrencyDescription(currencyId).name to true,
+                            plugin.factionPermissions.mintCurrency(currencyId).name to true,
+                            medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.retireCurrency(currencyId)).name to true,
+                            medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.changeCurrencyName(currencyId)).name to true,
+                            medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.changeCurrencyDescription(currencyId)).name to true,
+                            medievalFactions.factionPermissions.setRolePermission(plugin.factionPermissions.mintCurrency(currencyId)).name to true
                         ))
                     } else {
                         it
@@ -138,6 +128,16 @@ class CurrencyCreateCommand(private val plugin: Currencies) : CommandExecutor, T
             )).onFailure {
                 sender.sendMessage("${RED}Failed to save faction.")
                 plugin.logger.log(SEVERE, "Failed to save faction: ${it.reason.message}", it.reason.cause)
+                return@Runnable
+            }
+            currencyService.save(Currency(
+                id = currencyId,
+                name = currencyName,
+                factionId = faction.id,
+                item = item
+            )).onFailure {
+                sender.sendMessage("${RED}Failed to save currency.")
+                plugin.logger.log(SEVERE, "Failed to save currency: ${it.reason.message}", it.reason.cause)
                 return@Runnable
             }
             sender.sendMessage("${GREEN}Currency created.")
