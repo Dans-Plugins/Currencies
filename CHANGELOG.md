@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Changed
 - `USER_GUIDE.md` now gives 1.19.4 as the oldest supported Minecraft version, matching the README and `minecraft-versions.json`. It previously said 1.13 or later, but the plugin is built against the 1.19 Spigot API
+- Usage reporting now counts a `command` event only when a player runs the command; console, command-block and plugin-dispatched commands are no longer reported.
 
 ### Fixed
 - `/currency create` no longer leaves a currency behind without its faction permissions when saving the faction fails. The currency was saved first and the faction's per-currency permissions second, so a failed faction save left the currency holding its name while no role could mint, rename, describe or retire it, and the name could not be reused to try again. The faction's permissions are now saved first, and the currency is only saved once they have been (#254).
