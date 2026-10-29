@@ -6,9 +6,15 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+- `USER_GUIDE.md` now gives 1.19.4 as the oldest supported Minecraft version, matching the README and `minecraft-versions.json`. It previously said 1.13 or later, but the plugin is built against the 1.19 Spigot API
+
+### Fixed
+- `/currency create` no longer leaves a currency behind without its faction permissions when saving the faction fails. The currency was saved first and the faction's per-currency permissions second, so a failed faction save left the currency holding its name while no role could mint, rename, describe or retire it, and the name could not be reused to try again. The faction's permissions are now saved first, and the currency is only saved once they have been (#254).
+
+## [3.4.0] – 2026-10-28
+
 ### Added
-- Extended the unit tests to `/currency create`, covering its permission gate, the player-only and usage checks, the empty-hand refusal, the display-name prompt and its `--rename`/`--no-rename` choices, the currency ID stamped onto the item, the faction, role and create-currency permission checks, the name-clash refusal, the faction permission save, and both save-failure paths.
-- Added unit tests for the currency and balance services, covering the one-time load of currencies into the cache at startup, lookup by ID, by case-insensitive name and by faction or status, that a save writes through to the repository and caches the repository's result, that balance reads are not cached, and that a version conflict is reported as a conflict and any other repository error as a general failure, leaving the cache unchanged. One test characterizes current behaviour: a currency name shared (ignoring case) by two currencies resolves to neither
 - Added unit tests for saving the coinpurse when it is closed, covering that other inventories and non-player closers save nothing, that each currency's balance is the sum of its stacks, that a currency absent from the coinpurse is saved as zero, that an existing balance is updated keeping its version, that non-currency items are dropped at the player's location, and that a failed save is reported to the player while the remaining currencies are still saved
 - Added unit tests for the listeners that keep currency items out of crafting, anvils, furnaces and block placement, covering that each guard refuses a currency with its message, lets other items through, does nothing when its `config.yml` switch is off, and (for crafting and anvils) reports once and ignores an inventory with no player viewing it. Two tests characterize current behaviour: a currency on the cursor clicked into an empty furnace slot is not refused, and smokers are not guarded, reported as #262
 - Added unit tests for retiring a faction's currencies when the faction is disbanded, covering that every active currency is retired, that an already-retired currency is not saved again, that retiring changes only the status, that only the disbanded faction's currencies are looked up, and that a failed save is logged while the remaining currencies are still retired
@@ -21,7 +27,12 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Fixed
 - `currencies.disallowSmelting` now keeps currencies out of furnaces by every route. Previously only the item already in the clicked slot was checked, so a currency could still be put into a furnace from the cursor, by a hotbar number key or off-hand swap, by dragging, or by a hopper, and smokers were not guarded at all (#262).
 - `/coinpurse` no longer duplicates coins when the coinpurse is too full to hold a balance. Each currency was added as whole stacks and the excess trimmed afterwards from inside the coinpurse, so a rounded-up stack that did not fit was dropped at the player's feet in full. A full coinpurse and a balance of 10 Gold dropped 64 Gold. Coins that do not fit are now dropped at exactly the amount owed (#267).
-- `/currency create` no longer leaves a currency behind without its faction permissions when saving the faction fails. The currency was saved first and the faction's per-currency permissions second, so a failed faction save left the currency holding its name while no role could mint, rename, describe or retire it, and the name could not be reused to try again. The faction's permissions are now saved first, and the currency is only saved once they have been (#254).
+
+## [3.3.0] – 2026-10-18
+
+### Added
+- Extended the unit tests to `/currency create`, covering its permission gate, the player-only and usage checks, the empty-hand refusal, the display-name prompt and its `--rename`/`--no-rename` choices, the currency ID stamped onto the item, the faction, role and create-currency permission checks, the name-clash refusal, the faction permission save, and both save-failure paths.
+- Added unit tests for the currency and balance services, covering the one-time load of currencies into the cache at startup, lookup by ID, by case-insensitive name and by faction or status, that a save writes through to the repository and caches the repository's result, that balance reads are not cached, and that a version conflict is reported as a conflict and any other repository error as a general failure, leaving the cache unchanged. One test characterizes current behaviour: a currency name shared (ignoring case) by two currencies resolves to neither
 
 ## [3.2.0] – 2026-10-10
 
