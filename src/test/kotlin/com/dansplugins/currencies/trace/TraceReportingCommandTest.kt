@@ -7,6 +7,7 @@ import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
 import org.bukkit.command.TabCompleter
+import org.bukkit.entity.Player
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
@@ -17,7 +18,7 @@ class TraceReportingCommandTest {
 
     private val trace = mockk<TraceClient>(relaxed = true)
     private val delegate = mockk<Delegate>(relaxed = true)
-    private val sender = mockk<CommandSender>(relaxed = true)
+    private val sender = mockk<Player>(relaxed = true)
     private val bukkitCommand = mockk<Command>(relaxed = true) {
         every { name } returns "currency"
     }
@@ -32,6 +33,18 @@ class TraceReportingCommandTest {
 
         verify(exactly = 1) { trace.report("command", null, mapOf("name" to "currency")) }
         verify(exactly = 1) { delegate.onCommand(sender, bukkitCommand, "currencies", args) }
+    }
+
+    @Test
+    fun `a command not run by a player is handled but not reported`() {
+        val console = mockk<CommandSender>(relaxed = true)
+        val args = arrayOf("balance")
+        every { delegate.onCommand(console, bukkitCommand, "currencies", args) } returns true
+
+        assertTrue(command.onCommand(console, bukkitCommand, "currencies", args))
+
+        verify(exactly = 0) { trace.report(any(), any(), any()) }
+        verify(exactly = 1) { delegate.onCommand(console, bukkitCommand, "currencies", args) }
     }
 
     @Test
