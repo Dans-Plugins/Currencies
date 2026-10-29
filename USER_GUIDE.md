@@ -2,7 +2,7 @@
 
 ## Prerequisites
 
-- A Spigot or Paper Minecraft server (1.13 or later)
+- A Spigot or Paper Minecraft server, version 1.19.4 or later (the versions each release is tested on are listed in [`minecraft-versions.json`](minecraft-versions.json))
 - [Medieval Factions](https://github.com/Dans-Plugins/Medieval-Factions) installed and configured
 
 ## First Steps
