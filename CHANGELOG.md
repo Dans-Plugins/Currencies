@@ -6,6 +6,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- Added unit tests for the faction permissions that gate minting, retiring, renaming and describing a currency, covering that each parses only its own `PREFIX(<currency id>)` name for a currency that exists, with the currency's name in its description and denied by default, that a name with no currency ID, surrounding text or another permission's prefix is not parsed, and that a faction is offered one permission per currency it owns and none for another faction's currencies. Also covered: that all five currency permissions are registered with Medieval Factions at startup and that each per-currency lookup embeds the currency ID in the name
+
 ### Changed
 - `USER_GUIDE.md` now gives 1.19.4 as the oldest supported Minecraft version, matching the README and `minecraft-versions.json`. It previously said 1.13 or later, but the plugin is built against the 1.19 Spigot API
 - Usage reporting now counts a `command` event only when a player runs the command; console, command-block and plugin-dispatched commands are no longer reported.
