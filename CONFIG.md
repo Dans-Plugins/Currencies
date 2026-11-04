@@ -211,12 +211,15 @@ usage-reporting:
 
 ## Usage reporting
 
-When the plugin is enabled, and each time one of its commands is used, a small event is sent to the
+When the plugin is enabled, and each time a player uses one of its commands, a small event is sent to the
 author's [trace](https://github.com/Stephenson-Software/trace-client-java) server so it is known which
-plugins are actually in use. An event carries the plugin's name, the event name (`startup` or
-`command`), the plugin version, and for a command the command name (`currency` or `coinpurse`), plus a
-random server ID (the `server-id` line in `plugins/trace/config.yml`, which identifies no person,
-account or IP address; deleting the line gets a new one) — nothing about players or the world. Sending
+plugins are actually in use. Commands sent by anything other than a player (the console, a command block,
+or another plugin dispatching as the console) are not reported. An event carries the plugin's name, the
+event name (`startup` or `command`), the plugin version, and for a command the command name (`currency` or
+`coinpurse`), plus a random server ID (the `server-id` line in `plugins/trace/config.yml`, which identifies
+no person, account or IP address; deleting the line gets a new one) — nothing about players or the world.
+The first use of a command is sent at once; further uses of it in the next minute are sent as one event
+carrying how many there were (the `coalesced` tag). Sending
 happens off the main thread, never delays a tick, and
 is dropped silently if the server cannot be reached. Set `usage-reporting.enabled` to `false` to turn
 it off; the plugin says on every startup whether reporting is on, and why not when it is off.

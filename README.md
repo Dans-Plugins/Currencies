@@ -131,9 +131,12 @@ You can view the bStats page for the plugin [here](https://bstats.org/plugin/buk
 
 ## Usage reporting
 
-Usage reporting is on by default: when the plugin is enabled, and each time `/currency` or
-`/coinpurse` is used, it sends its name, its version and the command's name (`startup` and `command`
+Usage reporting is on by default: when the plugin is enabled, and each time a player uses `/currency`
+or `/coinpurse`, it sends its name, its version and the command's name (`startup` and `command`
 events) to https://trace.danielstephenson.dev so it is known which plugins are actually in use.
+Commands sent by anything other than a player (the console, a command block, or another plugin
+dispatching as the console) are not reported. The first use of a command is sent at once; further
+uses of it in the next minute are sent as one event carrying how many there were.
 Nothing about players, worlds, IPs, or anything typed after a command is sent. The plugin
 says on every startup whether reporting is on. Each event also carries a random server ID (the `server-id` line in `plugins/trace/config.yml`) so
 servers can be counted rather than events. It identifies no person, account or IP address; delete

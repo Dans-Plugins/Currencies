@@ -6,11 +6,23 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+- `README.md`, `CONFIG.md` and the comment in `config.yml` now say that only commands run by a player are reported, and that repeats of a command within a minute are sent as one counted event. Both have been the case since 3.5.0, but the docs still said every use of a command was reported
+
+## [3.7.0] – 2026-11-01
+
 ### Added
-- Added unit tests for the faction permissions that gate minting, retiring, renaming and describing a currency, covering that each parses only its own `PREFIX(<currency id>)` name for a currency that exists, with the currency's name in its description and denied by default, that a name with no currency ID, surrounding text or another permission's prefix is not parsed, and that a faction is offered one permission per currency it owns and none for another faction's currencies. Also covered: that all five currency permissions are registered with Medieval Factions at startup and that each per-currency lookup embeds the currency ID in the name
 - Added unit tests for the jOOQ balance repository, run against an in-memory H2 database built from the plugin's own migration script in the MySQL mode and H2 dialect the default `config.yml` uses. They cover that a new balance is stored at version 1 whatever version is passed in, that saving with the current version replaces the balance and bumps the version, that saving with a stale or future version is rejected with an optimistic-locking failure and leaves the stored balance untouched, that balances are keyed by player and currency together, that a player's balances are listed without other players' balances, and that a zero balance is stored rather than treated as absent
 
+## [3.6.0] – 2026-10-31
+
+### Added
+- Added unit tests for the faction permissions that gate minting, retiring, renaming and describing a currency, covering that each parses only its own `PREFIX(<currency id>)` name for a currency that exists, with the currency's name in its description and denied by default, that a name with no currency ID, surrounding text or another permission's prefix is not parsed, and that a faction is offered one permission per currency it owns and none for another faction's currencies. Also covered: that all five currency permissions are registered with Medieval Factions at startup and that each per-currency lookup embeds the currency ID in the name
+
+## [3.5.0] – 2026-10-30
+
 ### Changed
+- The vendored trace client is now 0.7.0, which coalesces repeated events: the first report of an event is sent at once, and identical reports in the next 60 seconds are counted and sent as one event tagged `coalesced` with the count. `startup` is never held back. Details: https://github.com/Stephenson-Software/trace-client-java/releases/tag/0.7.0.
 - `USER_GUIDE.md` now gives 1.19.4 as the oldest supported Minecraft version, matching the README and `minecraft-versions.json`. It previously said 1.13 or later, but the plugin is built against the 1.19 Spigot API
 - Usage reporting now counts a `command` event only when a player runs the command; console, command-block and plugin-dispatched commands are no longer reported.
 
