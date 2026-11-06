@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+- Added unit tests for the jOOQ currency repository, run against an in-memory H2 database built from the plugin's own migration script in the MySQL mode and H2 dialect the default `config.yml` uses, with the item column going through real Bukkit object serialization. They cover that a new currency is stored at version 1 whatever version is passed in, that every field reads back as stored, that a missing legacy ID stays absent, that saving with the current version replaces every field and bumps the version, that saving with a stale or future version is rejected with an optimistic-locking failure and leaves the stored currency untouched, that a name held by another currency is refused by the database, and that currencies are listed across factions and looked up by their own ID
+
+## [3.8.0] – 2026-11-05
+
 ### Changed
 - `README.md`, `CONFIG.md` and the comment in `config.yml` now say that only commands run by a player are reported, and that repeats of a command within a minute are sent as one counted event. Both have been the case since 3.5.0, but the docs still said every use of a command was reported
 
