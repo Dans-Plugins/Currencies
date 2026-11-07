@@ -4,7 +4,7 @@
 
 ### /currency balance
 
-**Description:** View your current balance of all currencies.
+**Description:** View how many coins of each currency are stored in your coinpurse. Every currency on the server is listed, with retired ones marked `[retired]`. Coins carried in your inventory are not counted.
 **Permission:** `currencies.balance`
 **Usage:** `/currency balance`
 **Example:** `/currency balance`
@@ -44,7 +44,7 @@ A currency name containing spaces may be given either as-is or wrapped in double
 
 ### /currency mint \<currency\> \[amount\]
 
-**Description:** Mint coins of the specified currency. May cost the minting player power and/or items depending on server configuration. The amount is optional and defaults to `1` when omitted; it must be at least `1`.
+**Description:** Mint coins of the specified currency. May cost the minting player power and/or items depending on server configuration. The amount is optional and defaults to `1` when omitted; it must be at least `1`. Minted coins are placed in your inventory, and any that do not fit are dropped at your feet.
 **Permission:** `currencies.mint`
 **Usage:** `/currency mint <currency> [amount]`
 **Example:** `/currency mint GoldCoin 10`
@@ -53,7 +53,7 @@ A currency name containing spaces may be given either as-is or wrapped in double
 
 ### /currency set name \<currency\> \[new-name\]
 
-**Description:** Set the name of an existing currency. Requires the appropriate faction permission or `currencies.force.rename`. When the new name is omitted, it is asked for in a chat prompt, which can be exited by typing `cancel`.
+**Description:** Set the name of an existing currency. Requires the appropriate faction permission or `currencies.force.rename`. When the new name is omitted, it is asked for in a chat prompt, which can be exited by typing `cancel`. The coin item keeps its existing display name, both on coins already in circulation and on coins minted afterwards ([#182](https://github.com/Dans-Plugins/Currencies/issues/182)).
 **Aliases:** `/currency rename <currency> [new-name]`
 **Permission:** `currencies.rename`
 **Usage:** `/currency set name <currency> [new-name]`
@@ -63,7 +63,7 @@ A currency name containing spaces may be given either as-is or wrapped in double
 
 ### /currency rename \<currency\> \[new-name\]
 
-**Description:** Alias for `/currency set name`. Rename an existing currency. Requires the appropriate faction permission or `currencies.force.rename`. When the new name is omitted, it is asked for in a chat prompt, which can be exited by typing `cancel`.
+**Description:** Alias for `/currency set name`. Rename an existing currency. Requires the appropriate faction permission or `currencies.force.rename`. When the new name is omitted, it is asked for in a chat prompt, which can be exited by typing `cancel`. The coin item keeps its existing display name, both on coins already in circulation and on coins minted afterwards ([#182](https://github.com/Dans-Plugins/Currencies/issues/182)).
 **Permission:** `currencies.rename`
 **Usage:** `/currency rename <currency> [new-name]`
 **Example:** `/currency rename GoldCoin SilverCoin`
@@ -95,7 +95,7 @@ A currency name containing spaces may be given either as-is or wrapped in double
 
 ### /coinpurse
 
-**Description:** Open your coinpurse inventory to view and organise your coins.
+**Description:** Open your coinpurse inventory to store coins and take them out. When it is closed, the coins left in it are saved as your balance, and items that are not coins of a currency are dropped at your feet. If your balance does not fit when it opens, the coins that do not fit are dropped at your feet.
 **Aliases:** `/purse`, `/wallet`
 **Permission:** `currencies.coinpurse`
 **Usage:** `/coinpurse`

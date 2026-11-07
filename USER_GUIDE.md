@@ -12,7 +12,7 @@ After installing Currencies and restarting your server:
 1. Ensure you are a member of a faction in Medieval Factions.
 2. Hold the item you want to use as the currency's coin, then use `/currency create <name>` to create a new currency for your faction.
 3. Use `/currency mint <currency> [amount]` to mint coins of your currency.
-4. Open your coinpurse with `/coinpurse` to view your current coins.
+4. Minted coins arrive in your inventory. Open your coinpurse with `/coinpurse` and move them in to store them.
 
 ## Common Scenarios
 
@@ -33,7 +33,7 @@ If the held item's display name does not already match the currency name, a **Ye
 
 ### Minting Currency
 
-Once a currency exists, authorised faction members can mint coins. Minting costs the minting player power (configurable) and may require an item cost. The amount defaults to `1` when omitted:
+Once a currency exists, authorised faction members can mint coins. Minting costs the minting player power (configurable) and may require an item cost. The amount defaults to `1` when omitted. Minted coins are placed in your inventory, and any that do not fit are dropped at your feet:
 
 ```
 /currency mint GoldCoin 10
@@ -51,11 +51,13 @@ Once a currency exists, authorised faction members can mint coins. Minting costs
 
 ### Viewing Your Balance
 
-Check how many coins of each currency you hold:
+Check how many coins of each currency are stored in your coinpurse:
 
 ```
 /currency balance
 ```
+
+Every currency on the server is listed, with retired ones marked `[retired]`. Coins carried in your inventory are not counted, so newly minted coins only appear here once they have been moved into your coinpurse.
 
 ### Viewing Currency Information
 
@@ -90,6 +92,8 @@ Rename an existing currency (requires faction permission). Leaving the new name 
 /currency rename <currency> <new-name>
 ```
 
+Only the currency's name changes. The coin item keeps its existing display name, both on coins already in circulation and on coins minted afterwards ([#182](https://github.com/Dans-Plugins/Currencies/issues/182)).
+
 ### Setting a Currency Description
 
 Set or update the description of a currency (requires faction permission). Leaving the description off asks for it in a chat prompt, which accepts several lines of text, joined with spaces, until `end` is typed; typing `cancel` exits without saving:
@@ -108,11 +112,13 @@ Permanently retire a currency so it can no longer be minted (requires faction pe
 
 ### Using Your Coinpurse
 
-Open your coinpurse inventory to view and organise your coins:
+Open your coinpurse inventory to store coins and take them out:
 
 ```
 /coinpurse
 ```
+
+When the coinpurse is closed, the coins left in it are saved as your balance, so coins moved in are stored and coins taken out are no longer counted. Items that are not coins of a currency are dropped at your feet when it closes. If your balance does not fit in the coinpurse when it opens, the coins that do not fit are dropped at your feet.
 
 ## Permissions
 
