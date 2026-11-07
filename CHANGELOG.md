@@ -6,6 +6,11 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Changed
+- `USER_GUIDE.md` and `COMMANDS.md` now say that `/currency balance` reports only the coins stored in the coinpurse, that minted coins arrive in the inventory rather than the coinpurse, that closing the coinpurse is what saves the balance, and that renaming a currency does not change the coin item's display name. They previously told players to open the coinpurse to see newly minted coins, and described `/currency balance` as every coin held
+
+## [3.9.0] – 2026-11-07
+
 ### Added
 - Added unit tests for the jOOQ currency repository, run against an in-memory H2 database built from the plugin's own migration script in the MySQL mode and H2 dialect the default `config.yml` uses, with the item column going through real Bukkit object serialization. They cover that a new currency is stored at version 1 whatever version is passed in, that every field reads back as stored, that a missing legacy ID stays absent, that saving with the current version replaces every field and bumps the version, that saving with a stale or future version is rejected with an optimistic-locking failure and leaves the stored currency untouched, that a name held by another currency is refused by the database, and that currencies are listed across factions and looked up by their own ID
 
