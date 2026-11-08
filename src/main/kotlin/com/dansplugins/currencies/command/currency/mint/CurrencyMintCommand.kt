@@ -7,6 +7,8 @@ import com.dansplugins.currencies.currency.CurrencyId
 import com.dansplugins.currencies.currency.CurrencyStatus.ACTIVE
 import com.dansplugins.factionsystem.player.MfPlayer
 import com.dansplugins.factionsystem.player.MfPlayerId
+import dev.forkhandles.result4k.Failure
+import dev.forkhandles.result4k.Success
 import dev.forkhandles.result4k.onFailure
 import org.bukkit.ChatColor.GREEN
 import org.bukkit.ChatColor.RED
@@ -83,28 +85,21 @@ class CurrencyMintCommand(private val plugin: Currencies) : CommandExecutor, Tab
                         sender.sendMessage("${RED}You need at least $amount x ${currency.item.type.toString().lowercase().replace('_', ' ')} to mint $amount ${currency.name}")
                         return@syncTask
                     }
-                }
-                val item = ItemStack(currency.item).apply {
-                    this.amount = amount
-                }
-                sender.inventory.addItem(item).values.forEach { sender.world.dropItem(sender.location, it) }
-                if (itemCostEnabled) {
+                    // Taken before anything is saved so that the items cannot be spent elsewhere
+                    // while the saves run. They are handed back if either save fails (#296).
                     sender.inventory.removeItem(ItemStack(currency.item.type, amount))
                 }
-                plugin.server.scheduler.runTaskAsynchronously(plugin, Runnable asyncTask@{
-                    if (powerCostEnabled) {
-                        playerService.save(mfPlayer.copy(power = mfPlayer.power - (amount * powerCost))).onFailure {
-                            sender.sendMessage("${RED}Failed to save player information.")
-                            plugin.logger.log(SEVERE, "Failed to save player: ${it.reason.message}", it.reason.cause)
-                            return@asyncTask
+                plugin.server.scheduler.runTaskAsynchronously(plugin, Runnable {
+                    val recorded = recordMint(sender, mfPlayer, currency, amount, powerCostEnabled, powerCost)
+                    plugin.server.scheduler.runTask(plugin, Runnable {
+                        // Coins are only given once the cost and the minted total have both been saved (#296).
+                        if (recorded) {
+                            sender.giveOrDrop(ItemStack(currency.item).apply { this.amount = amount })
+                            sender.sendMessage("${GREEN}Minted $amount x ${currency.name}.")
+                        } else if (itemCostEnabled) {
+                            sender.giveOrDrop(ItemStack(currency.item.type, amount))
                         }
-                    }
-                    currencyService.save(currency.copy(amount = currency.amount + amount)).onFailure {
-                        sender.sendMessage("${RED}Failed to save currency.")
-                        plugin.logger.log(SEVERE, "Failed to save currency: ${it.reason.message}", it.reason.cause)
-                        return@asyncTask
-                    }
-                    sender.sendMessage("${GREEN}Minted $amount x ${currency.name}.")
+                    })
                 })
             })
         })
@@ -120,5 +115,79 @@ class CurrencyMintCommand(private val plugin: Currencies) : CommandExecutor, Tab
         args.isEmpty() -> plugin.services.currencyService.currencies.map(Currency::name)
         args.size == 1 -> plugin.services.currencyService.currencies.map(Currency::name).filter { it.lowercase().startsWith(args[0].lowercase()) }
         else -> emptyList()
+    }
+
+    /**
+     * Saves the power cost and then the minted total, refunding the power when the minted total
+     * cannot be saved. Returns whether both were saved; when not, the sender has been told why.
+     */
+    private fun recordMint(
+        sender: Player,
+        snapshot: MfPlayer,
+        currency: Currency,
+        amount: Int,
+        powerCostEnabled: Boolean,
+        powerCost: Double
+    ): Boolean {
+        val powerRequired = amount * powerCost
+        if (powerCostEnabled) {
+            val playerService = plugin.medievalFactions.services.playerService
+            // Re-read so that the cost is taken from the player's current power rather than the snapshot checked earlier.
+            val current = playerService.getPlayer(snapshot.id) ?: snapshot
+            if (current.power < powerRequired) {
+                sender.sendMessage("${RED}You need at least $powerRequired power to mint $amount ${currency.name}")
+                return false
+            }
+            when (val result = playerService.save(current.copy(power = current.power - powerRequired))) {
+                is Success -> Unit
+                is Failure -> {
+                    sender.sendMessage("${RED}Failed to save player information.")
+                    plugin.logger.log(SEVERE, "Failed to save player: ${result.reason.message}", result.reason.cause)
+                    return false
+                }
+            }
+        }
+        if (saveMintedTotal(sender, currency.id, amount)) return true
+        if (powerCostEnabled) refundPower(snapshot, powerRequired)
+        return false
+    }
+
+    /**
+     * Adds [amount] to the currency's minted total. The currency is re-read under a lock so that
+     * mints run close together each build on the version the previous one saved, rather than on a
+     * shared snapshot that the optimistic-locking check would refuse for all but the first (#296).
+     */
+    private fun saveMintedTotal(sender: Player, currencyId: CurrencyId, amount: Int): Boolean = synchronized(mintLock) {
+        val currencyService = plugin.services.currencyService
+        val current = currencyService.getCurrency(currencyId)
+        if (current == null || current.status != ACTIVE) {
+            sender.sendMessage("${RED}That currency is no longer active.")
+            return@synchronized false
+        }
+        when (val result = currencyService.save(current.copy(amount = current.amount + amount))) {
+            is Success -> true
+            is Failure -> {
+                sender.sendMessage("${RED}Failed to save currency.")
+                plugin.logger.log(SEVERE, "Failed to save currency: ${result.reason.message}", result.reason.cause)
+                false
+            }
+        }
+    }
+
+    private fun refundPower(snapshot: MfPlayer, powerRequired: Double) {
+        val playerService = plugin.medievalFactions.services.playerService
+        val current = playerService.getPlayer(snapshot.id) ?: snapshot
+        val result = playerService.save(current.copy(power = current.power + powerRequired))
+        if (result is Failure) {
+            plugin.logger.log(SEVERE, "Failed to refund $powerRequired power to ${snapshot.name} after a failed mint: ${result.reason.message}", result.reason.cause)
+        }
+    }
+
+    private fun Player.giveOrDrop(item: ItemStack) {
+        inventory.addItem(item).values.forEach { world.dropItem(location, it) }
+    }
+
+    private companion object {
+        val mintLock = Any()
     }
 }

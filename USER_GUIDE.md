@@ -33,7 +33,7 @@ If the held item's display name does not already match the currency name, a **Ye
 
 ### Minting Currency
 
-Once a currency exists, authorised faction members can mint coins. Minting costs the minting player power (configurable) and may require an item cost. The amount defaults to `1` when omitted. Minted coins are placed in your inventory, and any that do not fit are dropped at your feet:
+Once a currency exists, authorised faction members can mint coins. Minting costs the minting player power (configurable) and may require an item cost. The amount defaults to `1` when omitted. Minted coins are placed in your inventory, and any that do not fit are dropped at your feet. If saving the mint fails, no coins are given and any power or items taken as its cost are handed back:
 
 ```
 /currency mint GoldCoin 10

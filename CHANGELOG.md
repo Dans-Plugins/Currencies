@@ -9,6 +9,9 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ### Changed
 - `USER_GUIDE.md` and `COMMANDS.md` now say that `/currency balance` reports only the coins stored in the coinpurse, that minted coins arrive in the inventory rather than the coinpurse, that closing the coinpurse is what saves the balance, and that renaming a currency does not change the coin item's display name. They previously told players to open the coinpurse to see newly minted coins, and described `/currency balance` as every coin held
 
+### Fixed
+- `/currency mint` now gives coins only after the power cost and the currency's minted total have both been saved. Coins were given first, so when either save failed they were kept while the cost or the minted total went unrecorded. An item cost is now taken before the saves and handed back if either fails, and a power cost is refunded if the minted total then fails to save. The currency is also re-read just before its minted total is saved, so a second mint run close to the first is no longer refused as a version conflict after its coins were given (#296).
+
 ## [3.9.0] – 2026-11-07
 
 ### Added
