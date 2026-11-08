@@ -8,6 +8,7 @@ import com.dansplugins.factionsystem.faction.MfFaction
 import com.dansplugins.factionsystem.faction.MfFactionId
 import com.dansplugins.factionsystem.faction.role.MfFactionRole
 import com.dansplugins.factionsystem.failure.ServiceFailure
+import com.dansplugins.factionsystem.failure.ServiceFailureType.CONFLICT
 import com.dansplugins.factionsystem.failure.ServiceFailureType.GENERAL
 import com.dansplugins.factionsystem.player.MfPlayer
 import com.dansplugins.factionsystem.player.MfPlayerId
@@ -17,6 +18,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.mockk.slot
 import io.mockk.verify
+import io.mockk.verifyOrder
 import org.bukkit.ChatColor.GREEN
 import org.bukkit.ChatColor.RED
 import org.bukkit.Location
@@ -386,6 +388,103 @@ class CurrencyMintCommandTest {
         factionOwning(gold)
         every { currencyService.save(any()) } returns Failure(ServiceFailure(GENERAL, "database unavailable", Exception("database unavailable")))
         assertEquals(listOf("${RED}Failed to save currency."), messagesSentBy(player(), "Gold"))
+    }
+
+    private val saveFailure = Failure(ServiceFailure(GENERAL, "database unavailable", Exception("database unavailable")))
+
+    /** Makes the player service behave like a store: the player read back is the one last saved. */
+    private fun storedPlayers(): MutableList<MfPlayer> {
+        val saved = mutableListOf<MfPlayer>()
+        every { playerService.save(any()) } answers {
+            saved += firstArg<MfPlayer>()
+            Success(firstArg())
+        }
+        every { playerService.getPlayer(any<MfPlayerId>()) } answers { saved.lastOrNull() ?: mfPlayer }
+        return saved
+    }
+
+    /** #296: coins were given before the minted total was saved, so they were kept when it failed. */
+    @Test
+    fun `no coins are given when the currency cannot be saved`() {
+        config()
+        currencyLookupReturns(gold)
+        factionOwning(gold)
+        every { currencyService.save(any()) } returns saveFailure
+        assertEquals(listOf("${RED}Failed to save currency."), messagesSentBy(player(), "Gold", "5"))
+        verify(exactly = 0) { inventory.addItem(*anyVararg()) }
+    }
+
+    /** #296: coins were given before the power cost was saved, so they were kept when it failed. */
+    @Test
+    fun `no coins are given when the player's power cannot be saved`() {
+        config(powerCostEnabled = true, powerCost = 1.0)
+        currencyLookupReturns(gold)
+        factionOwning(gold)
+        every { playerService.save(any()) } returns saveFailure
+        assertEquals(listOf("${RED}Failed to save player information."), messagesSentBy(player(), "Gold", "5"))
+        verify(exactly = 0) { inventory.addItem(*anyVararg()) }
+    }
+
+    /** #296: power was deducted and kept when the minted total then failed to save. */
+    @Test
+    fun `the power cost is refunded when the currency cannot be saved`() {
+        config(powerCostEnabled = true, powerCost = 1.0)
+        currencyLookupReturns(gold)
+        factionOwning(gold)
+        val savedPlayers = storedPlayers()
+        every { currencyService.save(any()) } returns saveFailure
+        assertEquals(listOf("${RED}Failed to save currency."), messagesSentBy(player(), "Gold", "4"))
+        assertEquals(listOf(6.0, 10.0), savedPlayers.map(MfPlayer::power))
+        verify(exactly = 0) { inventory.addItem(*anyVararg()) }
+    }
+
+    /** #296: with an item cost, the items are taken up front and handed back instead of coins. */
+    @Test
+    fun `the item cost is handed back and no coins are given when the currency cannot be saved`() {
+        config(itemCostEnabled = true)
+        currencyLookupReturns(gold)
+        factionOwning(gold)
+        every { inventory.containsAtLeast(any(), 4) } returns true
+        val removed = mutableListOf<ItemStack>()
+        every { inventory.removeItem(capture(removed)) } returns hashMapOf()
+        every { currencyService.save(any()) } returns saveFailure
+        assertEquals(listOf("${RED}Failed to save currency."), messagesSentBy(player(), "Gold", "4"))
+        assertEquals(listOf(Material.GOLD_INGOT to 4), removed.map { it.type to it.amount })
+        assertEquals(listOf(Material.GOLD_INGOT to 4), itemsGiven().map { it.type to it.amount })
+        verify(exactly = 1) { inventory.addItem(*anyVararg()) }
+        // Under test a coin stack and a plain stack of the item type look the same, so the refund is
+        // told apart from coins by the items being taken before anything is given.
+        verifyOrder {
+            inventory.removeItem(*anyVararg())
+            inventory.addItem(*anyVararg())
+        }
+    }
+
+    /**
+     * #296: the minted total was saved from the snapshot read when the command started, so a mint
+     * saved in between left that snapshot's version stale and the save was refused after the coins
+     * had been given. The currency is now re-read immediately before it is saved.
+     */
+    @Test
+    fun `a mint saved after the currency was looked up is built on rather than refused`() {
+        config()
+        factionOwning(gold)
+        // The name lookup returns the stale snapshot, while the store holds a newer version.
+        var stored = gold.copy(version = 3, amount = 150)
+        every { currencyService.getCurrency(any<String>()) } returns gold
+        every { currencyService.getCurrency(any<CurrencyId>()) } answers { if (firstArg<String>() == gold.id.value) stored else null }
+        every { currencyService.save(any()) } answers {
+            val currency = firstArg<Currency>()
+            if (currency.version != stored.version) {
+                Failure(ServiceFailure(CONFLICT, "Invalid version: ${currency.version}", Exception("Invalid version")))
+            } else {
+                stored = currency.copy(version = currency.version + 1)
+                Success(stored)
+            }
+        }
+        assertEquals(listOf("${GREEN}Minted 5 x Gold."), messagesSentBy(player(), "Gold", "5"))
+        assertEquals(155, stored.amount)
+        assertEquals(listOf(5), itemsGiven().map(ItemStack::getAmount))
     }
 
     /** #225: a zero or negative amount credited power back and lowered the minted total. */

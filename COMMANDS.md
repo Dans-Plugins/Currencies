@@ -44,7 +44,7 @@ A currency name containing spaces may be given either as-is or wrapped in double
 
 ### /currency mint \<currency\> \[amount\]
 
-**Description:** Mint coins of the specified currency. May cost the minting player power and/or items depending on server configuration. The amount is optional and defaults to `1` when omitted; it must be at least `1`. Minted coins are placed in your inventory, and any that do not fit are dropped at your feet.
+**Description:** Mint coins of the specified currency. May cost the minting player power and/or items depending on server configuration. The amount is optional and defaults to `1` when omitted; it must be at least `1`. Minted coins are placed in your inventory, and any that do not fit are dropped at your feet. If saving the mint fails, no coins are given and any power or items taken as its cost are handed back.
 **Permission:** `currencies.mint`
 **Usage:** `/currency mint <currency> [amount]`
 **Example:** `/currency mint GoldCoin 10`
