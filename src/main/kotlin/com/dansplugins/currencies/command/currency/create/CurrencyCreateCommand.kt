@@ -37,7 +37,7 @@ class CurrencyCreateCommand(private val plugin: Currencies) : CommandExecutor, T
             return true
         }
         if (args.isEmpty()) {
-            sender.sendMessage("${RED}Usage: /currency create [currency name]")
+            sender.sendMessage("${RED}Usage: /currency create [currency name] (--rename|--no-rename)")
             return true
         }
         val itemInHand = sender.inventory.itemInMainHand
