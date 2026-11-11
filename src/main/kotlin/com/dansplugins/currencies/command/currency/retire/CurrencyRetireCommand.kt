@@ -34,7 +34,7 @@ class CurrencyRetireCommand(private val plugin: Currencies) : CommandExecutor, T
             return true
         }
         if (args.isEmpty()) {
-            sender.sendMessage("${BukkitChatColor.RED}Usage: /currency retire [currency]")
+            sender.sendMessage("${BukkitChatColor.RED}Usage: /currency retire [currency] (confirm)")
             return true
         }
         val unquotedArgs = args.unquoteSafely()

@@ -149,7 +149,7 @@ class CurrencyCreateCommandTest {
     @Test
     fun `usage message is sent when no currency name is given`() {
         assertEquals(
-            listOf("${RED}Usage: /currency create [currency name]"),
+            listOf("${RED}Usage: /currency create [currency name] (--rename|--no-rename)"),
             messagesSentBy(player())
         )
     }

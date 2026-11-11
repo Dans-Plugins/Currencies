@@ -112,7 +112,7 @@ class CurrencyRetireCommandTest {
     @Test
     fun `usage message is sent when no currency is given`() {
         assertEquals(
-            listOf("${BukkitChatColor.RED}Usage: /currency retire [currency]"),
+            listOf("${BukkitChatColor.RED}Usage: /currency retire [currency] (confirm)"),
             messagesSentBy(player())
         )
     }
