@@ -1,5 +1,7 @@
 # Currencies
 
+![Currencies banner: a Strata render of a test-server world with its Medieval Factions claims tinted in the factions' colours](docs/images/banner.jpg)
+
 ![Creating the currency Marks from a gold nugget, minting 16 coins and viewing /currency info](docs/images/currency-commands.png)
 
 *Real in-game output from Currencies 3.3.0 on a local throwaway Paper 1.21.11 test server: the commands were typed by a scripted bot client, and the chat it received is drawn as Minecraft-style chat (typed commands appear in the input bars; grey lines say what happened between commands).*
