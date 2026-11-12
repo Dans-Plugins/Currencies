@@ -47,9 +47,11 @@ Issues are grouped into [milestones](https://github.com/Dans-Plugins/Currencies/
 8. Open a pull request against `main`, link the related issue with `#<number>`.
 9. Address review feedback.
 
-### Language Files
+### User-Facing Messages
 
-For any user-facing string changes, update the appropriate resource files under `src/main/resources/` (for example, `plugin.yml` or `config.yml`). If you add a new localization or language file structure, document it in your pull request.
+Currencies has no language files. Chat messages and usage strings are written inline in the command and listener classes under `src/main/kotlin/`, so change a message where it is sent. If `COMMANDS.md` or `USER_GUIDE.md` describes the message or the behaviour around it, update that page in the same pull request.
+
+`src/main/resources/plugin.yml` holds the command descriptions shown by the server's `/help` and the permission node declarations. A permission added or changed there also needs its row in the permissions table in `USER_GUIDE.md`. If you add a localization or language file structure, document it in your pull request.
 
 ## Testing
 
