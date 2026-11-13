@@ -49,6 +49,8 @@ A currency name containing spaces may be given either as-is or wrapped in double
 **Usage:** `/currency mint <currency> [amount]`
 **Example:** `/currency mint GoldCoin 10`
 
+A currency name containing spaces may be given either as-is or wrapped in double quotes: `/currency mint Gold Coin 10` and `/currency mint "Gold Coin" 10` both resolve. A trailing whole number is read as the amount, not as part of the name.
+
 ---
 
 ### /currency set name \<currency\> \[new-name\]
@@ -59,6 +61,8 @@ A currency name containing spaces may be given either as-is or wrapped in double
 **Usage:** `/currency set name <currency> [new-name]`
 **Example:** `/currency set name GoldCoin SilverCoin`
 
+Only the first argument names the currency, so a currency name containing spaces must be wrapped in double quotes: `/currency set name "Gold Coin" Silver Coin` renames `Gold Coin` to `Silver Coin`, while `/currency set name Gold Coin Silver Coin` looks up a currency named `Gold` instead (and, if one exists, renames it to `Coin Silver Coin`). Everything after the currency name is taken as the new name, quoted or not.
+
 ---
 
 ### /currency rename \<currency\> \[new-name\]
@@ -67,6 +71,8 @@ A currency name containing spaces may be given either as-is or wrapped in double
 **Permission:** `currencies.rename`
 **Usage:** `/currency rename <currency> [new-name]`
 **Example:** `/currency rename GoldCoin SilverCoin`
+
+As with `/currency set name`, a currency name containing spaces must be wrapped in double quotes: `/currency rename "Gold Coin" Silver Coin`.
 
 ---
 
@@ -77,6 +83,8 @@ A currency name containing spaces may be given either as-is or wrapped in double
 **Permission:** `currencies.desc`
 **Usage:** `/currency set description <currency> [description]`
 **Example:** `/currency set description GoldCoin "The official coin of the Northern Kingdom"`
+
+Only the first argument names the currency, so a currency name containing spaces must be wrapped in double quotes: `/currency set description "Gold Coin" The official coin of the Northern Kingdom`. Without the quotes, the first word alone is looked up as the currency.
 
 ---
 
