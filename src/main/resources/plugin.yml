@@ -8,7 +8,14 @@ commands:
     description: |
       Currency management command
       /currency balance - Views your current balance
-      /currency create [name] - Creates a new currency
+      /currency create <name> [--rename|--no-rename] - Creates a new currency
+      /currency info <currency> - Views information about a currency
+      /currency list [all|retired|<faction>] [page] - Lists currencies
+      /currency mint <currency> [amount] - Mints coins of a currency
+      /currency set name <currency> [new-name] - Renames a currency
+      /currency rename <currency> [new-name] - Alias for /currency set name
+      /currency set description <currency> [description] - Sets a currency's description
+      /currency retire <currency> [confirm] - Retires a currency
     usage: /<command>
     aliases: [currencies]
   coinpurse:
