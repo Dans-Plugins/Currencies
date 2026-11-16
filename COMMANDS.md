@@ -2,6 +2,8 @@
 
 ## Currency Commands
 
+Every `/currency` command can also be run as `/currencies`, for example `/currencies list`.
+
 ### /currency balance
 
 **Description:** View how many coins of each currency are stored in your coinpurse. Every currency on the server is listed, with retired ones marked `[retired]`. Coins carried in your inventory are not counted.

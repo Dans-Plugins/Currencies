@@ -7,6 +7,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 ## [Unreleased]
 
 ### Changed
+- `COMMANDS.md` now says that `/currencies` is an alias of `/currency`, as declared in `plugin.yml`, so every currency command can be run under either name. The alias was previously undocumented, while the coinpurse aliases `/purse` and `/wallet` were listed
 - `USER_GUIDE.md` and `COMMANDS.md` now say that `/currency balance` reports only the coins stored in the coinpurse, that minted coins arrive in the inventory rather than the coinpurse, that closing the coinpurse is what saves the balance, and that renaming a currency does not change the coin item's display name. They previously told players to open the coinpurse to see newly minted coins, and described `/currency balance` as every coin held
 - The usage messages of `/currency create` and `/currency retire` now list their optional arguments: `--rename|--no-rename` for `create`, which skips the display-name prompt, and `confirm` for `retire`, which retires the currency without the confirmation prompt. Both were accepted but not shown (#299)
 - `CONTRIBUTING.md` now says that chat messages and usage strings are written inline in the Kotlin command and listener classes, and that `plugin.yml` holds the command and permission descriptions. It previously told contributors to change user-facing strings in resource files such as `plugin.yml` or `config.yml`, which hold none of the plugin's messages
