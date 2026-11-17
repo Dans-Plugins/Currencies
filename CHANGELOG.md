@@ -15,6 +15,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 - The `/currency` description in `plugin.yml`, shown by the server's `/help currency`, now lists all eight subcommands with their arguments. It previously listed only `balance` and `create`, and showed `create`'s required name as optional (#204)
 
 ### Fixed
+- `/currency create` now strips the double quotes from a quoted multi-word name, as the other `/currency` subcommands do. `/currency create "Gold Coin"` previously saved a currency named `"Gold Coin"` with the quotes included, which `/currency info`, `mint`, `retire`, `set name` and `set description` could then not find by name, and `--rename` gave the coin item the quoted name (#307)
 - `/currency mint` now gives coins only after the power cost and the currency's minted total have both been saved. Coins were given first, so when either save failed they were kept while the cost or the minted total went unrecorded. An item cost is now taken before the saves and handed back if either fails, and a power cost is refunded if the minted total then fails to save. The currency is also re-read just before its minted total is saved, so a second mint run close to the first is no longer refused as a version conflict after its coins were given (#296).
 
 ## [3.9.0] – 2026-11-07

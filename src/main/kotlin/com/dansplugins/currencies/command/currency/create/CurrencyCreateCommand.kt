@@ -1,6 +1,7 @@
 package com.dansplugins.currencies.command.currency.create
 
 import com.dansplugins.currencies.Currencies
+import com.dansplugins.currencies.command.unquoteSafely
 import com.dansplugins.currencies.currency.Currency
 import com.dansplugins.currencies.currency.CurrencyId
 import com.dansplugins.factionsystem.player.MfPlayerId
@@ -53,8 +54,9 @@ class CurrencyCreateCommand(private val plugin: Currencies) : CommandExecutor, T
         }
         val itemMeta = if (item.hasItemMeta()) item.itemMeta else null
         val displayName = if (itemMeta?.hasDisplayName() == true) itemMeta.displayName else null
-        val currencyName = args.filter { it !in listOf("--rename", "--no-rename") }.joinToString(" ")
-        if (!args.contains("--rename") && !args.contains("--no-rename")) {
+        val unquotedArgs = args.unquoteSafely()
+        val currencyName = unquotedArgs.filter { it !in listOf("--rename", "--no-rename") }.joinToString(" ")
+        if (!unquotedArgs.contains("--rename") && !unquotedArgs.contains("--no-rename")) {
             if (ChatColor.stripColor(displayName) != currencyName) {
                 sender.sendMessage("${RED}The item's display name does not match the specified currency name. Would you like to update it to match?")
                 sender.spigot().sendMessage(
@@ -72,7 +74,7 @@ class CurrencyCreateCommand(private val plugin: Currencies) : CommandExecutor, T
                 )
                 return true
             }
-        } else if (args.contains("--rename")) {
+        } else if (unquotedArgs.contains("--rename")) {
             if (itemMeta != null) {
                 itemMeta.setDisplayName(currencyName)
                 item.itemMeta = itemMeta

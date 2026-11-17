@@ -22,6 +22,8 @@ Every `/currency` command can also be run as `/currencies`, for example `/curren
 
 If the held item's display name does not already match the currency name, the command stops and offers a clickable choice rather than creating the currency: **Yes** re-runs the command with `--rename` (the item is renamed to the currency name), and **No** re-runs it with `--no-rename` (the item keeps its own name). Passing either flag directly skips the prompt.
 
+A currency name containing spaces may be given either as-is or wrapped in double quotes: `/currency create Gold Coin` and `/currency create "Gold Coin"` both create a currency named `Gold Coin`.
+
 ---
 
 ### /currency info \<currency\>
