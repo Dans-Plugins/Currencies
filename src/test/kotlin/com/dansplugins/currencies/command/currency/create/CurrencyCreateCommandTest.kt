@@ -237,6 +237,45 @@ class CurrencyCreateCommandTest {
         verify(exactly = 0) { itemMeta.setDisplayName(any()) }
     }
 
+    /**
+     * The other /currency subcommands strip the quotes from a quoted multi-word name, so a currency
+     * created with the quotes kept could not be found by name afterwards (#307).
+     */
+    @Test
+    fun `a quoted multi-word name is saved without its quotes`() {
+        currencyNameTaken()
+        playerFaction()
+        assertEquals(
+            listOf("${GREEN}Currency created."),
+            messagesSentBy(player(item = heldItem(displayName = "Shiny Ingot")), "\"Royal", "Gold\"", "--rename")
+        )
+        assertEquals("Royal Gold", savedCurrency().name)
+        verify { itemMeta.setDisplayName("Royal Gold") }
+    }
+
+    @Test
+    fun `a quoted name matching the display name creates the currency without a prompt`() {
+        currencyNameTaken()
+        playerFaction()
+        assertEquals(
+            listOf("${GREEN}Currency created."),
+            messagesSentBy(player(item = heldItem(displayName = "Royal Gold")), "\"Royal", "Gold\"")
+        )
+        assertEquals("Royal Gold", savedCurrency().name)
+    }
+
+    @Test
+    fun `the prompt for a quoted name re-runs the command with the unquoted name`() {
+        val sender = player(item = heldItem(displayName = "Shiny Ingot"))
+        val components = mutableListOf<BaseComponent>()
+        every { sender.spigot().sendMessage(*varargAll { components.add(it); true }) } returns Unit
+        messagesSentBy(sender, "\"Royal", "Gold\"")
+        assertEquals(
+            listOf("/currency create Royal Gold --rename", "/currency create Royal Gold --no-rename"),
+            components.filterIsInstance<TextComponent>().filter { it.clickEvent != null }.map { it.clickEvent.value }
+        )
+    }
+
     @Test
     fun `the currency id is stamped onto the currency item`() {
         currencyNameTaken()
