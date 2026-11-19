@@ -12,6 +12,7 @@ import com.dansplugins.currencies.service.Services
 import com.dansplugins.currencies.trace.TraceClient
 import com.dansplugins.currencies.trace.TraceReportingCommand
 import com.dansplugins.currencies.trace.UsageReportingConfig
+import com.dansplugins.currencies.trace.UsageReportingSetting
 import com.dansplugins.factionsystem.MedievalFactions
 import com.zaxxer.hikari.HikariConfig
 import com.zaxxer.hikari.HikariDataSource
@@ -23,6 +24,7 @@ import org.jooq.SQLDialect
 import org.jooq.conf.Settings
 import org.jooq.impl.DSL
 import preponderous.ponder.minecraft.bukkit.plugin.registerListeners
+import java.io.File
 import java.util.logging.Level.SEVERE
 
 private const val MEDIEVAL_FACTIONS_PLUGIN_NAME = "MedievalFactions"
@@ -49,10 +51,11 @@ class Currencies : JavaPlugin() {
         Metrics(this, 12810)
 
         // usage reporting: one event now, one per command; see config.yml. The
-        // copyDefaults + saveConfig above already put the usage-reporting block
-        // on disk; the server-wide plugins/trace/config.yml and the environment
-        // get the last word.
-        val usageReporting = UsageReportingConfig.read(config)
+        // copyDefaults + saveConfig above normally put the usage-reporting block
+        // on disk (not over a config.yml that cannot be parsed, which leaves
+        // reporting off); the server-wide plugins/trace/config.yml and the
+        // environment get the last word.
+        val usageReporting = UsageReportingConfig.read(config, File(dataFolder, "config.yml"))
         trace = TraceClient.builder(usageReporting.endpoint, name, description.version)
             .key(usageReporting.key)
             .enabled(usageReporting.enabled)
@@ -90,6 +93,27 @@ class Currencies : JavaPlugin() {
             closeDataSource()
             isEnabled = false
         }
+    }
+
+    /**
+     * Every save of `config.yml` goes through here, so none of them can lose the operator's
+     * settings, usage-reporting opt-out included:
+     * - A file that cannot be parsed is never overwritten. Bukkit loads it as empty, so the
+     *   startup save would otherwise replace it with the bundled defaults (`enabled: true`).
+     * - `usage-reporting.enabled: false` on disk is carried into the loaded config first, so a
+     *   stale copy cannot overwrite an opt-out written while the server was running.
+     */
+    override fun saveConfig() {
+        val configFile = File(dataFolder, "config.yml")
+        if (UsageReportingSetting.isUnparseable(configFile)) {
+            logger.severe(
+                "config.yml could not be read, so it was not overwritten. Fix the YAML error in it and restart; " +
+                    "until then the defaults are used, and usage reporting is off."
+            )
+            return
+        }
+        UsageReportingSetting.keepOptOutFromDisk(config, configFile)
+        super.saveConfig()
     }
 
     private fun initialize(dataSource: HikariDataSource) {

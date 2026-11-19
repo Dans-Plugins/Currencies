@@ -1,6 +1,7 @@
 package com.dansplugins.currencies.trace
 
 import org.bukkit.configuration.Configuration
+import java.io.File
 
 /**
  * The `usage-reporting` block of `config.yml`, read the way that survives an
@@ -43,8 +44,15 @@ data class UsageReportingConfig(
         // explicit fallback instead, which for the key would be "" and would turn
         // reporting off on every existing installation. Verified against
         // YamlConfiguration, not assumed.
-        fun read(config: Configuration): UsageReportingConfig = UsageReportingConfig(
-            enabled = config.getBoolean(ENABLED_KEY),
+        //
+        // The switch itself fails closed (getBoolean() would read a quoted "false" as the
+        // bundled true), and an opt-out in [configFile] on disk wins over the loaded copy.
+        fun read(config: Configuration, configFile: File? = null): UsageReportingConfig = UsageReportingConfig(
+            enabled = if (configFile != null) {
+                UsageReportingSetting.isEnabled(config, configFile)
+            } else {
+                TraceClient.allowsReporting(config.get(ENABLED_KEY))
+            },
             endpoint = config.getString(ENDPOINT_KEY) ?: DEFAULT_ENDPOINT,
             key = config.getString(KEY_KEY) ?: ""
         )

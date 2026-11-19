@@ -21,7 +21,7 @@ class UsageReportingConfigTest {
 
     @Test
     fun `settings are read with the one-argument getters so bundled defaults apply`() {
-        every { config.getBoolean("usage-reporting.enabled") } returns true
+        every { config.get("usage-reporting.enabled") } returns true
         every { config.getString("usage-reporting.endpoint") } returns "https://trace.example.org"
         every { config.getString("usage-reporting.key") } returns "abc"
 
@@ -31,13 +31,14 @@ class UsageReportingConfigTest {
         assertEquals("https://trace.example.org", settings.endpoint)
         assertEquals("abc", settings.key)
         verify(exactly = 0) { config.getBoolean("usage-reporting.enabled", any()) }
+        verify(exactly = 0) { config.getBoolean("usage-reporting.enabled") }
         verify(exactly = 0) { config.getString("usage-reporting.endpoint", any()) }
         verify(exactly = 0) { config.getString("usage-reporting.key", any()) }
     }
 
     @Test
     fun `a missing endpoint falls back to the author's trace server`() {
-        every { config.getBoolean("usage-reporting.enabled") } returns true
+        every { config.get("usage-reporting.enabled") } returns true
         every { config.getString("usage-reporting.endpoint") } returns null
         every { config.getString("usage-reporting.key") } returns "abc"
 
@@ -46,7 +47,7 @@ class UsageReportingConfigTest {
 
     @Test
     fun `a missing key is empty, which the client treats as off`() {
-        every { config.getBoolean("usage-reporting.enabled") } returns true
+        every { config.get("usage-reporting.enabled") } returns true
         every { config.getString("usage-reporting.endpoint") } returns "https://trace.example.org"
         every { config.getString("usage-reporting.key") } returns null
 
@@ -55,7 +56,7 @@ class UsageReportingConfigTest {
 
     @Test
     fun `the switch is honoured`() {
-        every { config.getBoolean("usage-reporting.enabled") } returns false
+        every { config.get("usage-reporting.enabled") } returns false
         every { config.getString("usage-reporting.endpoint") } returns "https://trace.example.org"
         every { config.getString("usage-reporting.key") } returns "abc"
 
@@ -86,5 +87,14 @@ class UsageReportingConfigTest {
             "Usage reporting is off (environment).",
             UsageReportingConfig.startupNotice("Currencies", "https://trace.danielstephenson.dev", TraceClient.REASON_ENVIRONMENT)
         )
+    }
+
+    @Test
+    fun `a quoted false turns reporting off`() {
+        every { config.get("usage-reporting.enabled") } returns "false"
+        every { config.getString("usage-reporting.endpoint") } returns "https://trace.example.org"
+        every { config.getString("usage-reporting.key") } returns "abc"
+
+        assertFalse(UsageReportingConfig.read(config).enabled)
     }
 }
